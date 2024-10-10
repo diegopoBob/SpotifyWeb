@@ -145,12 +145,12 @@ public class Cliente extends Usuario {
         this.fecNac = fecNac;
     }
     
-    public Cliente(String nick, String nombre, String apellido, String mail, LocalDate FecNac, String imagen){
+    public Cliente(String nick, String nombre, String apellido, String mail, LocalDate FecNac, String imagen, String contraseña){
 
         this.nick = nick;
         this.nombre = nombre;
         this.apellido = apellido;
-        //this.Contraseña = contraseña;
+        this.contraseñaHash = contraseña;
         this.mail = mail;
         this.fecNac = FecNac;
         this.imagen = imagen;

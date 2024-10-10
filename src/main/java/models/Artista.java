@@ -26,11 +26,11 @@ public class Artista extends Usuario {
     private String DireccionWeb;
     
     
-    public Artista(String nick, String nombre, String apellido, String mail, LocalDate FecNac, String imagen, String biografia, String link){
+    public Artista(String nick, String nombre, String apellido, String mail, LocalDate FecNac, String imagen, String biografia, String link, String contraseña){
         this.nick = nick;
         this.nombre = nombre;
         this.apellido = apellido;
-        //this.Contraseña = contraseña;
+        this.contraseñaHash = contraseña;
         this.mail = mail;
         this.fecNac = FecNac;
         this.biografia = biografia;

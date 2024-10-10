@@ -13,15 +13,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  *
  * @author dylan
  */
-@WebServlet(name = "verificarInicioSesion", urlPatterns = {"/verify"})
+@WebServlet(name = "verificarInicioSesion", urlPatterns = {"/asd"})
 public class verificarInicioSesion extends HttpServlet {
     Fabrica fabrica = Fabrica.getInstance();
     private IUsuarioController ICU = fabrica.getIUsuarioController();
@@ -65,11 +62,11 @@ public class verificarInicioSesion extends HttpServlet {
     @Override
      protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response); no se usa
-      
         String username = request.getParameter("email");
         String password = request.getParameter("password");
-        
+        if(username.contains("@")){
+            username=ICU.getNickPorMail(username);
+        }
         
         if(ICU.inicioSesion(username, password)){
             
