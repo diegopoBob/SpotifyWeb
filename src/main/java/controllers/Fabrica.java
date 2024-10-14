@@ -4,6 +4,9 @@
  */
 package controllers;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
  *
  * @author dylan
@@ -12,7 +15,9 @@ public class Fabrica {
 
     private static Fabrica instancia;
 
+    private EntityManagerFactory emf;
     private Fabrica() {
+        this.emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
     };
 
     public static Fabrica getInstance() {

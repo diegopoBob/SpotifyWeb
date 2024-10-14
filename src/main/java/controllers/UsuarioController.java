@@ -43,7 +43,7 @@ import models.Usuario;
  */
 public class UsuarioController implements IUsuarioController {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("spotifyPersitence");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
     PlaylistJpaController auxPlay = new PlaylistJpaController(emf);
     AlbumJpaController auxAlbum = new AlbumJpaController(emf);
     CancionJpaController auxCan = new CancionJpaController(emf);
@@ -263,6 +263,13 @@ public class UsuarioController implements IUsuarioController {
         List<String> aux = null;
         ClienteJpaController jpa = new ClienteJpaController(emf);
         Query query = jpa.getEntityManager().createNativeQuery("Select usuario_id from cliente_usuariosseguidos where cliente_id ='" + usuario + "'");
+        return query.getResultList();
+    }
+    
+    public List<String> obtenerNicknamesseguidores(String usuario) throws Exception {
+        List<String> aux = null;
+        ClienteJpaController jpa = new ClienteJpaController(emf);
+        Query query = jpa.getEntityManager().createNativeQuery("Select cliente_id from cliente_usuariosseguidos where usuario_id ='" + usuario + "'");
         return query.getResultList();
     }
 
