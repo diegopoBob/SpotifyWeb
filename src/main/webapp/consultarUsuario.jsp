@@ -8,6 +8,7 @@
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="controllers.IPlaylistController"%>
+<%@page import="controllers.IAlbumController" %>
 <%@page import="java.util.List"%>
 <%@page import="controllers.IUsuarioController"%>
 <%@page import="controllers.Fabrica"%>
@@ -16,12 +17,15 @@
 Fabrica fabrica = Fabrica.getInstance();
 IUsuarioController usrController = fabrica.getIUsuarioController();
 IPlaylistController playController = fabrica.getIPlaylistController();
+IAlbumController albController = fabrica.getIAlbumController();
 
 String imagenDefault = "includes/imagenDefault.png";
-session.getAttribute("user");
-Object[][] datos = usrController.obtenerDatosCliente("lachiqui");
-List<String> seguidores = usrController.obtenerNicknamesseguidores("lachiqui");
+//String usuario = session.getAttribute("user");
+
+Object[][] datos = usrController.obtenerDatosCliente("cbochinche");
+List<String> seguidores = usrController.obtenerNicknamesseguidores("cbochinche");
 List<String> listas = playController.obtenerNombresPlaylistParticularCliente("cbochinche");
+List<String> albums = albController.obtenerNombresAlbumsFavoritos("cbochinche");
 String nombre = "Nombre";
 String apellido = "Apellido";
 String imagen = imagenDefault;
@@ -65,15 +69,15 @@ if (datos.length > 0) {
         </div>
 
         <!-- Perfil de usuario -->
-        <div class="perfil container bg-neutral-900 grid grid-cols-3 gap-2 grid-rows-2 gap-2 mx-auto  p-5  ">
+        <div class="perfil container bg-neutral-900 grid grid-cols-3 gap-2 lg:grid-rows-2 sm:grid-row-1 gap-2 mx-auto  p-5  ">
 
             <div class="logo  p-2 row-span-2 col-span-1 col-start-1 flex justify-center font-bold py-2 px-2 border-r-4 border-black ">
-                <img class="max-w-64 max-h-64 mr-2 rounded-full object-cover " src="<%= imagen %>"  alt="logo">
+                <img class="sm:max-w-16 sm:max-h-16 md:max-w-32 md:max-h-32 lg:max-w-64 lg:max-h-64 mr-2 rounded-full object-cover " src="<%= imagen %>"  alt="logo">
             </div>
 
             <div class=" col-span-2 col-start-2 row-start-1 cursor-default ">
                 <h1 class = "text-neutral-500">Cliente</h1>
-                <p class=" text-white font-bold text-7xl font-bold p-2 block "><%out.print(nombre + " " + apellido ); %> </p>
+                <p class=" sm:text-2xl text-white font-bold md:text-7xl font-bold p-2 block "><%out.print(nombre + " " + apellido ); %> </p>
                 <h2 class = "text-neutral-500" >
 
                     <a class="cursor-pointer text-neutral-500 hover:text-green-600 p-2">
@@ -101,28 +105,85 @@ if (datos.length > 0) {
             </div>
         </div>
 
-        <!-- Listas de reproduccion -->            
-        <div>
-            <h3 class="container mx-auto items-center justify-center bg-neutral-800 p-4 text-green-500 cursor-pointer text-center border border-black">Listas</h3>
+        <!-- Listas y Albums -->            
+        <div class="container mx-auto text-center items-center justify-center bg-neutral-800">
+            <ul class="flex flex-wrap  justify-center text-center">
+                <li class="me-2 border-b border-green-700">
+                    <a id="showListas" class="p-4 text-green-500 active inline-block cursor-pointer hover:text-green-800">Listas</a>
+                </li>
+                <li class="me-2 border-b border-green-700">
+                    <a id="showAlbums" class="p-4 text-green-500 active inline-block cursor-pointer hover:text-green-800">Albums</a>
+                </li>
+            </ul>
         </div>            
 
-
-        <div class="playlists container bg-neutral-900 pl-5 grid grid-cols-4 grid-rows-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto p-2">
-
-
-           <% 
-        // Iteramos sobre la lista de álbumes para generar las tarjetas dinámicamente
-        for (String album : listas) {
-    %>
-        <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href='login.jsp'">
-            <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
-            <div class="p-6 hover:shadow-inner">
-                <h2 class="text-lg font-semibold text-gray-800"><%= album %></h2>
+        <!-- Sección de Listas -->
+        <div id="listasSection" class="playlists container bg-neutral-900 pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto p-2">
+            <% 
+            // Iteramos sobre la lista de listas para generar las tarjetas dinámicamente
+            for (String album : listas) {
+            %>
+            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href='login.jsp'">
+                <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
+                <div class="p-6 hover:shadow-inner">
+                    <h2 class="text-lg font-semibold text-gray-800"><%= album %></h2>
+                </div>
             </div>
+            <% 
+               }
+            %>
         </div>
-             <% 
-                }
-             %>
-         </div>
+
+        <!-- Sección de Albums -->
+        <div id="albumsSection" class="playlists container bg-neutral-900 pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto p-2" style="display: none;">
+            <% 
+            // Iteramos sobre la lista de álbumes para generar las tarjetas dinámicamente
+            for (String album : albums) {
+            %>
+            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href='login.jsp'">
+                <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
+                <div class="p-6 hover:shadow-inner">
+                    <h2 class="text-lg font-semibold text-gray-800"><%= album %></h2>
+                </div>
+            </div>
+            <% 
+               }
+            %>
+        </div>
+
+        <!--alternar entre album y listas-->
+        <script>
+    // Obtener los elementos de los botones y secciones
+    const listasSection = document.getElementById('listasSection');
+    const albumsSection = document.getElementById('albumsSection');
+    const showListas = document.getElementById('showListas');
+    const showAlbums = document.getElementById('showAlbums');
+
+    //  quitar la clase "active" de ambos botones
+    function clearActiveClass() {
+        showListas.classList.remove('bg-green-800', 'text-white');
+        showAlbums.classList.remove('bg-green-800', 'text-white');
+    }
+
+    // Mostrar la sección de listas y cambiar el botón a activo
+    showListas.addEventListener('click', function() {
+        listasSection.style.display = 'grid';
+        albumsSection.style.display = 'none';
+        
+        clearActiveClass(); // Quitamos las clases activas de ambos botones
+        showListas.classList.add('bg-green-800', 'text-white'); // Activamos el botón de Listas
+    });
+
+    // Mostrar la sección de álbums y cambiar el botón a activo
+    showAlbums.addEventListener('click', function() {
+        albumsSection.style.display = 'grid';
+        listasSection.style.display = 'none';
+        
+        clearActiveClass(); // Quitamos las clases activas de ambos botones
+        showAlbums.classList.add('bg-green-800', 'text-white'); // Activamos el botón de Álbums
+    });
+        </script>
+
+
     </body>
 </html>      

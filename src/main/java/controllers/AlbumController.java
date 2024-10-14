@@ -26,12 +26,18 @@ import persistence.GeneroJpaController;
  */
 public class AlbumController implements IAlbumController {
  private EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
- ArtistaJpaController usr_ctr = new ArtistaJpaController(emf);
+ 
+ ArtistaJpaController art_ctr = new ArtistaJpaController(emf);
  ClienteJpaController auxCliente = new ClienteJpaController(emf);
  AlbumJpaController auxAL = new AlbumJpaController(emf);
  GeneroJpaController auxG = new GeneroJpaController(emf);
-    public AlbumController() {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      
+ public AlbumController() {
+        Fabrica fabrica = Fabrica.getInstance();
+        this.art_ctr = fabrica.getArtistaJpaController();
+        this.auxCliente = fabrica.getClienteJpaController();
+        this.auxAL = fabrica.getAlbumJpaController();
+        this.auxG = fabrica.getGeneroJpaController();
     }
 
     public AlbumController(EntityManagerFactory emf) {

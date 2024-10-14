@@ -6,6 +6,13 @@ package controllers;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import persistence.AlbumJpaController;
+import persistence.ArtistaJpaController;
+import persistence.CancionJpaController;
+import persistence.ClienteJpaController;
+import persistence.GeneroJpaController;
+import persistence.PlaylistJpaController;
+import persistence.UsuarioJpaController;
 
 /**
  *
@@ -30,19 +37,51 @@ public class Fabrica {
     public IUsuarioController getIUsuarioController() {
         return new UsuarioController();
     }
- 
+    
     public IGeneroController getIGeneroController(){
         return new GeneroController();
     }
     
-    public IAlbumController getIAlbumController() {
-       return new AlbumController();
+    public ICancionController getICancionController(){
+        return new CancionController();
+    }
+     
+    public IAlbumController getIAlbumController(){
+        return new AlbumController();
     }
     
-    public IPlaylistController getIPlaylistController() {
-       return new PlaylistController();
+    public IPlaylistController getIPlaylistController(){
+        return new PlaylistController();
     }
-    public ICancionController getICancionController() {
-       return new CancionController();
+
+    CancionJpaController getCancionJpaController() {
+        return new CancionJpaController(emf);
+    }
+    ArtistaJpaController getArtistaJpaController() {
+        return new ArtistaJpaController(emf);
+    }
+
+    AlbumJpaController getAlbumJpaController() {
+        return new AlbumJpaController(emf);
+    }
+
+    UsuarioJpaController getUsuarioJpaController() {
+        return new UsuarioJpaController(emf);
+    }
+
+    GeneroJpaController getGeneroJpaController() {
+        return new GeneroJpaController(emf);
+    }
+
+    PlaylistJpaController getPlaylistJpaController() {
+        return new PlaylistJpaController(emf);
+    }
+
+    ClienteJpaController getClienteJpaController() {
+        return new ClienteJpaController(emf);
+    }
+
+    EntityManagerFactory getEntityManagerFactory() {
+        return  this.emf;
     }
 }
