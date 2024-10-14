@@ -109,7 +109,7 @@ if (datos.length > 0) {
         <div class="container mx-auto text-center items-center justify-center bg-neutral-800">
             <ul class="flex flex-wrap  justify-center text-center">
                 <li class="me-2 border-b border-green-700">
-                    <a id="showListas" class="p-4 text-green-500 active inline-block cursor-pointer hover:text-green-800">Listas</a>
+                    <a id="showListas" class="p-4 bg-green-800 text-white inline-block cursor-pointer hover:text-green-800">Listas</a>
                 </li>
                 <li class="me-2 border-b border-green-700">
                     <a id="showAlbums" class="p-4 text-green-500 active inline-block cursor-pointer hover:text-green-800">Albums</a>
@@ -161,8 +161,8 @@ if (datos.length > 0) {
 
     //  quitar la clase "active" de ambos botones
     function clearActiveClass() {
-        showListas.classList.remove('bg-green-800', 'text-white');
-        showAlbums.classList.remove('bg-green-800', 'text-white');
+        showListas.classList.remove('bg-green-800', 'text-black');
+        showAlbums.classList.remove('bg-green-800', 'text-black');
     }
 
     // Mostrar la sección de listas y cambiar el botón a activo
@@ -171,7 +171,7 @@ if (datos.length > 0) {
         albumsSection.style.display = 'none';
         
         clearActiveClass(); // Quitamos las clases activas de ambos botones
-        showListas.classList.add('bg-green-800', 'text-white'); // Activamos el botón de Listas
+        showListas.classList.add('bg-green-800', 'text-black'); // Activamos el botón de Listas
     });
 
     // Mostrar la sección de álbums y cambiar el botón a activo
@@ -180,7 +180,7 @@ if (datos.length > 0) {
         listasSection.style.display = 'none';
         
         clearActiveClass(); // Quitamos las clases activas de ambos botones
-        showAlbums.classList.add('bg-green-800', 'text-white'); // Activamos el botón de Álbums
+        showAlbums.classList.add('bg-green-800', 'text-black'); // Activamos el botón de Álbums
     });
         </script>
 
