@@ -5,7 +5,7 @@
 --%>
 
 
-
+<%@ page import="java.time.LocalDate" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="controllers.IPlaylistController"%>
 <%@page import="controllers.IAlbumController" %>
@@ -28,11 +28,15 @@ List<String> listas = playController.obtenerNombresPlaylistParticularCliente("cb
 List<String> albums = albController.obtenerNombresAlbumsFavoritos("cbochinche");
 String nombre = "Nombre";
 String apellido = "Apellido";
+String mail = "mail";
+LocalDate fecnac = LocalDate.now();
 String imagen = imagenDefault;
 int num = seguidores.size();
 if (datos.length > 0) {
      nombre = (String) datos[0][1];
      apellido = (String) datos[0][2];
+     mail = (String) datos [0][3];
+     fecnac = (LocalDate) datos [0][4];
      imagen = (String) datos[0][5];
     if(imagen == null || imagen == "" || imagen == "null" || imagen.isEmpty() || "null".equals(imagen)){
         imagen = imagenDefault;
@@ -76,7 +80,10 @@ if (datos.length > 0) {
             </div>
 
             <div class=" col-span-2 col-start-2 row-start-1 cursor-default ">
-                <h1 class = "text-neutral-500">Cliente</h1>
+                <h1 class = "text-neutral-500"><%
+                            out.print("Cliente " + (fecnac != null ? fecnac.toString() : "Fecha no disponible") + " " + mail);
+                        %>
+                </h1>
                 <p class=" sm:text-2xl text-white font-bold md:text-7xl font-bold p-2 block "><%out.print(nombre + " " + apellido ); %> </p>
                 <h2 class = "text-neutral-500" >
 
@@ -109,10 +116,10 @@ if (datos.length > 0) {
         <div class="container mx-auto text-center items-center justify-center bg-neutral-800">
             <ul class="flex flex-wrap  justify-center text-center">
                 <li class="me-2 border-b border-green-700">
-                    <a id="showListas" class="p-4 bg-green-800 text-white inline-block cursor-pointer hover:text-green-800">Listas</a>
+                    <a id="showListas" class="p-4 bg-green-800 text-green-500 inline-block cursor-pointer hover:text-white">Listas</a>
                 </li>
                 <li class="me-2 border-b border-green-700">
-                    <a id="showAlbums" class="p-4 text-green-500 active inline-block cursor-pointer hover:text-green-800">Albums</a>
+                    <a id="showAlbums" class="p-4 text-green-500 active inline-block cursor-pointer hover:text-white">Albums</a>
                 </li>
             </ul>
         </div>            
