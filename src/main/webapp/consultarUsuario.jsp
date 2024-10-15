@@ -23,7 +23,7 @@ String imagenDefault = "includes/imagenDefault.png";
 //String usuario = session.getAttribute("user");
 
 Object[][] datos = usrController.obtenerDatosCliente("cbochinche");
-List<String> seguidores = usrController.obtenerNicknamesseguidores("cbochinche");
+List<String> seguidores = usrController.obtenerNicknamesseguidores("lachiqui");
 List<String> listas = playController.obtenerNombresPlaylistParticularCliente("cbochinche");
 List<String> albums = albController.obtenerNombresAlbumsFavoritos("cbochinche");
 String nombre = "Nombre";
@@ -56,21 +56,6 @@ if (datos.length > 0) {
         <link href="includes/style.css" rel="stylesheet">
     </head>
     <body class = "bg-green-800">
-        <div class=" bg-green-800">
-            <nav class="flex bg-black flex justify-between lg:justify-start items-center">
-                <div class="logo p-2">
-                    <img class="w-16 h-16 mr-2" src="https://cdn.freebiesupply.com/logos/large/2x/spotify-2-logo-png-transparent.png"with="100" alt="logo">
-                </div>
-                <div class=" lg:block hidden w-1/6 md-4/6">
-                    <ul class="menu flex items-center justify-center gap-5">
-                        <li><a href= "#" class=" text-green-500 font-bold block p-5 hover:text-green-900">Inicio</a></li>
-                        <li><a href= "#" class=" text-green-500 font-bold block p-5 hover:text-green-900">Explorar</a></li>
-
-                    </ul>
-                </div>
-
-            </nav>
-        </div>
 
         <!-- Perfil de usuario -->
         <div class="perfil container bg-neutral-900 grid grid-cols-3 gap-2 lg:grid-rows-2 sm:grid-row-1 gap-2 mx-auto  p-5  ">
@@ -82,12 +67,21 @@ if (datos.length > 0) {
             <div class=" col-span-2 col-start-2 row-start-1 cursor-default ">
                 <h1 class = "text-neutral-500"><%
                             out.print("Cliente " + (fecnac != null ? fecnac.toString() : "Fecha no disponible") + " " + mail);
-                        %>
+                    %>
                 </h1>
                 <p class=" sm:text-2xl text-white font-bold md:text-7xl font-bold p-2 block "><%out.print(nombre + " " + apellido ); %> </p>
                 <h2 class = "text-neutral-500" >
 
-                    <a class="cursor-pointer text-neutral-500 hover:text-green-600 p-2">
+
+                    <div class="p-2 align-right">
+                        <button class="border border-2 border-green-500 p-2 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg"  onclick="toggleFollow()">
+                            Seguir
+                        </button>
+                    </div>
+
+
+
+                    <a class="cursor-pointer text-neutral-500 hover:text-green-600 p-2" id="showSeguidores">
                         <%
                             out.print("Seguidores (" + num + ")");
                         %>
@@ -99,13 +93,34 @@ if (datos.length > 0) {
 
             <div class = " align-bottom col-start-2 row-start-2 text-white">
 
-
-
-                <div class="p-2 align-right">
-                    <button class="border border-2 border-green-500 p-2 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg">
-                        Seguir
-                    </button>
+                <!-- Sección de Seguidores -->
+                <div id="seguidoresSection" class="hidden bg-neutral-900 p-4">
+                    <h2 class="text-lg font-semibold text-green-800">Lista de Seguidores:</h2>
+                    <div>
+                        <%
+                            int count = 0; // Contador para los seguidores
+                            for (String seguidor : seguidores) {
+                                if (count % 10 == 0 && count != 0) {
+                                    // Cerrar el párrafo después de 5 seguidores
+                                    out.print("</p>");
+                                }
+                                if (count % 10 == 0) {
+                                    // Iniciar un nuevo párrafo
+                                    out.print("<p class='text-neutral-600'>");
+                                }
+                                out.print(seguidor + (count < seguidores.size() - 1 ? " - " : "")); // Agregar una coma entre los seguidores
+                                count++;
+                            }
+                            // Cerrar el último párrafo si hay seguidores
+                            if (count > 0) {
+                                out.print("</p>");
+                            }
+                        %>
+                    </div>
                 </div>
+
+
+
 
 
 
@@ -116,10 +131,10 @@ if (datos.length > 0) {
         <div class="container mx-auto text-center items-center justify-center bg-neutral-800">
             <ul class="flex flex-wrap  justify-center text-center">
                 <li class="me-2 border-b border-green-700">
-                    <a id="showListas" class="p-4 bg-green-800 text-green-500 inline-block cursor-pointer hover:text-white">Listas</a>
+                    <a id="showListas" class="p-4 bg-green-800 text-white inline-block cursor-pointer hover:text-neutral-400">Listas</a>
                 </li>
                 <li class="me-2 border-b border-green-700">
-                    <a id="showAlbums" class="p-4 text-green-500 active inline-block cursor-pointer hover:text-white">Albums</a>
+                    <a id="showAlbums" class="p-4 text-white active inline-block cursor-pointer hover:text-neutral-400">Albums</a>
                 </li>
             </ul>
         </div>            
@@ -130,7 +145,7 @@ if (datos.length > 0) {
             // Iteramos sobre la lista de listas para generar las tarjetas dinámicamente
             for (String album : listas) {
             %>
-            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href='login.jsp'">
+            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href = 'login.jsp'">
                 <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
                 <div class="p-6 hover:shadow-inner">
                     <h2 class="text-lg font-semibold text-gray-800"><%= album %></h2>
@@ -147,7 +162,7 @@ if (datos.length > 0) {
             // Iteramos sobre la lista de álbumes para generar las tarjetas dinámicamente
             for (String album : albums) {
             %>
-            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href='login.jsp'">
+            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href = 'login.jsp'">
                 <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
                 <div class="p-6 hover:shadow-inner">
                     <h2 class="text-lg font-semibold text-gray-800"><%= album %></h2>
@@ -160,36 +175,101 @@ if (datos.length > 0) {
 
         <!--alternar entre album y listas-->
         <script>
-    // Obtener los elementos de los botones y secciones
-    const listasSection = document.getElementById('listasSection');
-    const albumsSection = document.getElementById('albumsSection');
-    const showListas = document.getElementById('showListas');
-    const showAlbums = document.getElementById('showAlbums');
+            // Obtener los elementos de los botones y secciones
+            const listasSection = document.getElementById('listasSection');
+            const albumsSection = document.getElementById('albumsSection');
+            const showListas = document.getElementById('showListas');
+            const showAlbums = document.getElementById('showAlbums');
 
-    //  quitar la clase "active" de ambos botones
-    function clearActiveClass() {
-        showListas.classList.remove('bg-green-800', 'text-black');
-        showAlbums.classList.remove('bg-green-800', 'text-black');
-    }
+            //  quitar la clase "active" de ambos botones
+            function clearActiveClass() {
+                showListas.classList.remove('bg-green-800');
+                showAlbums.classList.remove('bg-green-800');
+            }
 
-    // Mostrar la sección de listas y cambiar el botón a activo
-    showListas.addEventListener('click', function() {
-        listasSection.style.display = 'grid';
-        albumsSection.style.display = 'none';
-        
-        clearActiveClass(); // Quitamos las clases activas de ambos botones
-        showListas.classList.add('bg-green-800', 'text-black'); // Activamos el botón de Listas
-    });
+            // Mostrar la sección de listas y cambiar el botón a activo
+            showListas.addEventListener('click', function () {
+                listasSection.style.display = 'grid';
+                albumsSection.style.display = 'none';
 
-    // Mostrar la sección de álbums y cambiar el botón a activo
-    showAlbums.addEventListener('click', function() {
-        albumsSection.style.display = 'grid';
-        listasSection.style.display = 'none';
-        
-        clearActiveClass(); // Quitamos las clases activas de ambos botones
-        showAlbums.classList.add('bg-green-800', 'text-black'); // Activamos el botón de Álbums
-    });
+                clearActiveClass(); // Quitamos las clases activas de ambos botones
+                showListas.classList.add('bg-green-800'); // Activamos el botón de Listas
+            });
+
+            // Mostrar la sección de álbums y cambiar el botón a activo
+            showAlbums.addEventListener('click', function () {
+                albumsSection.style.display = 'grid';
+                listasSection.style.display = 'none';
+
+                clearActiveClass(); // Quitamos las clases activas de ambos botones
+                showAlbums.classList.add('bg-green-800'); // Activamos el botón de Álbums
+            });
         </script>
+
+        <script>
+            // Obtener el enlace y la sección de seguidores
+            const showSeguidores = document.getElementById('showSeguidores');
+            const seguidoresSection = document.getElementById('seguidoresSection');
+
+            // Evento de clic para mostrar la sección de seguidores
+            showSeguidores.addEventListener('click', function () {
+                // Alternar la visibilidad de la sección de seguidores
+                if (seguidoresSection.style.display === 'none' || seguidoresSection.style.display === '') {
+                    seguidoresSection.style.display = 'block'; // Mostrar
+                } else {
+                    seguidoresSection.style.display = 'none'; // Ocultar si ya está visible
+                }
+            });
+        </script>
+
+        <script>
+            let isFollowing = false; // Estado inicial, no está siguiendo
+            const followButton = document.getElementById('followButton');
+
+            function toggleFollow() {
+                if (!isFollowing) {
+                    // Aquí puedes hacer una llamada AJAX a tu backend para seguir al usuario
+                    // Por ejemplo: seguirUsuario(usuarioId);
+                    followButton.innerText = 'Dejar de seguir'; // Cambia el texto
+                    isFollowing = true; // Actualiza el estado
+                    // Ejemplo de llamada AJAX (requiere implementar la lógica en el backend)
+                    fetch('/tu-endpoint-para-seguir', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({userId: 'id_del_usuario_a_seguir'})
+                    })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data); // Maneja la respuesta del servidor
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
+                } else {
+                    // Aquí puedes hacer otra llamada AJAX para dejar de seguir
+                    followButton.innerText = 'Seguir'; // Cambia el texto
+                    isFollowing = false; // Actualiza el estado
+                    // Ejemplo de llamada AJAX (requiere implementar la lógica en el backend)
+                    fetch('/tu-endpoint-para-dejar-de-seguir', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({userId: 'id_del_usuario_a_dejar_de_seguir'})
+                    })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data); // Maneja la respuesta del servidor
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
+                }
+            }
+        </script>
+
 
 
     </body>
