@@ -15,6 +15,7 @@ public interface IUsuarioController {
     public abstract void registroUsuario(String nickname, String nombre, String apellido, String mail, LocalDate FecNac, String imagen, String biografia, String link, String tipo, String contraseña) throws Exception;
     public abstract List<String> obtenerNombresClientes();
     public abstract List<String> obtenerNicknamesseguidos(String usuario) throws Exception;
+    public abstract List<String> obtenerNicknamesseguidores(String usuario) throws Exception;
     public abstract List<String> obtenerNicknamesDisponiblesASeguir(String usuario, List<String> usuariosSeguidos) throws Exception;
     public abstract void seguirUsuario(String usuario, String usuarioASeguir) throws Exception;
     public abstract void dejarSeguirUsuario(String usuario, String usuarioASeguir) throws Exception;
@@ -30,7 +31,6 @@ public interface IUsuarioController {
     public abstract void eliminarAlbumFavorito(String nick, String nombreAlbum) throws Exception;
     public abstract void eliminarPlaylistFavorita(String nick, String nombrePlaylist) throws Exception;
     public abstract List<String> obtenerNombresArtistas(); 
-    public abstract List<String> obtenerNicknamesseguidores(String usuario) throws Exception;
     
     public abstract Boolean inicioSesion(String nick, String password);
     public String hashPassword(String password);

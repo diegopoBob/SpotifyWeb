@@ -265,6 +265,13 @@ public class UsuarioController implements IUsuarioController {
         Query query = jpa.getEntityManager().createNativeQuery("Select usuario_id from cliente_usuariosseguidos where cliente_id ='" + usuario + "'");
         return query.getResultList();
     }
+    
+    public List<String> obtenerNicknamesseguidores(String usuario) throws Exception {
+        List<String> aux = null;
+        ClienteJpaController jpa = new ClienteJpaController(emf);
+        Query query = jpa.getEntityManager().createNativeQuery("Select cliente_id from cliente_usuariosseguidos where usuario_id ='" + usuario + "'");
+        return query.getResultList();
+    }
 
     public List<String> obtenerNicknamesDisponiblesASeguir(String usuario, List<String> usuariosSeguidos) throws Exception {
 
@@ -371,12 +378,6 @@ public class UsuarioController implements IUsuarioController {
     return nick;
     }
     
-    public List<String> obtenerNicknamesseguidores(String usuario) throws Exception {
-        List<String> aux = null;
-        ClienteJpaController jpa = new ClienteJpaController(emf);
-        Query query = jpa.getEntityManager().createNativeQuery("Select cliente_id from cliente_usuariosseguidos where usuario_id ='" + usuario + "'");
-        return query.getResultList();
-    }
 
 //encriptar pw
     public String hashPassword(String password) {
