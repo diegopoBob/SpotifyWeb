@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author dylan
  */
-@WebServlet(name = "verificarInicioSesion", urlPatterns = {"/asd"})
+@WebServlet(name = "verificarInicioSesion", urlPatterns = {"/verify"})
 public class verificarInicioSesion extends HttpServlet {
     Fabrica fabrica = Fabrica.getInstance();
     private IUsuarioController ICU = fabrica.getIUsuarioController();
@@ -61,7 +61,7 @@ public class verificarInicioSesion extends HttpServlet {
      */
     @Override
      protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         String username = request.getParameter("email");
         String password = request.getParameter("password");
         if(username.contains("@")){

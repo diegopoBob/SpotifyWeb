@@ -84,10 +84,7 @@ public class CancionController implements ICancionController  {
             datos[i][1] = cancion.getNombre();
             datos[i][2] = cancion.getDuracion();
             datos[i][3] = cancion.getDireccion_archivo_de_audio();
-            datos[i][4] = cancion.getDireccion_imagen();
-
-
-
+            datos[i][4] = "agarrar foto de album";
         }
         return datos;
     }

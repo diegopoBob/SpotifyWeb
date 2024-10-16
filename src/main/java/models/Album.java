@@ -37,6 +37,8 @@ public class Album implements Serializable {
      private String nombre;
     @Column(name="anioo")
     private int anioo;
+    @Column(name = "direccion_imagen")
+    private String direccion_imagen;
    
     @OneToMany
     @JoinTable(
@@ -58,12 +60,13 @@ public class Album implements Serializable {
     )
     List<Cancion> canciones;
 
-    public Album(String nombre, int anioo, Artista artista, List<Genero> generos, List<Cancion> canciones) {
+    public Album(String nombre, int anioo, Artista artista, String direccion_imagen, List<Genero> generos, List<Cancion> canciones) {
         this.nombre = nombre;
         this.anioo = anioo;
         this.artista = artista;
         this.generos = generos;
         this.canciones = canciones;
+        this.direccion_imagen = direccion_imagen;
     }
 
     public Album() {

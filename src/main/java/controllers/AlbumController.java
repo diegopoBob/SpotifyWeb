@@ -4,15 +4,17 @@
  */
 package controllers;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
+import controllers.IAlbumController;
 import java.util.ArrayList;
 import models.Album;
 import persistence.AlbumJpaController;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import javax.persistence.Persistence;
 import models.Artista;
 import models.Cancion;
 import models.Cliente;
@@ -25,14 +27,22 @@ import persistence.GeneroJpaController;
  * @author Machichu
  */
 public class AlbumController implements IAlbumController {
- private EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
- ArtistaJpaController usr_ctr = new ArtistaJpaController(emf);
- ClienteJpaController auxCliente = new ClienteJpaController(emf);
- AlbumJpaController auxAL = new AlbumJpaController(emf);
- GeneroJpaController auxG = new GeneroJpaController(emf);
+   private EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
+  
+    private ArtistaJpaController art_ctr;
+    private ClienteJpaController auxCliente;
+    private AlbumJpaController auxAL;
+    private GeneroJpaController auxG;
+   
     public AlbumController() {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Fabrica fabrica = Fabrica.getInstance();
+        this.art_ctr = fabrica.getArtistaJpaController();
+        this.auxCliente = fabrica.getClienteJpaController();
+        this.auxAL = fabrica.getAlbumJpaController();
+        this.auxG = fabrica.getGeneroJpaController();
     }
+    
+
 
     public AlbumController(EntityManagerFactory emf) {
         this.emf = emf;
@@ -90,7 +100,7 @@ public boolean registrarAlbum(String nombre, int anio,List<Genero> generos) {
             auxAL.create(al);
             return true;
         } catch (Exception ex) {
-            //Logger.getLogger(GeneroController.class.getName()).log(Level.SEVERE, null, ex);
+         
             return false;
         }
     }
@@ -102,21 +112,19 @@ public List<String> obtenerNombresAlbums() {
                  .collect(Collectors.toList());
 }
 
-    public void CrearAlbum(String text, int parseInt, String strArtista, Object[][] cancionesOBJ, List<String> generos) {
-        EntityManager em = getEntityManager();
+    public void CrearAlbum(String text, int parseInt, String strArtista, String Direccion_imagen,  Object[][] cancionesOBJ, List<String> generos) {
         List<Cancion> canciones = new ArrayList<>();
         for (Object[] fila : cancionesOBJ) {
             Cancion cancion = new Cancion();
             cancion.setNombre((String) fila[1]);  // Nombre
             cancion.setDuracion((Integer) fila[2]);  // Duración
             cancion.setDireccion_archivo_de_audio((String) fila[3]);  // Ruta MP3
-            cancion.setDireccion_imagen((String) fila[4]);  // Imagen
-            cancion.setGenero(auxG.findGenero((String) fila[5]));
+            //cancion.setDireccion_imagen((String) fila[4]);  // Imagen
+            cancion.setGenero(auxG.findGenero((String) fila[4]));
             canciones.add(cancion);  // Agregar la canción a la lista
         }
 
-        Artista artista = em.find(Artista.class,strArtista);
-        
+        Artista artista = art_ctr.findArtista(strArtista);
         List<Genero> generosSeleccionados = new ArrayList<>();
         for (String nombre : generos) {
             Genero genero = auxG.findGenero(nombre); // Método que busca el Genero por su nombre
@@ -124,16 +132,13 @@ public List<String> obtenerNombresAlbums() {
                 generosSeleccionados.add(genero); // Añadir a la lista si se encontró
             }
         }
-        Album album = new Album(text, parseInt, artista, generosSeleccionados, canciones);
+        Album album = new Album(text, parseInt, artista, Direccion_imagen, generosSeleccionados, canciones);
         auxAL.create(album);
     }
 
     public List<String> obtenerNombresAlbumsFavoritos(String clienteNick) {
     // Busca al cliente por su nick
-    EntityManager em = getEntityManager();
-
-    Cliente cliente = em.find(Cliente.class, clienteNick);
-    
+    Cliente cliente = auxCliente.findCliente(clienteNick);
 
     // Si no se encuentra el cliente, retorna una lista vacía
     if (cliente == null) {

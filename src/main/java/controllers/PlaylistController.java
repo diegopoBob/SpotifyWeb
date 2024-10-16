@@ -167,7 +167,7 @@ public class PlaylistController implements IPlaylistController{
             Cancion cancion = canciones.get(i);
             datos[i][0] = cancion.getId();
             datos[i][1] = cancion.getNombre();
-            datos[i][2] = cancion.getDireccion_imagen();
+            datos[i][2] = "obetner de album";
             datos[i][3] = cancion.getDireccion_archivo_de_audio();
             datos[i][4] = cancion.getDuracion();
             if(cancion.getGenero()!=null){

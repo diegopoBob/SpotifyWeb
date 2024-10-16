@@ -29,7 +29,8 @@ public interface IUsuarioController {
     public abstract void eliminarCancionFavorita(String nick, String nombreCancion)throws Exception;
     public abstract void eliminarAlbumFavorito(String nick, String nombreAlbum) throws Exception;
     public abstract void eliminarPlaylistFavorita(String nick, String nombrePlaylist) throws Exception;
-    public abstract List<String> obtenerNombresArtistas();
+    public abstract List<String> obtenerNombresArtistas(); 
+    public abstract List<String> obtenerNicknamesseguidores(String usuario) throws Exception;
     
     public abstract Boolean inicioSesion(String nick, String password);
     public String hashPassword(String password);
