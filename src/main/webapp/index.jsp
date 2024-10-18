@@ -23,23 +23,31 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="includes/style.css" rel="stylesheet">
         <script>
-            function abrirCasoDeUso(cu) {
+            function abrirCasoDeUso(cu, usuario) {
+                var url = cu;
+
+                // Si se proporciona un usuario válido, agregarlo como parámetro a la URL
+                if (usuario && usuario.trim() !== "") {
+                    url += '?user=' + encodeURIComponent(usuario); // Agrega el parámetro de usuario
+                }
+
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', cu, true); //
+                xhr.open('GET', url, true);
                 xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
                         document.getElementById('principal').innerHTML = xhr.responseText;
-                        var functionName = 'scripts_' + cu.split('.')[0]; //toma antes del punto
+                        var functionName = 'scripts_' + cu.split('.')[0]; // Toma antes del punto
                         if (typeof window[functionName] === 'function') {
-                            window[functionName](); 
+                            window[functionName]();
                         } else {
                             console.error("La función " + functionName + " no existe");
                         }
                     }
                 };
 
-                xhr.send();
+                xhr.send(); // Enviar la solicitud
             }
+
             function playPorPause() {
                 const icono = document.getElementById('playButton');
 
@@ -187,7 +195,8 @@
                     </form>
                 </div>
                 <div class=" h-auto bg-black pr-4 flex items-center userDropdown">
-                    <a onclick='abrirCasoDeUso("consultarUsuario.jsp")' class="text-white pr-2"><% out.print(session.getAttribute("user")); %></a>
+                    <a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= session.getAttribute("user") %>");' class="text-white cursor-pointer pr-2"><% out.print(session.getAttribute("user")); %></a>
+
 
                     <button class=""><img src="includes/search-icon.png" class=" rounded-full h-10 w-10 bg-white " alt="alt"/></button>
 

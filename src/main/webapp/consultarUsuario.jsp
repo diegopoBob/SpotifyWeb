@@ -20,7 +20,10 @@ IPlaylistController playController = fabrica.getIPlaylistController();
 IAlbumController albController = fabrica.getIAlbumController();
 
 String imagenDefault = "includes/asdasd.jpg";
-String usuario = session.getAttribute("user").toString();
+String usuarioLogueado = session.getAttribute("user").toString();
+String usuarioConsulta = request.getParameter("user");
+
+String usuario = (usuarioConsulta != null && !usuarioConsulta.isEmpty()) ? usuarioConsulta : usuarioLogueado;
 
 Object[][] datos = usrController.obtenerDatosCliente(usuario);
 List<String> seguidores = usrController.obtenerNicknamesseguidores(usuario);
@@ -32,6 +35,7 @@ String mail = "mail";
 LocalDate fecnac = LocalDate.now();
 String imagen = imagenDefault;
 int num = seguidores.size();
+
 if (datos.length > 0) {
      nombre = (String) datos[0][1];
      apellido = (String) datos[0][2];
@@ -73,11 +77,14 @@ if (datos.length > 0) {
                 <h2 class = "text-neutral-500" >
 
 
+                    <% if (!usuario.equals(usuarioLogueado)) { %>
                     <div class="p-2 align-right">
-                        <button class="border border-2 border-green-500 p-2 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg"  onclick="toggleFollow()">
+                        <button class="border border-2 border-green-500 p-2 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" onclick="toggleFollow()">
                             Seguir
                         </button>
                     </div>
+                    <% } %>
+
 
 
 
@@ -140,16 +147,12 @@ if (datos.length > 0) {
         </div>            
 
         <!-- Sección de Listas -->
-        <div id="listasSection" class="playlists container bg-neutral-900 pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto p-2">
-             <div class="bg-neutral-500 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href = 'login.jsp'">
-                <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
-                <div class="p-6 hover:shadow-inner">
-                    <h2 class="text-lg font-semibold text-gray-800">album1</h2>
-                </div>
-            </div>
+        <div id="listasSection" class="playlists container bg-black-900 pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto p-2">
             <% 
-            // Iteramos sobre la lista de listas para generar las tarjetas dinámicamente
-            for (String album : listas) {
+            // Verificamos si hay listas antes de mostrar la sección
+            if (listas != null && !listas.isEmpty()) {
+                // Iteramos sobre la lista de listas para generar las tarjetas dinámicamente
+                for (String album : listas) {
             %>
             <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href = 'login.jsp'">
                 <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
@@ -158,15 +161,22 @@ if (datos.length > 0) {
                 </div>
             </div>
             <% 
-               }
+                } 
+            } else {
+            %>
+            <p class="text-white">No hay listas disponibles.</p>
+            <% 
+            }
             %>
         </div>
 
         <!-- Sección de Albums -->
         <div id="albumsSection" class="playlists container bg-neutral-900 pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto" style="display: none;">
             <% 
-            // Iteramos sobre la lista de álbumes para generar las tarjetas dinámicamente
-            for (String album : albums) {
+            // Verificamos si hay álbumes antes de mostrar la sección
+            if (albums != null && !albums.isEmpty()) {
+                // Iteramos sobre la lista de álbumes para generar las tarjetas dinámicamente
+                for (String album : albums) {
             %>
             <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href = 'login.jsp'">
                 <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
@@ -175,11 +185,17 @@ if (datos.length > 0) {
                 </div>
             </div>
             <% 
-               }
+                } 
+            } else {
+            %>
+            <p class="text-white">No hay álbumes disponibles.</p>
+            <% 
+            }
             %>
         </div>
 
-      
+
+
 
 
 
