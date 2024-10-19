@@ -88,9 +88,9 @@
         <ul class="bg-black p-4 rounded-lg shadow">
             <% for (String genero : generos) { %>
                 <li class="text-white">
-                    <p onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero %>', '')" class="hover:text-green-500 cursor-pointer">
+                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero %>', '')" class="hover:text-green-500 cursor-pointer">
                         <%= genero %>
-                    </p>
+                    </a>
                 </li>
             <% } %>
         </ul>
@@ -99,9 +99,9 @@
         <ul class="bg-black p-4 rounded-lg shadow">
             <% for (String artista : artistas) { %>
                 <li class="text-white">
-                    <p onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista %>','')"  class="hover:text-green-500 cursor-pointer">
+                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista %>','')"  class="hover:text-green-500 cursor-pointer">
                         <%= artista %>
-                    </p>
+                    </a>
                 </li>
             <% } %>
         </ul>
