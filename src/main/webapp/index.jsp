@@ -26,11 +26,11 @@
         <script>      
             function abrirCasoDeUso(cu) {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', cu, true); //
+                xhr.open('GET', url, true);
                 xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
                         document.getElementById('principal').innerHTML = xhr.responseText;
-                        var functionName = 'scripts_' + cu.split('.')[0]; //toma antes del punto
+                        var functionName = 'scripts_' + cu.split('.')[0]; // Toma antes del punto
                         if (typeof window[functionName] === 'function') {
                             window[functionName]();
                         } else {
@@ -39,8 +39,9 @@
                     }
                 };
 
-                xhr.send();
+                xhr.send(); // Enviar la solicitud
             }
+
             function playPorPause() {
                 const icono = document.getElementById('playButton');
 
