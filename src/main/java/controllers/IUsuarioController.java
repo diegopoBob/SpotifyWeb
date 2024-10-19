@@ -6,6 +6,7 @@ package controllers;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -36,7 +37,7 @@ public interface IUsuarioController {
     public String hashPassword(String password);
     public boolean checkPassword(String password, String hashedPassword);
     public abstract String getNickPorMail(String mail);
-
     
+    public abstract Map<String, String> getDatosUsuario(String nick);    
     
 }

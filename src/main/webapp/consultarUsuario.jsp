@@ -58,7 +58,7 @@ if (datos.length > 0) {
     <body class = "bg-green-800">
 
         <!-- Perfil de usuario -->
-        <div class="perfil container bg-neutral-900 grid grid-cols-3 gap-2 lg:grid-rows-2 sm:grid-row-1 gap-2 mx-auto">
+        <div class="perfil container bg-transparent grid grid-cols-3 gap-2 lg:grid-rows-2 sm:grid-row-1 gap-2 mx-auto">
 
             <div class="logo  p-2 row-span-2 col-span-1 col-start-1 flex justify-center font-bold py-2 px-2 border-r-4 border-black ">
                 <img class="sm:max-w-16 sm:max-h-16 md:max-w-32 md:max-h-32 lg:max-w-64 lg:max-h-64 mr-2 rounded-full object-cover " src="<%= imagen %>"  alt="logo">

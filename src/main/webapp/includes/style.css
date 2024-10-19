@@ -7,7 +7,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : dylan
 */
 
-
+.bgregister{
+   background-image: url("https://www.24horas.cl/24horas/site/artic/20231109/imag/foto_0000000420231109194555/Spotify.jpeg");
+   background-repeat: no-repeat;
+   background-size: cover;  
+}
 .indexdiv{
     background-image: url("https://cdn.logojoy.com/wp-content/uploads/20240517160549/05-16-24_Spotify-Logo-Evolution_HEADER.jpg");
     background-repeat: no-repeat;
@@ -29,7 +33,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .userDropdown:focus-within .user-dropdown-content {
     display: block;
 }
-
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
@@ -77,3 +80,5 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         }
     }
 
+    
+   

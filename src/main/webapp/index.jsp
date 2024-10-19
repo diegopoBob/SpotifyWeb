@@ -6,7 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    if (session == null || session.getAttribute("user") == null) {
+        
+    if (session == null || session.getAttribute("nick") == null) {
         response.sendRedirect("login.jsp");       
         return;
     }
@@ -22,7 +23,7 @@
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="includes/style.css" rel="stylesheet">
-        <script>
+        <script>      
             function abrirCasoDeUso(cu) {
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', cu, true); //
@@ -31,7 +32,7 @@
                         document.getElementById('principal').innerHTML = xhr.responseText;
                         var functionName = 'scripts_' + cu.split('.')[0]; //toma antes del punto
                         if (typeof window[functionName] === 'function') {
-                            window[functionName](); 
+                            window[functionName]();
                         } else {
                             console.error("La función " + functionName + " no existe");
                         }
@@ -180,16 +181,16 @@
                     <img src="includes/logo.png" class="h-10 w-auto object-contain" alt="alt"/>
                 </div>
                 <div class="bg-black flex items-center gap-2"> 
-                    <div><a onclick='abrirCasoDeUso("principal.jsp")'><i class="fa-solid fa-house text-lg text-neutral-400 hover:text-white"></i></a></div>                   
+                    <div><a onclick='abrirCasoDeUso("principal.jsp")'><i class="fa-solid fa-house text-xl text-neutral-400 hover:text-white rounded-full  p-2 hover:bg-neutral-600"></i></a></div>                   
                     <form class="flex w-[30rem] h-12 bg-neutral-800 rounded-[20px] hover:bg-neutral-600  focus-within:border justify-center">
                         <img src="includes/search-icon.png" class="ml-[-2rem]" alt="alt"/>
                         <input class="focus:outline-none w-96 h-full  bg-transparent text-white text-lg" id="name" name="name" type="text" />
                     </form>
                 </div>
                 <div class=" h-auto bg-black pr-4 flex items-center userDropdown">
-                    <a onclick='abrirCasoDeUso("consultarUsuario.jsp")' class="text-white pr-2"><% out.print(session.getAttribute("user")); %></a>
+                    <a onclick='abrirCasoDeUso("consultarUsuario.jsp")' class="text-white pr-2"><% out.print(session.getAttribute("nick")); %></a>
 
-                    <button class=""><img src="includes/search-icon.png" class=" rounded-full h-10 w-10 bg-white " alt="alt"/></button>
+                    <button class=""><img src="<% out.print(session.getAttribute("imagen")); %>" class=" rounded-full h-10 w-10 bg-white " alt="alt"/></button>
 
                     <div class="user-dropdown-content hidden bg-neutral-800 absolute mt-20 rounded mr-2 text-white text-sm">
                         <form action="logout" method="post">
@@ -202,9 +203,51 @@
 
             </div>
 
-            <div class="grow grid grid-cols-10 gap-2 bg-black overflow-hidden">
-                <div class="col-span-2 rounded-t-lg ml-2 bg-neutral-900">explorador libreria</div>
-                <div id="principal" class="col-span-6 rounded-t-lg bg-neutral-900 overflow-y-auto pt-2">
+            <div class="grow grid grid-cols-12 gap-2 bg-black overflow-hidden">
+                <div id="libreria" class="col-span-2 rounded-t-lg ml-2 bg-neutral-900 p-2 text-white flex flex-col gap-2 overflow-y-auto">
+                    <div>
+                        <a class="text-neutral-400 hover:text-white flex items-center gap-4">                        
+                            <h1 class="text-lg">Tu Libreria</h1> 
+                        </a>
+                    </div> 
+                    <div class="flex gap-2">
+                        <div class="hover:ring hover:ring-2 hover:ring-green-800 bg-neutral-800 rounded-full px-[0.5rem]">
+                            <button class="">Albums</button>
+                        </div>
+                        <div class="hover:ring hover:ring-2 hover:ring-green-800 bg-neutral-800 rounded-full px-[0.5rem]">
+                            <button class="">Playlists</button>
+                        </div>
+                        <div class="hover:ring hover:ring-2 hover:ring-green-800 bg-neutral-800 rounded-full px-[0.5rem]">
+                            <button class="">Canciones</button>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                       
+                            <button class="flex  bg-neutral-800 rounded-md hover:bg-neutral-600  focus-within:border text-sm">
+                                <img src="includes/search-icon.png" class="w-8 h-8" alt="alt""/>
+                                <input class="text-transparent bg-transparent focus:text-white absolute w-8 h-8 focus:static focus:w-full focus:outline-0" id="name" name="name" type="text" />
+                            </button>
+                     
+                    </div>
+                    <div class="flex flex-col text-white">
+                        <div class="w-full hover:bg-neutral-600 rounded flex">
+                            <img src="includes/posi.jpg" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
+                            <div name="textoLibreria" class="flex flex-col justify-center text-sm">
+                                <p>holaaa</p>
+                                <p>jejee</p>
+                            </div>
+                        </div>
+                         <div class="w-full hover:bg-neutral-600 rounded flex">
+                            <img src="includes/posi.jpg" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
+                            <div name="textoLibreria" class="flex flex-col justify-center text-sm">
+                                <p>holaaa</p>
+                                <p>jejee</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="principal" class="col-span-8 rounded-t-lg bg-gradient-to-b from-green-800 to-25% to-neutral-900 overflow-y-auto pt-2">
 
                 </div>
                 <div class="col-span-2 rounded-t-lg mr-2 bg-neutral-900">info</div>
