@@ -6,8 +6,10 @@ package controllers;
 
 import static java.lang.System.out;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -388,4 +390,34 @@ public class UsuarioController implements IUsuarioController {
     public boolean checkPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
+    
+    //obtener datos del usuario almacenables en la sesion
+    public Map<String, String> getDatosUsuario(String nick) {     
+        Map<String, String> datos = new HashMap<>();
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            // Ejecutar la consulta JPQL que devuelve un Object[]
+            Object[] datosSql = (Object[]) em.createQuery("SELECT u.nick, u.apellido, u.fecNac, u.imagen, u.mail, u.nombre FROM Usuario u WHERE u.nick = :nick")
+                .setParameter("nick", nick)
+                .getSingleResult();
+
+            // Convertir cada valor a String y almacenarlo en el mapa
+            datos.put("nick", datosSql[0].toString());
+            datos.put("apellido", datosSql[1].toString());
+            datos.put("fecNac", datosSql[2].toString()); // Asegúrate de formatear adecuadamente si es un Date
+            datos.put("imagen", datosSql[3].toString()); // Si es un byte[], convierte a String apropiadamente
+            datos.put("mail", datosSql[4].toString());
+            datos.put("nombre", datosSql[5].toString());
+
+        } catch (Exception e) {
+            e.printStackTrace(); 
+        } finally {
+            em.close(); 
+        }
+
+        return datos;
+    }
+
+
 }
