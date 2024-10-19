@@ -22,6 +22,7 @@
     String tipo = request.getParameter("tipo");
     String nombre = request.getParameter("nombre");
     String albumIdSeleccionado = request.getParameter("albumId"); // Obtiene el ID del álbum seleccionado
+   
 
     List<Album> albumes = new ArrayList<>();
     List<Cancion> canciones = new ArrayList<>();
