@@ -6,9 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-        
+
     if (session == null || session.getAttribute("nick") == null) {
-        response.sendRedirect("login.jsp");       
+        response.sendRedirect("login.jsp");
         return;
     }
 %>
@@ -23,25 +23,36 @@
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="includes/style.css" rel="stylesheet">
-        <script>      
-            function abrirCasoDeUso(cu) {
-                var xhr = new XMLHttpRequest();
+        <script>
+            function abrirCasoDeUso(cu, usuario) {
+                var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
+                var url = cu;
+
+                // Si se proporciona un usuario válido, agregarlo como parámetro a la URL
+                if (usuario && usuario.trim() !== "") {
+                    url += '?user=' + encodeURIComponent(usuario); // Agrega el parámetro de usuario
+                }
+
                 xhr.open('GET', url, true);
+
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         document.getElementById('principal').innerHTML = xhr.responseText;
-                        var functionName = 'scripts_' + cu.split('.')[0]; // Toma antes del punto
+
+                        var functionName = 'scripts_' + cu.split('.')[0]; // Toma el nombre antes del punto
+
                         if (typeof window[functionName] === 'function') {
-                            window[functionName]();
+                            window[functionName](); // Llama la función si existe
                         } else {
                             console.error("La función " + functionName + " no existe");
                         }
+                    } else if (xhr.readyState === 4 && xhr.status !== 200) {
+                        console.error("Error en la solicitud: " + xhr.status);
                     }
                 };
 
                 xhr.send(); // Enviar la solicitud
             }
-
             function playPorPause() {
                 const icono = document.getElementById('playButton');
 
@@ -189,9 +200,9 @@
                     </form>
                 </div>
                 <div class=" h-auto bg-black pr-4 flex items-center userDropdown">
-                    <a onclick='abrirCasoDeUso("consultarUsuario.jsp")' class="text-white pr-2"><% out.print(session.getAttribute("nick")); %></a>
+                    <a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= session.getAttribute("nick")%>");' class="text-white cursor-pointer pr-2"><% out.print(session.getAttribute("nick")); %></a>
 
-                    <button class=""><img src="<% out.print(session.getAttribute("imagen")); %>" class=" rounded-full h-10 w-10 bg-white " alt="alt"/></button>
+                    <button class=""><img src="<% out.print(session.getAttribute("imagen"));%>" class=" rounded-full h-10 w-10 bg-white " alt="alt"/></button>
 
                     <div class="user-dropdown-content hidden bg-neutral-800 absolute mt-20 rounded mr-2 text-white text-sm">
                         <form action="logout" method="post">
@@ -224,12 +235,12 @@
                     </div>
 
                     <div class="flex gap-2">
-                       
-                            <button class="flex  bg-neutral-800 rounded-md hover:bg-neutral-600  focus-within:border text-sm">
-                                <img src="includes/search-icon.png" class="w-8 h-8" alt="alt""/>
-                                <input class="text-transparent bg-transparent focus:text-white absolute w-8 h-8 focus:static focus:w-full focus:outline-0" id="name" name="name" type="text" />
-                            </button>
-                     
+
+                        <button class="flex  bg-neutral-800 rounded-md hover:bg-neutral-600  focus-within:border text-sm">
+                            <img src="includes/search-icon.png" class="w-8 h-8" alt="alt""/>
+                            <input class="text-transparent bg-transparent focus:text-white absolute w-8 h-8 focus:static focus:w-full focus:outline-0" id="name" name="name" type="text" />
+                        </button>
+
                     </div>
                     <div class="flex flex-col text-white">
                         <div class="w-full hover:bg-neutral-600 rounded flex">
@@ -239,7 +250,7 @@
                                 <p>jejee</p>
                             </div>
                         </div>
-                         <div class="w-full hover:bg-neutral-600 rounded flex">
+                        <div class="w-full hover:bg-neutral-600 rounded flex">
                             <img src="includes/posi.jpg" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
                             <div name="textoLibreria" class="flex flex-col justify-center text-sm">
                                 <p>holaaa</p>

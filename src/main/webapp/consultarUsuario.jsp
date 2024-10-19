@@ -20,8 +20,8 @@ IPlaylistController playController = fabrica.getIPlaylistController();
 IAlbumController albController = fabrica.getIAlbumController();
 
 String imagenDefault = "includes/asdasd.jpg";
-String usuarioLogueado = session.getAttribute("user").toString();
-String usuarioConsulta = request.getParameter("user");
+String usuarioLogueado = session.getAttribute("nick").toString();
+String usuarioConsulta = request.getParameter("nick");
 
 String usuario = (usuarioConsulta != null && !usuarioConsulta.isEmpty()) ? usuarioConsulta : usuarioLogueado;
 
