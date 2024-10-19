@@ -59,8 +59,14 @@ if (datos.length > 0) {
         <title>Spotify</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="includes/style.css" rel="stylesheet">
+        <script src="includes/script.js"></script>
+
+            
     </head>
     <body class = "bg-green-800">
+        
+        
+        
 
         <!-- Perfil de usuario -->
         <div class="perfil container bg-transparent grid grid-cols-3 gap-2 lg:grid-rows-2 sm:grid-row-1 gap-2 mx-auto">
@@ -188,7 +194,7 @@ if (datos.length > 0) {
                 int id = Integer.valueOf(idAlbum);
                 String artista = albController.obtenerArtistaAlbum(id);
             %>
-            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href = 'ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista.trim()%>'">
+            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista.trim() %>', '')">
                 <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
                 <div class="p-6 hover:shadow-inner">
                     <h2 class="text-lg font-semibold text-gray-800"><%= album %></h2>
