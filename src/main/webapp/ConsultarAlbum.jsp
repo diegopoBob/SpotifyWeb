@@ -126,7 +126,7 @@
 
         <!-- Lista de álbumes -->
         <div class="mt-6">
-            <h4 class="text-white">Álbumes asociados</h4>
+            <h4 class="text-green-500 font-bold">Álbumes asociados</h4>
             <ul class="divide-y divide-gray-200">
                 <% if (!albumes.isEmpty()) { %>
                     <% for (Album album : albumes) { %>
@@ -143,7 +143,7 @@
 
         <!-- Lista de canciones -->
         <div class="mt-6">
-            <h4 class="text-white">Temas del álbum</h4>
+            <h4 class="text-green-500 font-bold">Temas del álbum</h4>
             <ul class="divide-y divide-gray-200">
                 <% if (!canciones.isEmpty()) { %>
                     <% for (Cancion cancion : canciones) { %>
