@@ -77,7 +77,7 @@
     <link href="includes/style.css" rel="stylesheet">
 </head>
 <body>
-<div class="min-h-screen bg-green-600 p-6">
+<div class="min-h-screen bg-transparent p-6">
     
 
     <!-- Géneros y artistas -->
