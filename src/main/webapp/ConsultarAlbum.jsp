@@ -22,7 +22,6 @@
     String tipo = request.getParameter("tipo");
     String nombre = request.getParameter("nombre");
     String albumIdSeleccionado = request.getParameter("albumId"); // Obtiene el ID del álbum seleccionado
-   
 
     List<Album> albumes = new ArrayList<>();
     List<Cancion> canciones = new ArrayList<>();
@@ -76,10 +75,9 @@
     <title>Spotify</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="includes/style.css" rel="stylesheet">
-    <script src="includes/script.js"></script>
 </head>
 <body>
-<div class="min-h-screen bg-transparent p-6">
+<div class="min-h-screen bg-green-600 p-6">
     
 
     <!-- Géneros y artistas -->
@@ -88,7 +86,7 @@
         <ul class="bg-black p-4 rounded-lg shadow">
             <% for (String genero : generos) { %>
                 <li class="text-white">
-                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero %>', '')" class="hover:text-green-500 cursor-pointer">
+                    <a href="ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero %>" class="hover:text-green-500">
                         <%= genero %>
                     </a>
                 </li>
@@ -99,7 +97,7 @@
         <ul class="bg-black p-4 rounded-lg shadow">
             <% for (String artista : artistas) { %>
                 <li class="text-white">
-                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista %>','')"  class="hover:text-green-500 cursor-pointer">
+                    <a href="ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista %>" class="hover:text-green-500">
                         <%= artista %>
                     </a>
                 </li>
