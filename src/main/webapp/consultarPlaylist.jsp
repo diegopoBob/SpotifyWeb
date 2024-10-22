@@ -101,10 +101,10 @@ if (datos.length > 0) {
                                 <thead
                                     class="border-b border-neutral-200 font-medium dark:border-white/10">
                                     <tr>
-                                        <th scope="col" class="flex max-w-8 mt-3 px-6 py-1">#</th>
-                                        <th scope="col" class="px-6 py-4">Titulo</th>
-                                        <th scope="col" class="px-6 py-4">Album</th>
-                                        <th scope="col" class="px-6 py-4">Duracion</th>
+                                        <th scope="col" class="hover:text-gray-400 whitespace-nowrap flex max-w-8 mt-3 px-6 py-1">#<i class="  ml-1 fa-solid fa-sort"></i></th>
+                                        <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Titulo<i class="ml-1  fa-solid fa-sort"></i></th>
+                                        <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Album<i class="ml-1  fa-solid fa-sort"></i></th>
+                                        <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Duracion<i class="ml-1  fa-solid fa-sort"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -123,20 +123,20 @@ if (datos.length > 0) {
                                             </div>
                                         </td>
 
-                                        <td class="px-20 py-4">
+                                        <td class=" px-20 py-4">
                                             <p style="font-size: clamp(12px, 1vw, 20px);" 
                                                class=" mt-2 leading-none text-xl font-bold">
                                                 <% out.print(datosCan[i][1]);%>
                                             </p>
                                             <a class=" w-1/6" onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= datosCan[i][8]%>"); event.stopPropagation();' 
                                                class="hover:underline w-1/6 text-white cursor-pointer pr-2">
-                                                <p class=" w-1/6"><%= datosCan[i][7]%></p>
+                                                <p class="cursor-pointer hover:underline"><%= datosCan[i][7]%></p>
                                             </a>
                                         </td>
 
-                                        <td class="whitespace-nowrap px-6 py-4 hover:underline" 
+                                        <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline" 
                                             onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>', ''); event.stopPropagation();">
-                                            <%= datosCan[i][6]%>
+                                            <p class="cursor-pointer"><%= datosCan[i][6]%></p>
                                         </td>
 
                                         <td class="whitespace-nowrap px-6 py-4">
