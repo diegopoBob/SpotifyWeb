@@ -34,18 +34,17 @@ public class Cancion implements Serializable {
     private int duracion;
     @Column(name = "direccion_archivo_de_audio")
     private String direccion_archivo_de_audio;
-    @Column(name = "direccion_imagen")
-    private String direccion_imagen;
+    
 
     @ManyToOne
     @JoinColumn(name = "genero")
     private Genero genero;
 
-    public Cancion(String nombre, int duracion, String direccion_archivo_de_audio, String direccion_imagen) {
+    public Cancion(String nombre, int duracion, String direccion_archivo_de_audio) {
         this.nombre = nombre;
         this.duracion = duracion;
         this.direccion_archivo_de_audio = direccion_archivo_de_audio;
-        this.direccion_imagen = direccion_imagen;
+        
         
     }
 
@@ -80,6 +79,7 @@ public class Cancion implements Serializable {
     public int getDuracion() {
         return duracion;
     }
+    
 
     public String getDireccion_archivo_de_audio() {
         return direccion_archivo_de_audio;
@@ -89,13 +89,7 @@ public class Cancion implements Serializable {
         this.direccion_archivo_de_audio = direccion_archivo_de_audio;
     }
 
-    public String getDireccion_imagen() {
-        return direccion_imagen;
-    }
-
-    public void setDireccion_imagen(String direccion_imagen) {
-        this.direccion_imagen = direccion_imagen;
-    }
+  
     
     public void setDuracion(int duracion) {
         this.duracion = duracion;

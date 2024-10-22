@@ -20,7 +20,7 @@ import javax.persistence.DiscriminatorValue;
 @DiscriminatorValue("artista")
 
 public class Artista extends Usuario {
-	@Column(name="biografia")
+	@Column(name="biografia",length = 1200)
     private String biografia;
 	@Column(name="DireccionWeb")
     private String DireccionWeb;

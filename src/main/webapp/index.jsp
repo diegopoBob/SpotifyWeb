@@ -27,7 +27,7 @@
             function abrirCasoDeUso(cu, usuario) {
                 var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
                 var url = cu;
-
+                
                 // Si se proporciona un usuario válido, agregarlo como parámetro a la URL
                 if (usuario && usuario.trim() !== "") {
                     url += '?user=' + encodeURIComponent(usuario); // Agrega el parámetro de usuario
@@ -71,7 +71,7 @@
                     </form>
                 </div>
                 <div class=" h-auto bg-black pr-4 flex items-center userDropdown">
-                    <a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= session.getAttribute("nick")%>")' class="text-white pr-2"><% out.print(session.getAttribute("nick")); %></a>
+                    <a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= session.getAttribute("nick")%>")' class="text-white pr-2 cursor-pointer"><% out.print(session.getAttribute("nick")); %></a>
 
                     <button class=""><img src="<% out.print(session.getAttribute("imagen"));%>" class=" rounded-full h-10 w-10 bg-white " alt="alt"/></button>
 
@@ -158,7 +158,7 @@
                             <i class="fas fa-backward"></i>
                         </button>
                         <button class="bg-transparent text-white text-xl p-2 hover:text-2xl" onclick="playPorPause()">
-                            <i class="fas fa-play" id="playButton"></i>                      
+                            <i class="fas fa-pause" id="playButton"></i>                      
                         </button>       
                         <button class="bg-transparent text-neutral-400 hover:text-white text-xl p-2">
                             <i class="fas fa-forward"></i>
@@ -174,7 +174,7 @@
                         </div>
                     </div>
                     <audio controls class="text-white absolute left-64 hidden" id="audioControl">
-                        <source src="includes/musica/gay.mp3" type="audio/mpeg">                      
+                        <source src="" type="audio/mpeg" id="audioSource">                      
                     </audio>
                 </div>
 
@@ -187,12 +187,20 @@
         </div>
     </body>
     <script>
+        
+        
+        
         const audio = document.getElementById('audioControl');
         const barraVolumen = document.getElementById('barraVolumen');
         const playButton = document.getElementById('playButton');
         const timeRange = document.getElementById('timeRange');
         audio.volume = 0.15;
         
+        function reproducirCancion(nombre){
+            document.getElementById('audioSource').src = nombre;
+            audio.load();
+            audio.play();
+        }
         //event listeners del audio
         audio.addEventListener('loadedmetadata', () => {
             document.getElementById('minutosActuales').innerHTML = '0:00';
@@ -208,6 +216,7 @@
             const minutos = Math.floor(tiempoActual / 60);
             const segundos = Math.floor(tiempoActual % 60).toString().padStart(2, '0');
             minutosActuales.innerHTML = minutos + ':' + segundos;
+            timeRange.value = tiempoActual;
         });
         
         //event listeners de los inputs

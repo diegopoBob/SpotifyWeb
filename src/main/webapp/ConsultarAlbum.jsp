@@ -62,6 +62,7 @@
             Cancion cancion = new Cancion();
             cancion.setId((Integer) dato[0]);
             cancion.setNombre((String) dato[1]);
+            cancion.setDireccion_archivo_de_audio((String) dato[3]);
             canciones.add(cancion);
         }
     }
@@ -77,7 +78,7 @@
     <link href="includes/style.css" rel="stylesheet">
 </head>
 <body>
-<div class="min-h-screen bg-green-600 p-6">
+<div class="min-h-screen bg-transparent p-6">
     
 
     <!-- Géneros y artistas -->
@@ -85,8 +86,8 @@
         <!-- Géneros -->
         <ul class="bg-black p-4 rounded-lg shadow">
             <% for (String genero : generos) { %>
-                <li class="text-white">
-                    <a href="ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero %>" class="hover:text-green-500">
+                <li class="text-white hover:bg-neutral-400 hover:rounded cursor-pointer">
+                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero%>')" class="hover:text-green-500">
                         <%= genero %>
                     </a>
                 </li>
@@ -96,8 +97,8 @@
         <!-- Artistas -->
         <ul class="bg-black p-4 rounded-lg shadow">
             <% for (String artista : artistas) { %>
-                <li class="text-white">
-                    <a href="ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista %>" class="hover:text-green-500">
+                <li class="text-white hover:bg-neutral-400 hover:rounded cursor-pointer">
+                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista%>')" class="hover:text-green-500">
                         <%= artista %>
                     </a>
                 </li>
@@ -124,13 +125,13 @@
 
         <!-- Lista de álbumes -->
         <div class="mt-6">
-            <h4 class="text-white">Álbumes asociados</h4>
+            <h4 class="text-green-500 font-bold">Álbumes asociados</h4>
             <ul class="divide-y divide-gray-200">
                 <% if (!albumes.isEmpty()) { %>
                     <% for (Album album : albumes) { %>
-                        <li class="flex justify-between py-2">
+                        <li class="flex justify-between py-2 hover:bg-neutral-400 hover:rounded cursor-pointer px-2">
                             <span class="text-white"><%= album.getNombre() %></span>
-                            <a href="ConsultarAlbum.jsp?tipo=<%= tipo %>&nombre=<%= java.net.URLEncoder.encode(nombre, "UTF-8") %>&albumId=<%= album.getId() %>" class="text-blue-500 hover:underline">Detalles</a>
+                            <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=<%= tipo%>&nombre=<%= java.net.URLEncoder.encode(nombre, "UTF-8")%>&albumId=<%= album.getId()%>', '')" class="text-blue-500 hover:underline cursor-pointer text-center">Detalles</a>
                         </li>
                     <% } %>
                 <% } else { %>
@@ -141,12 +142,15 @@
 
         <!-- Lista de canciones -->
         <div class="mt-6">
-            <h4 class="text-white">Temas del álbum</h4>
+            <h4 class="text-green-500 font-bold">Temas del álbum</h4>
             <ul class="divide-y divide-gray-200">
                 <% if (!canciones.isEmpty()) { %>
                     <% for (Cancion cancion : canciones) { %>
-                        <li class="flex justify-between py-2">
-                            <span class="text-white"><%= cancion.getNombre() %></span>
+                        <li class="flex justify-between py-2 hover:bg-neutral-400 hover:rounded cursor-pointer px-2">
+                            
+                            <a onclick="reproducirCancion('<%= cancion.getDireccion_archivo_de_audio()%>')">
+                                <span class="text-white"><%= cancion.getNombre()%></span>                              
+                            </a>
                             <a href="#" class="text-blue-500 hover:underline">Descargar</a>
                         </li>
                     <% } %>

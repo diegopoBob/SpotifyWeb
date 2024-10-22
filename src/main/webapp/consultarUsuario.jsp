@@ -20,14 +20,14 @@ IPlaylistController playController = fabrica.getIPlaylistController();
 IAlbumController albController = fabrica.getIAlbumController();
 
 String imagenDefault = "includes/asdasd.jpg";
-String usuarioLogueado = session.getAttribute("user").toString();
-String usuarioConsulta = request.getParameter("user");
-
+String usuarioLogueado = session.getAttribute("nick").toString();
+String usuarioConsulta = request.getParameter("nick");
 String usuario = (usuarioConsulta != null && !usuarioConsulta.isEmpty()) ? usuarioConsulta : usuarioLogueado;
 
 Object[][] datos = usrController.obtenerDatosCliente(usuario);
 List<String> seguidores = usrController.obtenerNicknamesseguidores(usuario);
 List<String> listas = playController.obtenerNombresPlaylistParticularCliente(usuario);
+List<String> listas2 = playController.obtenerNombresDePlaylistsFavoritas(usuario);
 List<String> albums = albController.obtenerNombresAlbumsFavoritos(usuario);
 String nombre = "Nombre";
 String apellido = "Apellido";
@@ -58,8 +58,14 @@ if (datos.length > 0) {
         <title>Spotify</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="includes/style.css" rel="stylesheet">
+        <script src="includes/script.js"></script>
+
+            
     </head>
     <body class = "bg-green-800">
+        
+        
+        
 
         <!-- Perfil de usuario -->
         <div class="perfil container bg-transparent grid grid-cols-3 gap-2 lg:grid-rows-2 sm:grid-row-1 gap-2 mx-auto">
@@ -149,15 +155,19 @@ if (datos.length > 0) {
         <!-- Sección de Listas -->
         <div id="listasSection" class="playlists container bg-black-900 pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto p-2">
             <% 
+            // Combinar las dos listas (listas particulares y listas favoritas)
+            List<String> todasLasListas = new ArrayList<>(listas);
+            todasLasListas.addAll(listas2);
+
             // Verificamos si hay listas antes de mostrar la sección
-            if (listas != null && !listas.isEmpty()) {
-                // Iteramos sobre la lista de listas para generar las tarjetas dinámicamente
-                for (String album : listas) {
-            %>
-            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href = 'login.jsp'">
+            if (todasLasListas != null && !todasLasListas.isEmpty()) {
+                // Iteramos sobre la lista combinada de listas para generar las tarjetas dinámicamente
+                for (String lista : todasLasListas) {
+            String id = lista.split(" - ")[0];%>
+            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick='abrirCasoDeUso("consultarPlaylist.jsp", "<%= id %>")'>
                 <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
                 <div class="p-6 hover:shadow-inner">
-                    <h2 class="text-lg font-semibold text-gray-800"><%= album %></h2>
+                    <h2 class="text-lg font-semibold text-gray-800"><%= lista %></h2>
                 </div>
             </div>
             <% 
@@ -170,6 +180,7 @@ if (datos.length > 0) {
             %>
         </div>
 
+
         <!-- Sección de Albums -->
         <div id="albumsSection" class="playlists container bg-neutral-900 pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto" style="display: none;">
             <% 
@@ -177,8 +188,12 @@ if (datos.length > 0) {
             if (albums != null && !albums.isEmpty()) {
                 // Iteramos sobre la lista de álbumes para generar las tarjetas dinámicamente
                 for (String album : albums) {
+                String[] partes = album.split(" - ", 2);
+                String idAlbum = partes[0].trim();
+                int id = Integer.valueOf(idAlbum);
+                String artista = albController.obtenerArtistaAlbum(id);
             %>
-            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="window.location.href = 'login.jsp'">
+            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista.trim() %>', '')">
                 <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/ImagenPrueba.png" alt="Imagen de tarjeta">
                 <div class="p-6 hover:shadow-inner">
                     <h2 class="text-lg font-semibold text-gray-800"><%= album %></h2>

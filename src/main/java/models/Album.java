@@ -60,17 +60,21 @@ public class Album implements Serializable {
     )
     List<Cancion> canciones;
 
-    public Album(String nombre, int anioo, Artista artista, String direccion_imagen, List<Genero> generos, List<Cancion> canciones) {
+    public Album(String nombre, int anioo, Artista artista, String direccionimagen, List<Genero> generos, List<Cancion> canciones) {
         this.nombre = nombre;
         this.anioo = anioo;
         this.artista = artista;
+        this.direccion_imagen = direccionimagen;
         this.generos = generos;
         this.canciones = canciones;
-        this.direccion_imagen = direccion_imagen;
     }
 
     public Album() {
        
+    }
+
+    public String getDireccion_imagen() {
+        return direccion_imagen;
     }
     
     public int getId() {
@@ -134,5 +138,6 @@ public class Album implements Serializable {
         return canciones;
     }
 
-
+   
+    
 }
