@@ -57,14 +57,12 @@
 
     // Obtener canciones del álbum seleccionado
     if (albumActual != null) {
-        Object[][] datosCanciones = canController.obtenerDatosCancion(albumActual.getId());
-        for (Object[] dato : datosCanciones) {
-            Cancion cancion = new Cancion();
-            cancion.setId((Integer) dato[0]);
-            cancion.setNombre((String) dato[1]);
-            cancion.setDireccion_archivo_de_audio((String) dato[3]);
-            canciones.add(cancion);
-        }
+        Object[] datosCanciones = canController.obtenerDatosCancion(albumActual.getId());     
+        Cancion cancion = new Cancion();
+        cancion.setId((Integer) datosCanciones[0]);
+        cancion.setNombre((String) datosCanciones[1]);
+        cancion.setDireccion_archivo_de_audio((String) datosCanciones[3]);
+        canciones.add(cancion);      
     }
 %>
 
@@ -111,7 +109,7 @@
         <div class="flex items-center">
             <!-- Imagen del álbum -->
             <div class="w-48 h-48 bg-gray-200 rounded-lg mr-6 flex items-center justify-center">
-                <img src="/includes/posi.jpg" alt="Imagen del álbum" class="w-full h-full object-cover">
+                <img src="<%= albumActual.getDireccion_imagen() %>" alt="Imagen del álbum" class="w-full h-full object-cover">
             </div>
 
             <!-- Información del álbum -->
@@ -148,7 +146,7 @@
                     <% for (Cancion cancion : canciones) { %>
                         <li class="flex justify-between py-2 hover:bg-neutral-400 hover:rounded cursor-pointer px-2">
                             
-                            <a onclick="reproducirCancion('<%= cancion.getDireccion_archivo_de_audio()%>')">
+                            <a onclick="reproducirCancion('<%= cancion.getDireccion_archivo_de_audio()%>'); cargarInfoCancion('<%= cancion.getId() %>')">
                                 <span class="text-white"><%= cancion.getNombre()%></span>                              
                             </a>
                             <a href="#" class="text-blue-500 hover:underline">Descargar</a>

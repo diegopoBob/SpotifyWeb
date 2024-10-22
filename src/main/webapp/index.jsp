@@ -27,7 +27,7 @@
             function abrirCasoDeUso(cu, usuario) {
                 var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
                 var url = cu;
-                
+           
                 // Si se proporciona un usuario válido, agregarlo como parámetro a la URL
                 if (usuario && usuario.trim() !== "") {
                     url += '?user=' + encodeURIComponent(usuario); // Agrega el parámetro de usuario
@@ -139,17 +139,8 @@
 
             <div class="min-h-24 flex items-center justify-between bg-black">
 
-                <div class="w-auto h-16 ml-4 flex items-center">
-                    <div class="h-16 w-auto">
-                        <img class="h-16 w-auto" src="includes/posi.jpg" alt="alt"/>
-                    </div>  
-                    <div class="h-auto w-auto ml-2">
-                        <p class="text text-white">holaaaa</p>
-                        <p class="text text-neutral-400 text-sm">soy gay</p>
-                    </div>
-                    <div class="text-white pl-2">
-                        <i id="likebtnHeart" class="fa-regular fa-heart text-xl" onClick="likePorDislike()"></i>
-                    </div>
+                <div class="w-96 h-16 ml-4 flex items-center" id="dataCancion">
+                   
                 </div>
 
                 <div class="w-96 h-20 flex flex-col gap-2 items-center absolute left-1/2 transform -translate-x-1/2">
@@ -196,11 +187,40 @@
         const timeRange = document.getElementById('timeRange');
         audio.volume = 0.15;
         
+        
+        
         function reproducirCancion(nombre){
             document.getElementById('audioSource').src = nombre;
             audio.load();
             audio.play();
+            cargarInfoCancion(this.value);
+        };
+        
+        function cargarInfoCancion(cu){
+             var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
+             var url = 'InfoCancion.jsp?idCancion='+cu;   
+            
+             xhr.open('GET', url, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        document.getElementById('dataCancion').innerHTML = xhr.responseText;
+
+                        var functionName = 'scripts_' + cu.split('.')[0]; // Toma el nombre antes del punto
+
+                        if (typeof window[functionName] === 'function') {
+                            window[functionName](); // Llama la función si existe
+                        } else {
+                            console.error("La función " + functionName + " no existe");
+                        }
+                    } else if (xhr.readyState === 4 && xhr.status !== 200) {
+                        console.error("Error en la solicitud: " + xhr.status);
+                    }
+                };
+                xhr.send(); // Enviar la solicitud
         }
+        
+        
         //event listeners del audio
         audio.addEventListener('loadedmetadata', () => {
             document.getElementById('minutosActuales').innerHTML = '0:00';
