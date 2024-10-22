@@ -19,9 +19,10 @@ IUsuarioController usrController = fabrica.getIUsuarioController();
 IPlaylistController playController = fabrica.getIPlaylistController();
 IAlbumController albController = fabrica.getIAlbumController();
 
-String imagenDefault = "includes/asdasd.jpg";
+String imagenDefault = "includes/imagenDefault.png";
 String usuarioLogueado = session.getAttribute("nick").toString();
 String usuarioConsulta = request.getParameter("user");
+out.print(usuarioConsulta);
 String usuario = (usuarioConsulta != null && !usuarioConsulta.isEmpty()) ? usuarioConsulta : usuarioLogueado;
 
 Object[][] datos = usrController.obtenerDatosCliente(usuario);
@@ -58,7 +59,7 @@ if (datos.length > 0) {
         <title>Spotify</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="includes/style.css" rel="stylesheet">
-        <script src="includes/script.js"></script>
+        <script src="script.js"></script>
 
             
     </head>

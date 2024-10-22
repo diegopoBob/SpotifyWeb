@@ -18,7 +18,7 @@ IUsuarioController usrController = fabrica.getIUsuarioController();
 IPlaylistController playController = fabrica.getIPlaylistController();
 IAlbumController albController = fabrica.getIAlbumController();
 
-String imagenDefault = "includes/asdasd.jpg";
+String imagenDefault = "includes/defaultPlaylist.png";
 String usuarioLogueado = session.getAttribute("nick").toString();
 
 int idPlaylist = Integer.parseInt(request.getParameter("user"));
@@ -26,21 +26,30 @@ Object[][] datosCan = playController.obtenerDatosCancionesPlaylist(idPlaylist);
 Object[][] datos = playController.obtenerPlaylistLista(idPlaylist);
 
 
+
 String titulo = "Nombre";
 String propietario = "Apellido";
 String tipo = "Apellido";
 
 String imagenPlay = imagenDefault;
+String imagenClie = imagenDefault;
 
 if (datos.length > 0) {
-     titulo = (String) datos[0][2];
-     tipo = (String) datos [0][3];
-     propietario = (String) datos [0][6];
-     imagenPlay = (String) datos[0][0];
-    if(imagenPlay == null || imagenPlay == "" || imagenPlay == "null" || imagenPlay.isEmpty() || "null".equals(imagenPlay)){
-        imagenPlay = imagenDefault;
-    } 
-}
+        titulo = (String) datos[0][2];
+        tipo = (String) datos[0][3];
+        propietario = (String) datos[0][6];
+        imagenPlay = (String) datos[0][0];
+        if (imagenPlay == null || imagenPlay == "" || imagenPlay == "null" || imagenPlay.isEmpty() || "null".equals(imagenPlay)) {
+            imagenPlay = imagenDefault;
+        }
+    }
+    Object[][] datosCli = usrController.obtenerDatosCliente(propietario);
+    if (datosCli.length > 0) {
+        imagenClie = (String) datosCli[0][5];
+        if (imagenClie == null || imagenClie == "" || imagenClie == "null" || imagenClie.isEmpty() || "null".equals(imagenClie)) {
+            imagenClie = imagenClie;
+        }
+    }
 
 %>
 <!DOCTYPE html>
@@ -51,7 +60,7 @@ if (datos.length > 0) {
         <title>Spotify</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="includes/style.css" rel="stylesheet">
-        <script src="includes/script.js"></script>
+        <script src="script.js"></script>
         <!-- Importar la librería Color Thief -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -68,7 +77,7 @@ if (datos.length > 0) {
                     <h2 style="font-size: clamp(20px, 5vw, 110px);" class=" Class leading-none font-bold "><%= titulo%> </h2>
                 </div>
                 <div name="masInfoPlay" class="flex  pt-5 pb-5 ">
-                    <img src="includes/posi.jpg" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/><a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= propietario%>");' class=" hover:underline text-white cursor-pointer pr-2 "> <p class="decoration-1"> <%= propietario%></p></a> <h3> ・ 29 Canciones</h3>
+                    <img src="<%= imagenClie %>" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/><a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= propietario%>");' class=" hover:underline text-white cursor-pointer pr-2 "> <p class="decoration-1"> <%= propietario%></p></a> <h3> ・ <%= datosCan.length %> Canciones</h3>
                 </div>
             </div>
         </div>
@@ -102,19 +111,40 @@ if (datos.length > 0) {
                                     <% for (int i = 0; i < datosCan.length; i++) {
 
                                     %>
-                                    <tr style="border-radius: 16px; " class=" max-h-9 flex-row hover:bg-neutral-600/50  hover:rounded-md " onclick="reproducirCancion('<%= datosCan[i][3]%>')">
+                                    <tr style="border-radius: 16px;" 
+                                        class="max-h-9 flex-row hover:bg-neutral-600/50 hover:rounded-md" 
+                                        onclick="reproducirCancion('<%= datosCan[i][3]%>')">
+
                                         <td class="flex max-w-5 px-6 py-1 text-xl">
                                             <div class="flex flex-row items-center space-y-2">
-                                                <span><%= i+1%></span>
-                                                <img src="<%= datosCan[i][4]%>" alt="Imagen" class=" min-w-16 ml-4 h-16 rounded-xl p-1.5"/>
+                                                <span><%= i + 1%></span>
+                                                <img src="<%= datosCan[i][4]%>" alt="Imagen" 
+                                                     class="min-w-16 ml-4 h-16 rounded-xl p-1.5" />
                                             </div>
                                         </td>
 
-                                        <td class="  px-20 py-4"><p style="font-size: clamp(12px, 1vw, 20px);" class="Class leading-nonetext-xl font-bold"><%  out.print(datosCan[i][1]); %></p><a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= datosCan[i][8]%>");' class=" hover:underline text-white cursor-pointer pr-2 "><p><%= datosCan[i][7]%></p></a></td>
-                                <td class="whitespace-nowrap px-6 py-4 hover:underline"><%= datosCan[i][6]%></td>
-                                <td class="whitespace-nowrap px-6 py-4"><%= datosCan[i][2]%></td>
-                                </tr>
-                                <% }%>
+                                        <td class="px-20 py-4">
+                                            <p style="font-size: clamp(12px, 1vw, 20px);" 
+                                               class=" mt-2 leading-none text-xl font-bold">
+                                                <% out.print(datosCan[i][1]);%>
+                                            </p>
+                                            <a class=" w-1/6" onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= datosCan[i][8]%>"); event.stopPropagation();' 
+                                               class="hover:underline w-1/6 text-white cursor-pointer pr-2">
+                                                <p class=" w-1/6"><%= datosCan[i][7]%></p>
+                                            </a>
+                                        </td>
+
+                                        <td class="whitespace-nowrap px-6 py-4 hover:underline" 
+                                            onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>', ''); event.stopPropagation();">
+                                            <%= datosCan[i][6]%>
+                                        </td>
+
+                                        <td class="whitespace-nowrap px-6 py-4">
+                                            <%= datosCan[i][2]%>
+                                        </td>
+
+                                    </tr>
+                                    <% }%>
                                 </tbody>
                             </table>
                         </div>

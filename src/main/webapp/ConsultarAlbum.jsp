@@ -79,6 +79,7 @@
     <script src="script.js"></script>
 </head>
 <body>
+    
 <div class="min-h-screen bg-transparent p-6">
     
 
@@ -112,7 +113,7 @@
         <div class="flex items-center">
             <!-- Imagen del álbum -->
             <div class="w-48 h-48 bg-gray-200 rounded-lg mr-6 flex items-center justify-center">
-                <img src="/includes/posi.jpg" alt="Imagen del álbum" class="w-full h-full object-cover">
+                <img src="<%= albumActual.getDireccion_imagen() %>" alt="Imagen del álbum" class="w-full h-full object-cover">
             </div>
 
             <!-- Información del álbum -->
