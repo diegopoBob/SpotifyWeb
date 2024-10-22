@@ -2,7 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
-
+             //PARA PONER COLOR DE FONDO PLAYLIST
+ function setBackgroundColor() {
+            var sourceImage = document.getElementById("imagenPLaylistPrincipal");
+            var colorThief = new ColorThief();
+            var color = colorThief.getColor(sourceImage);
+            document.getElementById("divPLaylistPrincipal").style.backgroundColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+        }
 
             function abrirCasoDeUso(cu, usuario) {
                 var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
@@ -165,8 +171,7 @@
             }
             
               function scripts_consultarPlaylist() {
-
-         $(window).ready(function(){
+    $(window).ready(function () {
         var sourceImage = document.getElementById("imagenPLaylistPrincipal");
         var colorThief = new ColorThief();
         var color = colorThief.getColor(sourceImage);
@@ -178,5 +183,5 @@
         console.log("Color obtenido:", color); // Log del color obtenido
         document.getElementById("divPLaylistPrincipal").style.backgroundColor = "rgb(" + color + ")";
         document.getElementById("PlaylistAbajo").style.backgroundImage = "linear-gradient(to bottom, rgb(" + colorOscuro + ") 25%, rgb(23 23 23))";
-       });
-              }
+    });
+}

@@ -227,6 +227,7 @@ public class PlaylistController implements IPlaylistController{
             }else{
             datos[i][5] ="Sin Genero asociado";
             }
+            
             datos[i][6] =albumAux.getNombre();
             datos[i][7] =albumAux.getArtista().getNombre();
             datos[i][8] =albumAux.getArtista().getNick();

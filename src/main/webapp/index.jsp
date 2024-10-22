@@ -18,42 +18,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Spotify</title>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="includes/style.css" rel="stylesheet">
-        <script>
-            function abrirCasoDeUso(cu, usuario) {
-                var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
-                var url = cu;
-                
-                // Si se proporciona un usuario válido, agregarlo como parámetro a la URL
-                if (usuario && usuario.trim() !== "") {
-                    url += '?user=' + encodeURIComponent(usuario); // Agrega el parámetro de usuario
-                }
-
-                xhr.open('GET', url, true);
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        document.getElementById('principal').innerHTML = xhr.responseText;
-
-                        var functionName = 'scripts_' + cu.split('.')[0]; // Toma el nombre antes del punto
-
-                        if (typeof window[functionName] === 'function') {
-                            window[functionName](); // Llama la función si existe
-                        } else {
-                            console.error("La función " + functionName + " no existe");
-                        }
-                    } else if (xhr.readyState === 4 && xhr.status !== 200) {
-                        console.error("Error en la solicitud: " + xhr.status);
-                    }
-                };
-
-                xhr.send(); // Enviar la solicitud
-            }
-        </script>
+        <script src="script.js"></script>
+        
 
     </head>
     <body class="max-h-[100vh] overflow-hidden">
@@ -121,7 +93,7 @@
                                 <p>jejee</p>
                             </div>
                         </div>
-                        <div class="w-full hover:bg-neutral-600 rounded flex">
+                        <div onclick='abrirCasoDeUso("consultarPlaylist.jsp", "4")' class="w-full hover:bg-neutral-600 rounded flex">
                             <img src="includes/posi.jpg" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
                             <div name="textoLibreria" class="flex flex-col justify-center text-sm">
                                 <p>holaaa</p>

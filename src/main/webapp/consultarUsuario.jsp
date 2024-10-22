@@ -21,7 +21,7 @@ IAlbumController albController = fabrica.getIAlbumController();
 
 String imagenDefault = "includes/asdasd.jpg";
 String usuarioLogueado = session.getAttribute("nick").toString();
-String usuarioConsulta = request.getParameter("nick");
+String usuarioConsulta = request.getParameter("user");
 String usuario = (usuarioConsulta != null && !usuarioConsulta.isEmpty()) ? usuarioConsulta : usuarioLogueado;
 
 Object[][] datos = usrController.obtenerDatosCliente(usuario);
