@@ -76,6 +76,7 @@
     <title>Spotify</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="includes/style.css" rel="stylesheet">
+    <script src="script.js"></script>
 </head>
 <body>
 <div class="min-h-screen bg-transparent p-6">
