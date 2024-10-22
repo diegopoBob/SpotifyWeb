@@ -57,13 +57,16 @@
 
     // Obtener canciones del álbum seleccionado
     if (albumActual != null) {
-        Object[] datosCanciones = canController.obtenerDatosCancion(albumActual.getId());     
-        Cancion cancion = new Cancion();
-        cancion.setId((Integer) datosCanciones[0]);
-        cancion.setNombre((String) datosCanciones[1]);
-        cancion.setDireccion_archivo_de_audio((String) datosCanciones[3]);
-        canciones.add(cancion);      
-    }
+            List<Cancion> listaCanciones = albumActual.getCanciones();
+            for (Cancion aux : listaCanciones) {
+                Object[] datosCanciones = canController.obtenerDatosCancion(aux.getId());
+                aux.setId((Integer) datosCanciones[0]);
+                aux.setNombre((String) datosCanciones[1]);
+                aux.setDireccion_archivo_de_audio((String) datosCanciones[3]);
+                canciones.add(aux);
+            }
+
+        }
 %>
 
 <!DOCTYPE html>

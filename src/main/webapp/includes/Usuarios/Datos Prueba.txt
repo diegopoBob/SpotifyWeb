@@ -1,0 +1,398 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 18-09-2024 a las 03:02:57
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `spotify`
+--
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`nick`, `tipo_usuario`, `apellido`, `fecNac`, `imagen`, `mail`, `nombre`) VALUES
+('alcides', 'Artista', NULL, '1952-07-17', NULL, 'alcides@tuta.io', 'Alcides'),
+('benKenobi', 'Cliente', 'Kenobi', '1914-04-02', 'bit.ly/benKenobi', 'benKenobi@gmail.com', 'Obi-Wan'),
+('bruceTheBoss', 'Artista', 'Springsteen', '1949-09-23', 'bit.ly/bruceTheBoss', 'bruceTheBoss@gmail.com', 'Bruce'),
+('cbochinche', 'Cliente', 'Bochinche', '1937-05-08', 'bit.ly/cbochinche', 'cbochinche@vera.com.uy', 'Cacho'),
+('chaiko', 'Artista', 'Tchaikovsky', '1840-04-25', NULL, 'chaiko@tuta.io', 'Piotr'),
+('clauper', 'Artista', 'Lauper', '1953-06-22', 'bit.ly/cLauper', 'clauper@hotmail.com', 'Cyndi'),
+('dmode', 'Artista', 'Mode', '1980-06-14', 'bit.ly/depecheMode', 'dmode@tuta.io', 'Depeche'),
+('dyangounchained', 'Artista', NULL, '1940-03-05', NULL, 'dyangounchained@gmail.com', 'Dyango'),
+('Eleven11', 'Cliente', NULL, '1971-12-31', 'bit.ly/11Eleven1', 'Eleven11@gmail.com', 'Eleven'),
+('el_padrino', 'Cliente', 'Corleone', '1972-03-08', 'bit.ly/vitoCorleone', 'el_padrino@tuta.io', 'Vito'),
+('Heisenberg', 'Cliente', 'White', '1956-03-07', 'bit.ly/heisenbergWW', 'Heisenberg@tuta.io', 'Walter'),
+('lachiqui', 'Cliente', 'Legrand', '1927-02-23', 'bit.ly/laChiqui', 'lachiqui@hotmail.com.ar', 'Mirtha'),
+('la_ley', 'Artista', 'Ley', '1987-02-14', NULL, 'la_ley@tuta.io', 'La'),
+('lospimpi', 'Artista', NULL, '1981-08-13', 'bit.ly/losPimpinela', 'lospimpi@gmail.com', 'Pimpinela'),
+('Machichu', 'Artista', 'Rodriguez', '2024-09-05', 'C:\\Users\\Machichu\\Pictures\\Saved Pictures\\elden-ring-logo-uhdpaper.com-4K-3.jpg', 'correo', 'Matias'),
+('nicoleneu', 'Artista', 'Neumann', '1980-10-31', 'bit.ly/nicoleneu', 'nicoleneu@hotmail.com', 'Nicole'),
+('ppArgento', 'Cliente', 'Argento', '1955-02-14', 'bit.ly/ppArgento', 'ppArgento@hotmail.com', 'Pepe'),
+('scarlettO', 'Cliente', 'O’Hara', '1984-11-27', 'bit.ly/scarlettO', 'scarlettO@tuta.io', 'Scarlett'),
+('tigerOfWales', 'Artista', 'Jones', '1940-06-07', NULL, 'tigerOfWales@tuta.io', 'Tom'),
+('tripleNelson', 'Artista', 'Nelson', '1998-01-01', 'bit.ly/tripleNelson', 'tripleNelson@tuta.io', 'La Triple'),
+('vpeople', 'Artista', 'People', '1977-01-01', 'bit.ly/vpeople', 'vpeople@tuta.io', 'Village');
+
+--
+-- Volcado de datos para la tabla `artista`
+--
+
+INSERT INTO `artista` (`nick`, `DireccionWeb`, `biografia`) VALUES
+('alcides', NULL, 'Alcides es un cantante argentino que comenzó su carrera en 1976 con la banda Los Playeros. Su éxito se consolidó en los años 1990 con el lanzamiento de varios álbumes populares.'),
+('bruceTheBoss', 'brucespringsteen.net', ''),
+('chaiko', NULL, 'Piotr Ilich Chaikovski fue un compositor ruso del período del Romanticismo. Sus obras abarcan una variedad de géneros, incluyendo sinfonías, óperas y ballets.'),
+('clauper', 'cyndilauper.com', 'Cynthia Ann Stephanie Lauper, conocida simplemente como Cyndi Lauper, es una cantautora, actriz y empresaria estadounidense. Después de participar en el grupo musical, Blue Angel, en 1983 firmó con Portrait Records y lanzó su exitoso álbum debut She\'s So '),
+('dmode', 'www.depechemode.com', ''),
+('dyangounchained', NULL, 'Dyango es un cantante español conocido por su música romántica y sus baladas sentimentales.'),
+('la_ley', NULL, ''),
+('lospimpi', 'www.pimpinela.net', ''),
+('Machichu', 'github', 'El mas puto'),
+('nicoleneu', 'bit.ly/nicoleneu', ''),
+('tigerOfWales', 'www.tomjones.com', 'Tom Jones es un cantante británico conocido por su potente voz y sus éxitos en los géneros del pop y del soul. Ha vendido más de 100 millones de discos en todo el mundo.'),
+('tripleNelson', NULL, 'La Triple Nelson es un grupo de rock uruguayo formado en enero de 1998. Su música se caracteriza por su estilo rockero y letras profundas.'),
+('vpeople', 'www.officialvillagepeople.com', 'Village People es una innovadora formación musical de estilo disco de finales de los años 70. Fue famosa tanto por sus peculiares disfraces, como por sus canciones pegadizas, con letras sugerentes y llenas de dobles sentidos.');
+
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`nick`) VALUES
+('benKenobi'),
+('cbochinche'),
+('Eleven11'),
+('el_padrino'),
+('Heisenberg'),
+('lachiqui'),
+('ppArgento'),
+('scarlettO');
+
+--
+-- Volcado de datos para la tabla `genero`
+--
+
+INSERT INTO `genero` (`nombre`, `padre_nombre`) VALUES
+('Balada', NULL),
+('Clásica', NULL),
+('Cumbia', NULL),
+('Disco', NULL),
+('Pop', NULL),
+('Rock', NULL),
+('Dance-pop', 'Pop'),
+('Electropop', 'Pop'),
+('Pop Clásico', 'Pop'),
+('Rock & Roll', 'Rock'),
+('Rock Clásico', 'Rock'),
+('Rock Latino', 'Rock');
+
+--
+-- Volcado de datos para la tabla `playlist`
+--
+
+INSERT INTO `playlist` (`id`, `DTYPE`, `Nombre`, `rutaimagen`) VALUES
+(1, 'PlaylistPorDefecto', 'Noche De La Nostalgia', 'bit.ly/laNocheNostalgia'),
+(2, 'PlaylistPorDefecto', 'Rock En Español', NULL),
+(3, 'PlaylistPorDefecto', 'Música Clásica', 'bit.ly/musicaCla'),
+(4, 'PlaylistParticular', 'Música Inspiradora', 'bit.ly/musicInspi'),
+(5, 'PlaylistParticular', 'De Todo Un Poco', NULL),
+(6, 'PlaylistParticular', 'Para Cocinar', 'bit.ly/ParaCocinar'),
+(7, 'PlaylistParticular', 'Para Las Chicas', NULL),
+(8, 'PlaylistParticular', 'Fiesteras', 'bit.ly/fiestaFiesta'),
+(9, 'PlaylistParticular', 'Mis Favoritas', NULL);
+
+--
+-- Volcado de datos para la tabla `playlistparticular`
+--
+
+INSERT INTO `playlistparticular` (`id`, `privada`, `propietario`) VALUES
+(4, 0, 'el_padrino'),
+(5, 0, 'el_padrino'),
+(6, 1, 'Heisenberg'),
+(7, 0, 'lachiqui'),
+(8, 0, 'cbochinche'),
+(9, 1, 'cbochinche');
+
+--
+-- Volcado de datos para la tabla `playlistpordefecto`
+--
+
+INSERT INTO `playlistpordefecto` (`id`, `genero_nombre`) VALUES
+(3, 'Clásica'),
+(1, 'Pop Clásico'),
+(2, 'Rock Latino');
+
+--
+-- Volcado de datos para la tabla `cancion`
+--
+
+INSERT INTO `cancion` (`id`, `direccion_archivo_de_audio` , `duracion`, `nombre`, `genero`) VALUES
+(1, 'bit.ly/SCvpymca', 268, 'YMCA', NULL),
+(2, 'bit.ly/SCvpmacho', 208, 'Macho Man', NULL),
+(3, 'bit.ly/SCvpinthenavy', 193, 'In the Navy', NULL),
+(4, 'picosong.com/download/zfQ3', 296, 'Personal Jesus', NULL),
+(5, 'picosong.com/download/zfQX',  261, 'Enjoy The Silence', NULL),
+(6, 'bit.ly/SCclgirlsjustwant',  195, 'Girls Just Want To Have Fun', NULL),
+(7, 'picosong.com/download/zfER', 312, 'Time After Time', NULL),
+(8, 'bit.ly/SCbsborninusa',  298, 'Born In The U.S.A.', NULL),
+(9, 'bit.ly/SCbsglorydays',  323, 'Glory Days', NULL),
+(10, 'picosong.com/download/zf86',  238, 'Dancing In The Park', NULL),
+(11, 'picosong.com/download/zfbS', 120, 'It’s Not Unusual', NULL),
+(12, 'bit.ly/SCtnadagiopais',  290, 'Adagio De Mi País', NULL),
+(13, 'picosong.com/download/zfh6',  323, 'El Duelo', NULL),
+(14, 'picosong.com/download/zfAe',  288, 'Mentira', NULL),
+(15, 'bit.ly/SCptswanlake',  160, 'Acto 2, Número 10, Escena (Moderato)', NULL),
+(16, 'bit.ly/SCptpiano',  1318, 'Primer Movimiento (Allegro non troppo e molto maestoso – Allegro con spirito)', NULL),
+(17, 'picosong.com/download/zfZN',  132, 'No Quiero Estudiar', NULL),
+(18, 'picosong.com/download/zfa4',  285, 'Por Ese Hombre', NULL),
+(19, 'bit.ly/SCdyporesehombre',  313, 'Por Ese Hombre', NULL),
+(20, 'bit.ly/SCvioleta',  116, 'Violeta', NULL);
+--
+-- Volcado de datos para la tabla `album`
+--
+
+INSERT INTO `album` (id, anioo, nombre, artista) VALUES
+(1, 1980, 'Village People Live and Sleazy', 'vpeople'),
+(2, 1990, 'Violator', 'dmode'),
+(3, 1983, 'She’s So Unusual', 'clauper'),
+(4, 1984, 'Born In The U.S.A.', 'bruceTheBoss'),
+(5, 1965, 'It’s Not Unusual', 'tigerOfWales'),
+(6, 2012, 'Agua Y Sal', 'tripleNelson'),
+(7, 2001, 'MTV Unplugged', 'la_ley'),
+(8, 1875, 'El Lago De Los Cisnes', 'chaiko'),
+(9, 1875, 'Concierto Para Piano No. 1 En Si Menor, Opus 23', 'chaiko'),
+(10, 1994, 'Primer Amor', 'nicoleneu'),
+(11, 1993, 'Hay Amores Que Matan', 'lospimpi'),
+(12, 1993, 'Un Loco Como Yo', 'dyangounchained'),
+(13, 1989, '20 Grandes Éxitos', 'alcides');
+
+
+--
+-- Volcado de datos para la tabla `album_cancion`
+--
+
+INSERT INTO `album_canciones` (`album_id`, `cancion_id`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(2, 4),
+(2, 5),
+(3, 6),
+(3, 7),
+(4, 8),
+(4, 9),
+(4, 10),
+(5, 11),
+(6, 12),
+(7, 13),
+(7, 14),
+(8, 15),
+(9, 16),
+(10, 17),
+(11, 18),
+(12, 18),
+(13, 19);
+
+--
+-- Volcado de datos para la tabla `album_genero`
+--
+
+INSERT INTO `album_genero` (`Album_id`, `generos_nombre`) VALUES
+(1, 'Dance-pop'),
+(1, 'Disco'),
+(1, 'Pop Clásico'),
+(2, 'Electropop'),
+(3, 'Dance-pop'),
+(3, 'Pop Clásico'),
+(4, 'Pop Clásico'),
+(4, 'Rock & Roll'),
+(4, 'Rock Clásico'),
+(5, 'Pop Clásico'),
+(5, 'Rock Clásico'),
+(6, 'Rock Latino'),
+(7, 'Pop Clásico'),
+(7, 'Rock Latino'),
+(8, 'Clásica'),
+(9, 'Clásica'),
+(10, 'Electropop'),
+(11, 'Balada'),
+(11, 'Pop Clásico'),
+(12, 'Balada'),
+(12, 'Pop Clásico'),
+(13, 'Cumbia');
+
+
+--
+-- Volcado de datos para la tabla `cliente_albumesfavoritos`
+--
+
+INSERT INTO `cliente_albumesfavoritos` (`cliente_id`, `album_id`) VALUES
+('cbochinche', 12),
+('ppArgento', 8),
+('ppArgento', 9),
+('vpeople', 2),
+('vpeople', 8),
+('vpeople', 9);
+
+--
+-- Volcado de datos para la tabla `cliente_cancionesfavoritas`
+--
+
+INSERT INTO `cliente_cancionesfavoritas` (`cliente_id`, `cancion_id`) VALUES
+('cbochinche', 15),
+('el_padrino', 17),
+('ppArgento', 6),
+('vpeople', 11);
+
+--
+-- Volcado de datos para la tabla `cliente_playlistfavoritas`
+--
+
+INSERT INTO `cliente_playlistfavoritas` (`cliente_id`, `playlist_particular_id`) VALUES
+('cbochinche', 1),
+('cbochinche', 2),
+('Heisenberg', 4),
+('ppArgento', 1),
+('ppArgento', 2),
+('scarlettO', 3),
+('vpeople', 1),
+('vpeople', 3);
+
+--
+-- Volcado de datos para la tabla `cliente_usuariosseguidos`
+--
+
+INSERT INTO `cliente_usuariosseguidos` (`cliente_id`, `usuario_id`) VALUES
+('benKenobi', 'alcides'),
+('benKenobi', 'bruceTheBoss'),
+('benKenobi', 'cbochinche'),
+('benKenobi', 'chaiko'),
+('benKenobi', 'dmode'),
+('benKenobi', 'Eleven11'),
+('benKenobi', 'el_padrino'),
+('benKenobi', 'lachiqui'),
+('benKenobi', 'la_ley'),
+('benKenobi', 'lospimpi'),
+('benKenobi', 'nicoleneu'),
+('benKenobi', 'ppArgento'),
+('cbochinche', 'alcides'),
+('cbochinche', 'dyangounchained'),
+('cbochinche', 'la_ley'),
+('cbochinche', 'lospimpi'),
+('cbochinche', 'ppArgento'),
+('Eleven11', 'el_padrino'),
+('Eleven11', 'la_ley'),
+('Eleven11', 'ppArgento'),
+('Eleven11', 'scarlettO'),
+('el_padrino', 'benKenobi'),
+('el_padrino', 'cbochinche'),
+('el_padrino', 'clauper'),
+('el_padrino', 'dmode'),
+('el_padrino', 'Eleven11'),
+('el_padrino', 'lachiqui'),
+('el_padrino', 'vpeople'),
+('Heisenberg', 'alcides'),
+('Heisenberg', 'benKenobi'),
+('Heisenberg', 'bruceTheBoss'),
+('Heisenberg', 'dmode'),
+('Heisenberg', 'dyangounchained'),
+('Heisenberg', 'Eleven11'),
+('Heisenberg', 'el_padrino'),
+('Heisenberg', 'lachiqui'),
+('Heisenberg', 'lospimpi'),
+('Heisenberg', 'ppArgento'),
+('Heisenberg', 'scarlettO'),
+('Heisenberg', 'tigerOfWales'),
+('Heisenberg', 'tripleNelson'),
+('lachiqui', 'alcides'),
+('lachiqui', 'bruceTheBoss'),
+('lachiqui', 'el_padrino'),
+('lachiqui', 'la_ley'),
+('lachiqui', 'lospimpi'),
+('lachiqui', 'ppArgento'),
+('lachiqui', 'scarlettO'),
+('ppArgento', 'benKenobi'),
+('ppArgento', 'bruceTheBoss'),
+('ppArgento', 'cbochinche'),
+('ppArgento', 'dmode'),
+('ppArgento', 'Eleven11'),
+('ppArgento', 'lachiqui'),
+('ppArgento', 'tripleNelson'),
+('scarlettO', 'benKenobi'),
+('scarlettO', 'bruceTheBoss'),
+('scarlettO', 'dmode'),
+('scarlettO', 'Heisenberg'),
+('scarlettO', 'lachiqui'),
+('scarlettO', 'tigerOfWales'),
+('scarlettO', 'tripleNelson');
+
+--
+-- Volcado de datos para la tabla `playlist_cancion`
+--
+
+INSERT INTO `playlist_cancion` (`playlist_id`, `canciones_id`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 6),
+(1, 7),
+(1, 8),
+(1, 9),
+(1, 10),
+(1, 11),
+(2, 12),
+(2, 13),
+(2, 14),
+(3, 15),
+(3, 16),
+(4, 4),
+(4, 15),
+(4, 16),
+(5, 6),
+(5, 7),
+(5, 11),
+(5, 15),
+(6, 4),
+(6, 5),
+(6, 8),
+(6, 9),
+(7, 6),
+(7, 11),
+(7, 16),
+(7, 17),
+(7, 18),
+(8, 1),
+(8, 2),
+(8, 3),
+(8, 9),
+(8, 20),
+(9, 12),
+(9, 16),
+(9, 18);
+
+--
+-- Volcado de datos para la tabla `sequence`
+--
+
+INSERT INTO `sequence` (`SEQ_NAME`, `SEQ_COUNT`) VALUES
+('SEQ_GEN', 0);
+
+
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -23,37 +23,10 @@
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="includes/style.css" rel="stylesheet">
-        <script>
-            function abrirCasoDeUso(cu, usuario) {
-                var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
-                var url = cu;
-           
-                // Si se proporciona un usuario válido, agregarlo como parámetro a la URL
-                if (usuario && usuario.trim() !== "") {
-                    url += '?user=' + encodeURIComponent(usuario); // Agrega el parámetro de usuario
-                }
-
-                xhr.open('GET', url, true);
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        document.getElementById('principal').innerHTML = xhr.responseText;
-
-                        var functionName = 'scripts_' + cu.split('.')[0]; // Toma el nombre antes del punto
-
-                        if (typeof window[functionName] === 'function') {
-                            window[functionName](); // Llama la función si existe
-                        } else {
-                            console.error("La función " + functionName + " no existe");
-                        }
-                    } else if (xhr.readyState === 4 && xhr.status !== 200) {
-                        console.error("Error en la solicitud: " + xhr.status);
-                    }
-                };
-
-                xhr.send(); // Enviar la solicitud
-            }
-        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="script.js"></script>
+       
 
     </head>
     <body class="max-h-[100vh] overflow-hidden">
@@ -67,7 +40,7 @@
                     <div><a onclick='abrirCasoDeUso("principal.jsp", "<%= session.getAttribute("nick")%>")'><i class="fa-solid fa-house text-xl text-neutral-400 hover:text-white rounded-full  p-2 hover:bg-neutral-600"></i></a></div>                   
                     <form class="flex w-[30rem] h-12 bg-neutral-800 rounded-[20px] hover:bg-neutral-600  focus-within:border justify-center">
                         <img src="includes/search-icon.png" class="ml-[-2rem]" alt="alt"/>
-                        <input class="focus:outline-none w-96 h-full  bg-transparent text-white text-lg" id="name" name="name" type="text" />
+                        <input class="focus:outline-none w-96 h-full  bg-transparent text-white text-lg" id="searchBar" name="searchBar" type="text" />
                     </form>
                 </div>
                 <div class=" h-auto bg-black pr-4 flex items-center userDropdown">
@@ -115,11 +88,13 @@
                     </div>
                     <div class="flex flex-col text-white">
                         <div class="w-full hover:bg-neutral-600 rounded flex">
+                            <div onclick='abrirCasoDeUso("consultarPlaylist.jsp", "8")' class="w-full hover:bg-neutral-600 rounded flex">
                             <img src="includes/posi.jpg" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
                             <div name="textoLibreria" class="flex flex-col justify-center text-sm">
-                                <p>holaaa</p>
+                                <p>CLIK ACA PARA PROBNAR PLAylist</p>
                                 <p>jejee</p>
                             </div>
+                        </div>
                         </div>
                         <div class="w-full hover:bg-neutral-600 rounded flex">
                             <img src="includes/posi.jpg" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
@@ -130,10 +105,10 @@
                         </div>
                     </div>
                 </div>
-                <div id="principal" class="col-span-8 rounded-t-lg bg-gradient-to-b from-green-800 to-25% to-neutral-900 overflow-y-auto pt-2">
+                <div id="principal" class="col-span-10 rounded-t-lg bg-neutral-900 overflow-y-auto ">
 
                 </div>
-                <div class="col-span-2 rounded-t-lg mr-2 bg-neutral-900">info</div>
+               
             </div>
 
 
@@ -179,8 +154,10 @@
     </body>
     <script>
         
-        
-        
+        document.getElementById('searchBar').addEventListener('input', function() {
+            abrirCasoDeUso("busqueda.jsp?input="+document.getElementById('searchBar').value);
+        });
+            
         const audio = document.getElementById('audioControl');
         const barraVolumen = document.getElementById('barraVolumen');
         const playButton = document.getElementById('playButton');

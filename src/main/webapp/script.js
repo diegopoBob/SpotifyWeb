@@ -2,7 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
-
+             //PARA PONER COLOR DE FONDO PLAYLIST
+ 
 
             function abrirCasoDeUso(cu, usuario) {
                 var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
@@ -160,13 +161,14 @@
                                     console.error('Error:', error);
                                 });
                     }
-                }
-                
-            }
-            
-              function scripts_consultarPlaylist() {
+    }
 
-         $(window).ready(function(){
+}
+
+function scripts_consultarPlaylist() {
+    
+    //FUNCION COLOR
+    $(window).ready(function () {
         var sourceImage = document.getElementById("imagenPLaylistPrincipal");
         var colorThief = new ColorThief();
         var color = colorThief.getColor(sourceImage);
@@ -178,5 +180,28 @@
         console.log("Color obtenido:", color); // Log del color obtenido
         document.getElementById("divPLaylistPrincipal").style.backgroundColor = "rgb(" + color + ")";
         document.getElementById("PlaylistAbajo").style.backgroundImage = "linear-gradient(to bottom, rgb(" + colorOscuro + ") 25%, rgb(23 23 23))";
-       });
-              }
+    });
+     //FUNCION TABLA SORTER
+    const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
+        v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+document.getElementById('playButtonPlaylist').addEventListener('click', function(){
+    var pbtn = document.getElementById('playButtonPlaylist');
+    if(pbtn.src === 'includes/playP.png'){
+        alert('as');
+    }
+    if(pbtn.src === 'includes/pauseP.png'){
+        alert('as');
+    }
+});
+document.querySelectorAll('th').forEach(th => th.addEventListener('click', () => {
+    const table = th.closest('table');
+    const tbody = table.querySelector('tbody');
+    Array.from(tbody.querySelectorAll('tr'))
+        .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+        .forEach(tr => tbody.appendChild(tr));
+}));
+
+}

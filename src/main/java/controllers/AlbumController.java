@@ -149,6 +149,25 @@ public class AlbumController implements IAlbumController {
                 .collect(Collectors.toList());
     }
 
+    public List<Integer> obtenerIdAlbumsFavoritos(String clienteNick) {
+        // Busca al cliente por su nick
+        Cliente cliente = auxCliente.findCliente(clienteNick);
+
+        // Si no se encuentra el cliente, retorna una lista vacía
+        if (cliente == null) {
+            return new ArrayList<>();
+        }
+
+        // Obtener los álbumes favoritos del cliente
+        List<Album> albumesFavoritos = cliente.getAlbumesFavoritos();
+
+        // Mapear los álbumes favoritos a una lista de nombres
+        return albumesFavoritos.stream()
+                .map(album -> album.getId())
+                .collect(Collectors.toList());
+    }
+    
+    
     public List<Album> BuscarAlbumGenero(String nombreGenero) {
         EntityManager em = getEntityManager();
         try {
@@ -185,7 +204,25 @@ public class AlbumController implements IAlbumController {
             em.close();
         }
     }
+    
+    public Object[][] obtenerAlbumArtistaNombres(String nickArtista) {
+         EntityManager em = emf.createEntityManager();
+        try {
+            List<Album> albumes = em.createQuery("SELECT a FROM Album a JOIN a.artista art WHERE art.nick = :nickArtista", Album.class).setParameter("nickArtista", nickArtista).getResultList();
+            Object[][] data = new Object[albumes.size()][6];
 
+            for (int i = 0; i < albumes.size(); i++) {
+                Album album = albumes.get(i);
+                data[i][0] = album.getId();
+                data[i][1] = album.getNombre();
+            }
+            return data;
+
+        } finally {
+            em.close();
+        }
+    }
+//SELECT a FROM Album a JOIN a.artista art WHERE art.nick = :nickArtista
     public Object[][] obtenerDatosAlbum(String nombre) {
         EntityManager em = emf.createEntityManager();
         try {

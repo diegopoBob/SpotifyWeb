@@ -212,7 +212,7 @@ public class PlaylistController implements IPlaylistController{
             return new Object[0][0]; 
         }
         List<Cancion> canciones = playlist.getCanciones();
-        Object[][] datos = new Object[canciones.size()][9];
+        Object[][] datos = new Object[canciones.size()][10];
 
         for (int i = 0; i < canciones.size(); i++) {
             Cancion cancion = canciones.get(i);
@@ -227,6 +227,7 @@ public class PlaylistController implements IPlaylistController{
             }else{
             datos[i][5] ="Sin Genero asociado";
             }
+            datos[i][9] =albumAux.getId();
             datos[i][6] =albumAux.getNombre();
             datos[i][7] =albumAux.getArtista().getNombre();
             datos[i][8] =albumAux.getArtista().getNick();
