@@ -13,18 +13,20 @@
 
 <%
     Fabrica fabrica = Fabrica.getInstance();
-    IAlbumController alController= fabrica.getIAlbumController();
+    IAlbumController alController = fabrica.getIAlbumController();
     IUsuarioController usrController = fabrica.getIUsuarioController();
-    ICancionController canController= fabrica.getICancionController();
-    IGeneroController genController=fabrica.getIGeneroController();
-    List<String> artistas=usrController.obtenerNombresArtistas();
-    List<String> generos=genController.obtenerNombresGeneros();
+    ICancionController canController = fabrica.getICancionController();
+    IGeneroController genController = fabrica.getIGeneroController();
+    List<String> artistas = usrController.obtenerNombresArtistas();
+    List<String> generos = genController.obtenerNombresGeneros();
     String tipo = request.getParameter("tipo");
     String nombre = request.getParameter("nombre");
     String albumIdSeleccionado = request.getParameter("albumId"); // Obtiene el ID del álbum seleccionado
+    String usuarioLogueado = (String) session.getAttribute("nick");
 
     List<Album> albumes = new ArrayList<>();
     List<Cancion> canciones = new ArrayList<>();
+    List<Integer> favoritos = alController.obtenerIdAlbumsFavoritos(usuarioLogueado);
 
     // Obtención de álbumes
     if (tipo != null && nombre != null) {
@@ -62,111 +64,143 @@
             Cancion cancion = new Cancion();
             cancion.setId((Integer) dato[0]);
             cancion.setNombre((String) dato[1]);
-            cancion.setDireccion_archivo_de_audio((String) dato[3]);
             canciones.add(cancion);
         }
     }
+    
+
+    String action = request.getParameter("action"); // Obtener el parámetro 'action'
+    String albumIdParam = request.getParameter("albumId"); // Obtener el parámetro 'albumId'
+    
+    if (action != null && albumIdParam != null) {
+        int albumId = Integer.parseInt(albumIdParam);
+
+        // Lógica para agregar o eliminar de favoritos
+        if (action.equals("agregarAFavoritos")) {
+            usrController.registrarAlbumFavorito(usuarioLogueado, albumActual.getNombre());
+        } else if (action.equals("eliminarDeFavoritos")) {
+            usrController.eliminarAlbumFavorito(usuarioLogueado, albumActual.getNombre());
+        }
+        
+        // Después de la acción, redirigir para evitar que se vuelva a ejecutar la misma acción al refrescar
+        response.sendRedirect("consultarAlbum.jsp?tipo=" + tipo + "&nombre=" + nombre + "&albumId=" + albumId);
+        return;
+    }
+
+
+
+
 %>
 
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="includes/style.css" rel="stylesheet">
-    <script src="script.js"></script>
-</head>
-<body>
-    
-<div class="min-h-screen bg-transparent p-6">
-    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Spotify</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="includes/style.css" rel="stylesheet">
+        <script src="includes/script.js"></script>
+    </head>
+    <body>
+        <div class="min-h-screen bg-transparent p-6">
 
-    <!-- Géneros y artistas -->
-    <div class="grid grid-cols-2 gap-4 mb-6">
-        <!-- Géneros -->
-        <ul class="bg-black p-4 rounded-lg shadow">
-            <% for (String genero : generos) { %>
-                <li class="text-white hover:bg-neutral-400 hover:rounded cursor-pointer">
-                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero%>')" class="hover:text-green-500">
-                        <%= genero %>
-                    </a>
-                </li>
-            <% } %>
-        </ul>
 
-        <!-- Artistas -->
-        <ul class="bg-black p-4 rounded-lg shadow">
-            <% for (String artista : artistas) { %>
-                <li class="text-white hover:bg-neutral-400 hover:rounded cursor-pointer">
-                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista%>')" class="hover:text-green-500">
-                        <%= artista %>
-                    </a>
-                </li>
-            <% } %>
-        </ul>
-    </div>
-
-    <!-- Detalles del álbum -->
-    <div class="bg-black p-6 rounded-lg shadow-lg">
-        <div class="flex items-center">
-            <!-- Imagen del álbum -->
-            <div class="w-48 h-48 bg-gray-200 rounded-lg mr-6 flex items-center justify-center">
-                <img src="<%= albumActual.getDireccion_imagen() %>" alt="Imagen del álbum" class="w-full h-full object-cover">
-            </div>
-
-            <!-- Información del álbum -->
-            <div>
-                <% if (albumActual != null) { %>
-                    <h3 class="text-white"><%= albumActual.getNombre() %></h3>
-                    <p class="text-white">Año de creación: <%= albumActual.getAnioo() %></p>
-                <% } %>
-            </div>
-        </div>
-
-        <!-- Lista de álbumes -->
-        <div class="mt-6">
-            <h4 class="text-green-500 font-bold">Álbumes asociados</h4>
-            <ul class="divide-y divide-gray-200">
-                <% if (!albumes.isEmpty()) { %>
-                    <% for (Album album : albumes) { %>
-                        <li class="flex justify-between py-2 hover:bg-neutral-400 hover:rounded cursor-pointer px-2">
-                            <span class="text-white"><%= album.getNombre() %></span>
-                            <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=<%= tipo%>&nombre=<%= java.net.URLEncoder.encode(nombre, "UTF-8")%>&albumId=<%= album.getId()%>', '')" class="text-blue-500 hover:underline cursor-pointer text-center">Detalles</a>
-                        </li>
+            <!-- Géneros y artistas -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <!-- Géneros -->
+                <ul class="bg-black p-4 rounded-lg shadow">
+                    <% for (String genero : generos) {%>
+                    <li class="text-white">
+                        <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero%>', '')" class="hover:text-green-500 cursor-pointer">
+                            <%= genero%>
+                        </a>
+                    </li>
                     <% } %>
-                <% } else { %>
-                    <li class="text-white">No hay álbumes disponibles para este género o artista</li>
-                <% } %>
-            </ul>
-        </div>
+                </ul>
 
-        <!-- Lista de canciones -->
-        <div class="mt-6">
-            <h4 class="text-green-500 font-bold">Temas del álbum</h4>
-            <ul class="divide-y divide-gray-200">
-                <% if (!canciones.isEmpty()) { %>
-                    <% for (Cancion cancion : canciones) { %>
-                        <li class="flex justify-between py-2 hover:bg-neutral-400 hover:rounded cursor-pointer px-2">
-                            
-                            <a onclick="reproducirCancion('<%= cancion.getDireccion_archivo_de_audio()%>')">
-                                <span class="text-white"><%= cancion.getNombre()%></span>                              
-                            </a>
+                <!-- Artistas -->
+                <ul class="bg-black p-4 rounded-lg shadow">
+                    <% for (String artista : artistas) {%>
+                    <li class="text-white">
+                        <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista%>', '')" class="hover:text-green-500 cursor-pointer">
+                            <%= artista%>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+
+            <!-- Detalles del álbum -->
+            <div class="bg-black p-6 rounded-lg shadow-lg">
+                <div class="flex items-center">
+                    <!-- Imagen del álbum -->
+                    <div class="w-48 h-48 bg-gray-200 rounded-lg mr-6 flex items-center justify-center">
+                        <img src="<%= albumActual.getDireccion_imagen() %>" alt="Imagen del álbum" class="w-full h-full object-cover">
+                    </div>
+
+                    <!-- Información del álbum -->
+                    <div>
+                        <% if (albumActual != null) {
+                                boolean esFavorito = favoritos.contains(albumActual.getId()); // Comparar el ID del álbum
+                        %>
+                        <h3 class="text-white"><%= albumActual.getNombre()%></h3>
+                        <p class="text-white">Año: <%= albumActual.getAnioo()%></p>
+
+                        <!-- Botón de favorito dinámico -->
+                        <a onclick="toggleFavorito(albumActual)"
+                           class="<%= esFavorito ? "text-red-500" : "text-green-500"%> pt-3 font-bold hover:underline cursor-pointer text-center" 
+                           id="botonGuardar">
+                            <%= esFavorito ? "Eliminar de favoritos" : "Guardar en favoritos"%>
+                        </a>
+                        <% } %>
+                    </div>
+
+                </div>
+
+                <!-- Lista de álbumes -->
+                <div class="mt-6">
+                    <h4 class="text-green-500 font-bold">Álbumes asociados</h4>
+                    <ul class="divide-y divide-gray-200">
+                        <% if (!albumes.isEmpty()) { %>
+                        <% for (Album album : albumes) {%>
+                        <li class="flex justify-between py-2">
+                            <span class="text-white"><%= album.getNombre()%></span>
+                            <div class="flex space-x-4">
+                                <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=<%= tipo%>&nombre=<%= java.net.URLEncoder.encode(nombre, "UTF-8")%>&albumId=<%= album.getId()%>', '')" class="text-blue-500 hover:underline cursor-pointer text-center">Detalles</a>
+
+                            </div>
+                        </li>
+                        <% } %>
+                        <% } else { %>
+                        <li class="text-white">No hay álbumes disponibles para este género o artista</li>
+                            <% } %>
+                    </ul>
+                </div>
+
+                <!-- Lista de canciones -->
+                <div class="mt-6">
+                    <h4 class="text-green-500 font-bold">Temas del álbum</h4>
+                    <ul class="divide-y divide-gray-200">
+                        <% if (!canciones.isEmpty()) { %>
+                        <% for (Cancion cancion : canciones) {%>
+                        <li class="flex justify-between py-2">
+                            <span class="text-white"><%= cancion.getNombre()%></span>
                             <a href="#" class="text-blue-500 hover:underline">Descargar</a>
                         </li>
-                    <% } %>
-                <% } else { %>
-                    <li class="text-white">No hay canciones disponibles para este álbum</li>
-                <% } %>
-            </ul>
-        </div>
-    </div>
+                        <% } %>
+                        <% } else { %>
+                        <li class="text-white">No hay canciones disponibles para este álbum</li>
+                            <% }%>
+                    </ul>
+                </div>
+            </div>
 
-    <!-- Mensaje para usuarios con suscripción -->
-    <div class="mt-4">
-        <p class="text-sm text-black">* Solo los usuarios con suscripción vigente pueden descargar las canciones para escuchar offline.</p>
-    </div>
-</div>
-</body>
+            <!-- Mensaje para usuarios con suscripción -->
+            <div class="mt-4">
+                <p class="text-sm text-black">* Solo los usuarios con suscripción vigente pueden descargar las canciones para escuchar offline.</p>
+            </div>
+        </div>
+
+    </body>
 </html>

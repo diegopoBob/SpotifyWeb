@@ -22,14 +22,28 @@ IAlbumController albController = fabrica.getIAlbumController();
 String imagenDefault = "includes/imagenDefault.png";
 String usuarioLogueado = session.getAttribute("nick").toString();
 String usuarioConsulta = request.getParameter("user");
-out.print(usuarioConsulta);
-String usuario = (usuarioConsulta != null && !usuarioConsulta.isEmpty()) ? usuarioConsulta : usuarioLogueado;
 
-Object[][] datos = usrController.obtenerDatosCliente(usuario);
+String usuario = (usuarioConsulta != null && !usuarioConsulta.isEmpty()) ? usuarioConsulta : usuarioLogueado;
+String tipoUsuario = usrController.tipoUsuario(usuario);
+Object[][] datos;
+List<String> albums = new ArrayList<>();
+
+if(tipoUsuario.equals("Cliente")){
+ datos = usrController.obtenerDatosCliente(usuario);
+ albums = albController.obtenerNombresAlbumsFavoritos(usuario);
+    }else{
+   datos = usrController.obtenerDatosArtista(usuario);
+   Object[][] albumsDatos = albController.obtenerAlbumArtistaNombres(usuario);
+       
+   for (Object[] fila : albumsDatos) {
+       String nombreAlbum = fila[0].toString()+" - "+fila[1].toString() ;   
+       albums.add(nombreAlbum);    
+        } 
+    }
 List<String> seguidores = usrController.obtenerNicknamesseguidores(usuario);
 List<String> listas = playController.obtenerNombresPlaylistParticularCliente(usuario);
 List<String> listas2 = playController.obtenerNombresDePlaylistsFavoritas(usuario);
-List<String> albums = albController.obtenerNombresAlbumsFavoritos(usuario);
+
 String nombre = "Nombre";
 String apellido = "Apellido";
 String mail = "mail";
@@ -72,7 +86,7 @@ if (datos.length > 0) {
         <div class="perfil container bg-transparent grid grid-cols-3 gap-2 lg:grid-rows-2 sm:grid-row-1 gap-2 mx-auto">
 
             <div class="logo  p-2 row-span-2 col-span-1 col-start-1 flex justify-center font-bold py-2 px-2 border-r-4 border-black ">
-                <img class="sm:max-w-16 sm:max-h-16 md:max-w-32 md:max-h-32 lg:max-w-64 lg:max-h-64 mr-2 rounded-full object-cover " src="<%= imagen %>"  alt="logo">
+                <img class="sm:max-w-16 sm:max-h-16 md:max-w-32 md:max-h-32 lg:max-w-64 lg:max-h-64 mr-2 rounded-full object-cover aspect-square " src="<%= imagen %>"  alt="logo">
             </div>
 
             <div class=" col-span-2 col-start-2 row-start-1 cursor-default ">

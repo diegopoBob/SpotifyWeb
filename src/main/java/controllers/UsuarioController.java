@@ -49,6 +49,7 @@ public class UsuarioController implements IUsuarioController {
     PlaylistJpaController auxPlay = new PlaylistJpaController(emf);
     AlbumJpaController auxAlbum = new AlbumJpaController(emf);
     CancionJpaController auxCan = new CancionJpaController(emf);
+    UsuarioJpaController usrController = new UsuarioJpaController(emf);
     //ClienteJpaController auxCliente =  new ClienteJpaController(emf);
 
     //  private ClienteJpaController cliente_ctr = new ClienteJpaController(emf);
@@ -65,6 +66,15 @@ public class UsuarioController implements IUsuarioController {
             em.close();
         }
         //     cliente_ctr.
+    }
+    
+    public String tipoUsuario(String nick){
+        Usuario usuario = usrController.findUsuario(nick);
+        if(usuario instanceof Artista){
+            return "Artista";
+        }else{
+            return "Cliente";
+        }
     }
 
     public Object[][] obtenerDatosCliente(String nick) {
