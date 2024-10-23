@@ -79,6 +79,8 @@ public class guardarAlbumFavorito extends HttpServlet {
         String idAlbum = request.getParameter("albumId");
         String usuario = (String) session.getAttribute("nick");
         int id = Integer.valueOf(idAlbum);
+        Album album = albController.findAlbum(id);
+        String nombreArtista = album.getArtista().getNick();
         List<Integer> favoritos = albController.obtenerIdAlbumsFavoritos(usuario);
         
         if(favoritos.contains(id)){
@@ -99,7 +101,7 @@ public class guardarAlbumFavorito extends HttpServlet {
         }
         
 
-        response.sendRedirect("index.jsp?");
+        response.sendRedirect("index.jsp?caso=ConsultarAlbum.jsp?tipo=artista&nombre=" + nombreArtista);
 
     }
 

@@ -139,6 +139,7 @@
         console.log("Color obtenido:", color); // Log del color obtenido
         document.getElementById("perfilUsuario").style.backgroundColor = "rgb(" + color + ")";
         document.getElementById("listasSection").style.backgroundImage = "linear-gradient(to bottom, rgb(" + colorOscuro + ") 25%, rgb(23 23 23))";
+        document.getElementById("albumsSection").style.backgroundImage = "linear-gradient(to bottom, rgb(" + colorOscuro + ") 25%, rgb(23 23 23))";
     });
     
 

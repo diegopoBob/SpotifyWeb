@@ -26,6 +26,16 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="script.js"></script>
+        <%
+    if (request.getAttribute("caso")== null){
+    String caso = request.getParameter("caso");
+    %>
+    <script>
+        abrirCasoDeUso("<%= caso %>", "");
+    </script>
+    <%
+    }
+    %>
        
 
     </head>
