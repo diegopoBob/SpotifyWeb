@@ -31,8 +31,8 @@ EntityManager em = emf.createEntityManager();
 Map<String, String> canciones = new HashMap<>(); 
 
 List<Object[]> ObtenidosCanciones = em.createNativeQuery("Select id,nombre,duracion,direccion_archivo_de_audio from cancion where nombre like '%"+input+"%' LIMIT 4").getResultList();
-List<Object[]> ObtenidosClientes = em.createNativeQuery("Select nick,imagen from usuario where nick like '%"+input+"%'and  tipo_usuario='Cliente' LIMIT 4").getResultList();
-List<Object[]> ObtenidosArtistas = em.createNativeQuery("Select nick,imagen from usuario where nick like '%"+input+"%'and tipo_usuario='Artista' LIMIT 4").getResultList();
+List<Object[]> ObtenidosClientes = em.createNativeQuery("Select nick,imagen from usuario where nick like '%"+input+"%'and  tipo_usuario='cliente' LIMIT 4").getResultList();
+List<Object[]> ObtenidosArtistas = em.createNativeQuery("Select nick,imagen from usuario where nick like '%"+input+"%'and tipo_usuario='artista' LIMIT 4").getResultList();
 List<Object[]> ObtenidosAlbums = em.createNativeQuery("Select id,nombre,direccion_imagen,artista,anioo from album where nombre like '%"+input+"%' LIMIT 4").getResultList();
 List<Object[]> ObtenidosPlaylists = em.createNativeQuery("Select id,nombre,rutaImagen from playlist where nombre like '%"+input+"%' LIMIT 4").getResultList();
    
@@ -55,7 +55,7 @@ List<Object[]> ObtenidosPlaylists = em.createNativeQuery("Select id,nombre,rutaI
                 <img src="<%= datosAlb[0][6]%>" alt="alt" class=" aspect-square min-w-16  max-w-20  rounded-xl p-1.5"/>
                 <div style="font-size:clamp(15px, 2vw, 20px);" name="textoLibreria" class=" ml-2 flex flex-col justify-center ">
                     <p class=" whitespace-nowrap  font-semibold text-white mt-2"><%= aux[1]%></p>
-                    <p  class="hover:underline text-gray-400 cursor-pointer" onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp","<%= datosAlb[0][3]%>")'><%= datosAlb[0][3]%></p>
+                    <p  class="hover:underline text-gray-400 cursor-pointer" onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp","<%= datosAlb[0][8]%>")'><%= datosAlb[0][3]%></p>
                 </div>
                 <div style="" name="textoLibreria" class=" items-center flex w-full justify-end">
                     <div class="align-middle ">

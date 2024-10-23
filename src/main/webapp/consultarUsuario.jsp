@@ -31,7 +31,7 @@
     List<String> albums = new ArrayList<>();
    
     
-    if (tipoUsuario.equals("Cliente")) {
+    if (tipoUsuario.equals("cliente")) {
         datos = usrController.obtenerDatosCliente(usuario);
         albums = albController.obtenerNombresAlbumsFavoritos(usuario);
     } else {

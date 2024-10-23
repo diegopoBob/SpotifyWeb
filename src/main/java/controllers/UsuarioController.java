@@ -70,27 +70,8 @@ public class UsuarioController implements IUsuarioController {
     }
     
     public String tipoUsuario(String nick){
-        
         EntityManager em = emf.createEntityManager();
-        try {
-        Artista artista = em.createQuery("SELECT a FROM Artista a WHERE a.nick = :nick", Artista.class)
-                            .setParameter("nick", nick)
-                            .getSingleResult();
-        return "Artista";
-    } catch (NoResultException e) {
-        // No es un Artista, intenta con Cliente
-        try {
-            Cliente cliente = em.createQuery("SELECT c FROM Cliente c WHERE c.nick = :nick", Cliente.class)
-                                .setParameter("nick", nick)
-                                .getSingleResult();
-            return "Cliente";
-        } catch (NoResultException ex) {
-            return null;
-        }
-    }
-        
-        
-        
+        return(String) em.createNativeQuery("Select tipo_usuario from usuario where nick='"+nick+"'").getSingleResult(); 
     }
 
     public Object[][] obtenerDatosCliente(String nick) {
@@ -141,7 +122,7 @@ public class UsuarioController implements IUsuarioController {
         Usuario usr;
         String contraseñaEncriptada;
         contraseñaEncriptada = hashPassword(contraseña);
-        if (tipo == "Artista") {
+        if (tipo == "artista") {
             usr = new Artista(nickname, nombre, apellido, mail, FecNac, imagen, biografia, link, contraseñaEncriptada);
         } else {//si es cliente
             usr = new Cliente(nickname, nombre, apellido, mail, FecNac, imagen, contraseñaEncriptada);
