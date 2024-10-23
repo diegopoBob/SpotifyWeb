@@ -104,9 +104,12 @@
 
                     <% if (!usuario.equals(usuarioLogueado)) { %>
                     <div class="p-2 align-right">
-                        <button class="border border-2 border-green-500 p-2 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" onclick="toggleFollow()">
-                            Seguir
-                        </button>
+                        <form action="seguirUsuario" method="POST">
+                            <input type="hidden" name="usuarioConsulta" value="<%= usuarioConsulta %>">
+                            <button class="border border-2 border-green-500 p-2 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="submit">
+                                <% if(seguidores.contains(usuarioLogueado)){out.print("Dejar de Seguir");}else{out.print("Seguir");}  %>
+                             </button>
+                        </form>    
                     </div>
                     <% } %>
 

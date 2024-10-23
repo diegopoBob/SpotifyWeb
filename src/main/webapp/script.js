@@ -125,49 +125,7 @@
                 let isFollowing = false; // Estado inicial, no está siguiendo
                 const followButton = document.getElementById('followButton');
 
-                function toggleFollow() {
-                    if (!isFollowing) {
-                        // Aquí puedes hacer una llamada AJAX a tu backend para seguir al usuario
-                        // Por ejemplo: seguirUsuario(usuarioId);
-                        followButton.innerText = 'Dejar de seguir'; // Cambia el texto
-                        isFollowing = true; // Actualiza el estado
-                        // Ejemplo de llamada AJAX (requiere implementar la lógica en el backend)
-                        fetch('/tu-endpoint-para-seguir', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({userId: 'id_del_usuario_a_seguir'})
-                        })
-                                .then(response => response.json())
-                                .then(data => {
-                                    console.log(data); // Maneja la respuesta del servidor
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
-                    } else {
-                        // Aquí puedes hacer otra llamada AJAX para dejar de seguir
-                        followButton.innerText = 'Seguir'; // Cambia el texto
-                        isFollowing = false; // Actualiza el estado
-                        // Ejemplo de llamada AJAX (requiere implementar la lógica en el backend)
-                        fetch('/tu-endpoint-para-dejar-de-seguir', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({userId: 'id_del_usuario_a_dejar_de_seguir'})
-                        })
-                                .then(response => response.json())
-                                .then(data => {
-                                    console.log(data); // Maneja la respuesta del servidor
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
-                    }
-    }
-    
+               
                   $(window).ready(function () {
                    
         var sourceImage = document.getElementById("imagenPerfil");
