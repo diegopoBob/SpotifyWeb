@@ -29,7 +29,8 @@
     String tipoUsuario = usrController.tipoUsuario(usuario);
     Object[][] datos;
     List<String> albums = new ArrayList<>();
-
+   
+    
     if (tipoUsuario.equals("Cliente")) {
         datos = usrController.obtenerDatosCliente(usuario);
         albums = albController.obtenerNombresAlbumsFavoritos(usuario);
@@ -94,7 +95,7 @@
 
             <div class=" col-span-2 col-start-2 row-start-1 cursor-default ">
                 <h1 class = "text-neutral-500"><%
-                    out.print("Cliente " + (fecnac != null ? fecnac.toString() : "Fecha no disponible") + " " + mail);
+                    out.print(tipoUsuario + " " + (fecnac != null ? fecnac.toString() : "Fecha no disponible") + " " + mail);
                     %>
                 </h1>
                 <p class=" sm:text-2xl text-white font-bold md:text-7xl font-bold p-2 block "><%out.print(nombre + " " + apellido); %> </p>
@@ -220,8 +221,9 @@
                         String imagenAlbum = albumAux.getDireccion_imagen();
                         String artista = albController.obtenerArtistaAlbum(id);
             %>
-            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista.trim()%>', '')">
-                <img class="w-full h-48 object-cover hover:shadow-inner" src="<%= imagenAlbum%>" alt="Imagen de tarjeta">
+            
+            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista.trim() %>&user=<%= idAlbum%>')">
+                <img class="w-full h-48 object-cover hover:shadow-inner" src="<%=imagenAlbum%>" alt="Imagen de tarjeta">
                 <div class="p-6 hover:shadow-inner">
                     <h2 class="text-lg font-semibold text-gray-800"><%= album%></h2>
                 </div>

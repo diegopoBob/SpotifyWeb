@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -69,12 +70,27 @@ public class UsuarioController implements IUsuarioController {
     }
     
     public String tipoUsuario(String nick){
-        Usuario usuario = usrController.findUsuario(nick);
-        if(usuario instanceof Artista){
-            return "Artista";
-        }else{
+        
+        EntityManager em = emf.createEntityManager();
+        try {
+        Artista artista = em.createQuery("SELECT a FROM Artista a WHERE a.nick = :nick", Artista.class)
+                            .setParameter("nick", nick)
+                            .getSingleResult();
+        return "Artista";
+    } catch (NoResultException e) {
+        // No es un Artista, intenta con Cliente
+        try {
+            Cliente cliente = em.createQuery("SELECT c FROM Cliente c WHERE c.nick = :nick", Cliente.class)
+                                .setParameter("nick", nick)
+                                .getSingleResult();
             return "Cliente";
+        } catch (NoResultException ex) {
+            return null;
         }
+    }
+        
+        
+        
     }
 
     public Object[][] obtenerDatosCliente(String nick) {
