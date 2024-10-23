@@ -13,7 +13,7 @@
                 if (usuario && usuario.trim() !== "") {
                     url += '?user=' + encodeURIComponent(usuario); // Agrega el parámetro de usuario
                 }
-
+                alert(url);
                 xhr.open('GET', url, true);
 
                 xhr.onreadystatechange = function () {

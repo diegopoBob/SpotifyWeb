@@ -70,7 +70,7 @@ if (datos.length > 0) {
     <body class="">
         <div name="divPlay" id="divPLaylistPrincipal" class=" text-white w-full  rounded flex"> 
             <div class="image-container flex min-h-32 min-w-32 max-h-64 max-w-64 m-6 w-1/3 h-1/3">
-                <img name="imagenPLaylistPrincipal" onclick="convertirRutaAUrl("<%= imagenPlay %>") id="imagenPLaylistPrincipal" crossorigin="anonymous" style="-webkit-box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); -moz-box-shadow: 0px 0px 32px -11px rgba(0font-bold text-white,0,0,1); box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); border-radius: 0.5rem;" src="<%= imagenPlay %>" alt="alt" class=" min-h-32 min-w-32 max-h-64 max-w-64 size-full aspect-square shadow shadow-black "/>
+                <img name="imagenPLaylistPrincipal"  id="imagenPLaylistPrincipal" crossorigin="anonymous" style="-webkit-box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); -moz-box-shadow: 0px 0px 32px -11px rgba(0font-bold text-white,0,0,1); box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); border-radius: 0.5rem;" src="<%= imagenPlay %>" alt="alt" class=" min-h-32 min-w-32 max-h-64 max-w-64 size-full aspect-square shadow shadow-black "/>
             </div> 
             <div class="mt-5">
                 <div  name="textoLibreria" class="h-2/3 flex flex-col justify-center overflow-hidden">
@@ -78,7 +78,14 @@ if (datos.length > 0) {
                     <h2 style="font-size: clamp(20px, 5vw, 110px);" class=" Class leading-none font-bold "><%= titulo%> </h2>
                 </div>
                 <div name="masInfoPlay" class="flex  pt-5 pb-5 ">
-                    <img src="<%= imagenClie %>" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/><a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= propietario%>");' class=" hover:underline text-white cursor-pointer pr-2 "> <p class="decoration-1"> <%= propietario%></p></a> <h3> ・ <%= datosCan.length %> Canciones</h3>
+                    <%if(tipo=="Particular"){ %>
+                    <img src="<%= imagenClie %>" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/><a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= propietario%>");' class=" hover:underline text-white cursor-pointer pr-2 ">
+                        <p class="decoration-1"> <%= propietario%></p>
+                    </a> <% }else{%>
+                     <img src="includes/logo.png" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/>
+                        <p class="decoration-1"> <i class="fa-solid fa-circle-check"></i> Spotify</p>
+                    <% }%>
+                        <h3> ・ <%= datosCan.length %> Canciones</h3>
                 </div>
             </div>
         </div>
@@ -135,7 +142,7 @@ if (datos.length > 0) {
                                         </td>
 
                                         <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline" 
-                                            onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>', ''); event.stopPropagation();">
+                                            onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>&user=<%= datosCan[i][9]%>');  event.stopPropagation();">
                                             <p class="cursor-pointer"><%= datosCan[i][6]%></p>
                                         </td>
 

@@ -88,7 +88,7 @@
                     </div>
                     <div class="flex flex-col text-white">
                         <div class="w-full hover:bg-neutral-600 rounded flex">
-                            <div onclick='abrirCasoDeUso("consultarPlaylist.jsp", "8")' class="w-full hover:bg-neutral-600 rounded flex">
+                            <div onclick='abrirCasoDeUso("consultarPlaylist.jsp", "6")' class="w-full hover:bg-neutral-600 rounded flex">
                             <img src="includes/posi.jpg" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
                             <div name="textoLibreria" class="flex flex-col justify-center text-sm">
                                 <p>CLIK ACA PARA PROBNAR PLAylist</p>

@@ -1,3 +1,5 @@
+
+<%@page import="java.net.URLEncoder"%>
 <%@ page import="java.time.LocalDate" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="controllers.IPlaylistController"%>
@@ -12,21 +14,26 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
+    
     Fabrica fabrica = Fabrica.getInstance();
-    IAlbumController alController= fabrica.getIAlbumController();
+    IAlbumController alController = fabrica.getIAlbumController();
     IUsuarioController usrController = fabrica.getIUsuarioController();
-    ICancionController canController= fabrica.getICancionController();
-    IGeneroController genController=fabrica.getIGeneroController();
-    List<String> artistas=usrController.obtenerNombresArtistas();
-    List<String> generos=genController.obtenerNombresGeneros();
+    IGeneroController genController = fabrica.getIGeneroController();
+
+    
+    List<String> artistas = usrController.obtenerNombresArtistas();
+    List<String> generos = genController.obtenerNombresGeneros();
+
     String tipo = request.getParameter("tipo");
     String nombre = request.getParameter("nombre");
-    String albumIdSeleccionado = request.getParameter("albumId"); // Obtiene el ID del álbum seleccionado
+    String albumIdSeleccionado = request.getParameter("user");
 
-    List<Album> albumes = new ArrayList<>();
-    List<Cancion> canciones = new ArrayList<>();
+    
+    Object[][] albumes = new Object[0][0];
+    Object[] albumActual = new Object[0];
+    Object[][] canciones = new Object[0][0];
 
-    // Obtención de álbumes
+    
     if (tipo != null && nombre != null) {
         if (tipo.equals("genero")) {
             albumes = alController.obtenerAlbumesPorGenero(nombre);
@@ -35,38 +42,26 @@
         }
     }
 
-    Album albumActual = null;
-
-    // Obtener el álbum seleccionado o el primer álbum
+    
     if (albumIdSeleccionado != null) {
         int idAlbum = Integer.parseInt(albumIdSeleccionado);
-        // Buscar el álbum seleccionado en la lista de álbumes
-        for (Album album : albumes) {
-            if (album.getId() == idAlbum) {
+        for (Object[] album : albumes) {
+            if (album[0] != null && album[0].equals(idAlbum)) {
                 albumActual = album;
                 break;
             }
         }
+        
+    }
+    if (albumActual.length == 0 && albumes.length > 0) {
+        albumActual = albumes[0];
+        albumIdSeleccionado = String.valueOf(albumActual[0]);
     }
 
-    // Si no hay álbum seleccionado, usar el primero de la lista
-    if (albumActual == null && !albumes.isEmpty()) {
-        albumActual = albumes.get(0);
-        albumIdSeleccionado = String.valueOf(albumActual.getId());
+   
+    if (albumActual.length > 0) {
+        canciones = alController.obtenerDatosCancionAlbum((Integer) albumActual[0]);
     }
-
-    // Obtener canciones del álbum seleccionado
-    if (albumActual != null) {
-            List<Cancion> listaCanciones = albumActual.getCanciones();
-            for (Cancion aux : listaCanciones) {
-                Object[] datosCanciones = canController.obtenerDatosCancion(aux.getId());
-                aux.setId((Integer) datosCanciones[0]);
-                aux.setNombre((String) datosCanciones[1]);
-                aux.setDireccion_archivo_de_audio((String) datosCanciones[3]);
-                canciones.add(aux);
-            }
-
-        }
 %>
 
 <!DOCTYPE html>
@@ -80,26 +75,23 @@
 </head>
 <body>
 <div class="min-h-screen bg-transparent p-6">
-    
 
     <!-- Géneros y artistas -->
     <div class="grid grid-cols-2 gap-4 mb-6">
-        <!-- Géneros -->
         <ul class="bg-black p-4 rounded-lg shadow">
             <% for (String genero : generos) { %>
                 <li class="text-white hover:bg-neutral-400 hover:rounded cursor-pointer">
-                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero%>')" class="hover:text-green-500">
+                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero %>')" class="hover:text-green-500">
                         <%= genero %>
                     </a>
                 </li>
             <% } %>
         </ul>
 
-        <!-- Artistas -->
         <ul class="bg-black p-4 rounded-lg shadow">
             <% for (String artista : artistas) { %>
                 <li class="text-white hover:bg-neutral-400 hover:rounded cursor-pointer">
-                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista%>')" class="hover:text-green-500">
+                    <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista %>')" class="hover:text-green-500">
                         <%= artista %>
                     </a>
                 </li>
@@ -110,16 +102,19 @@
     <!-- Detalles del álbum -->
     <div class="bg-black p-6 rounded-lg shadow-lg">
         <div class="flex items-center">
-            <!-- Imagen del álbum -->
             <div class="w-48 h-48 bg-gray-200 rounded-lg mr-6 flex items-center justify-center">
-                <img src="<%= albumActual.getDireccion_imagen() %>" alt="Imagen del álbum" class="w-full h-full object-cover">
+                <%
+    // Verificamos si el álbum tiene una imagen disponible
+    String albumImagen = (albumActual.length > 6 && albumActual[6] != null) ? 
+                         (String) albumActual[6] : "includes/defaultAlbum.png";
+%>
+                <img src="<%= albumImagen%>" 
+                     alt="Imagen del álbum" class="w-full h-full object-cover">
             </div>
-
-            <!-- Información del álbum -->
             <div>
-                <% if (albumActual != null) { %>
-                    <h3 class="text-white"><%= albumActual.getNombre() %></h3>
-                    <p class="text-white">Año de creación: <%= albumActual.getAnioo() %></p>
+                <% if (albumActual.length > 0) { %>
+                    <h3 class="text-white"><%= albumActual[1] %></h3>
+                    <p class="text-white">Año de creación: <%= albumActual[2] %></p>
                 <% } %>
             </div>
         </div>
@@ -128,11 +123,12 @@
         <div class="mt-6">
             <h4 class="text-green-500 font-bold">Álbumes asociados</h4>
             <ul class="divide-y divide-gray-200">
-                <% if (!albumes.isEmpty()) { %>
-                    <% for (Album album : albumes) { %>
+                <% if (albumes.length > 0) { %>
+                    <% for (Object[] album : albumes) { %>
                         <li class="flex justify-between py-2 hover:bg-neutral-400 hover:rounded cursor-pointer px-2">
-                            <span class="text-white"><%= album.getNombre() %></span>
-                            <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=<%= tipo%>&nombre=<%= java.net.URLEncoder.encode(nombre, "UTF-8")%>&albumId=<%= album.getId()%>', '')" class="text-blue-500 hover:underline cursor-pointer text-center">Detalles</a>
+                            <span class="text-white"><%= album[1] %></span>
+                            <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=<%= tipo %>&nombre=<%= URLEncoder.encode(nombre, "UTF-8") %>&user=<%= album[0] %>')" 
+                               class="text-blue-500 hover:underline cursor-pointer text-center">Detalles</a>
                         </li>
                     <% } %>
                 <% } else { %>
@@ -145,12 +141,11 @@
         <div class="mt-6">
             <h4 class="text-green-500 font-bold">Temas del álbum</h4>
             <ul class="divide-y divide-gray-200">
-                <% if (!canciones.isEmpty()) { %>
-                    <% for (Cancion cancion : canciones) { %>
+                <% if (canciones.length > 0) { %>
+                    <% for (Object[] cancion : canciones) { %>
                         <li class="flex justify-between py-2 hover:bg-neutral-400 hover:rounded cursor-pointer px-2">
-                            
-                            <a onclick="reproducirCancion('<%= cancion.getDireccion_archivo_de_audio()%>'); cargarInfoCancion('<%= cancion.getId() %>')">
-                                <span class="text-white"><%= cancion.getNombre()%></span>                              
+                            <a onclick="reproducirCancion('<%= cancion[3] %>'); cargarInfoCancion('<%= cancion[0] %>')">
+                                <span class="text-white"><%= cancion[1] %></span>
                             </a>
                             <a href="#" class="text-blue-500 hover:underline">Descargar</a>
                         </li>
@@ -162,7 +157,6 @@
         </div>
     </div>
 
-    <!-- Mensaje para usuarios con suscripción -->
     <div class="mt-4">
         <p class="text-sm text-black">* Solo los usuarios con suscripción vigente pueden descargar las canciones para escuchar offline.</p>
     </div>
