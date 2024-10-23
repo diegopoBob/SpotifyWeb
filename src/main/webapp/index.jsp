@@ -27,15 +27,18 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="script.js"></script>
         <%
-    if (request.getAttribute("caso")== null){
-    String caso = request.getParameter("caso");
-    %>
-    <script>
-        abrirCasoDeUso("<%= caso %>", "");
-    </script>
-    <%
+    if (request.getAttribute("caso") == null) {
+        String caso = request.getRequestURI() + "?" + request.getQueryString();
+
+        // Captura solo la parte después de "index.jsp?"
+        String casoCapturado = caso.substring(caso.indexOf("index.jsp?caso=") + "index.jsp?caso=".length());
+%>
+        <script>
+            abrirCasoDeUso("<%= casoCapturado %>", "");
+        </script>
+<%
     }
-    %>
+%>
        
 
     </head>

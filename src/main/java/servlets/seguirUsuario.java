@@ -97,7 +97,7 @@ public class seguirUsuario extends HttpServlet {
         
         
         
-        response.sendRedirect("index.jsp?");
+        response.sendRedirect("index.jsp?caso=consultarUsuario.jsp?user=" + usuarioASeguir);
         
     }
 
