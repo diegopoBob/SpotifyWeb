@@ -130,6 +130,11 @@ public class AlbumController implements IAlbumController {
         Album album = new Album(text, parseInt, artista, Direccion_imagen, generosSeleccionados, canciones);
         auxAL.create(album);
     }
+    
+    public Album findAlbum(int id){
+       Album album = auxAL.findAlbum(id);
+        return album;
+    }
 
     public List<String> obtenerNombresAlbumsFavoritos(String clienteNick) {
         // Busca al cliente por su nick

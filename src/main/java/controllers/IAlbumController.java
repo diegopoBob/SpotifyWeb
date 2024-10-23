@@ -25,5 +25,5 @@ public interface IAlbumController {
     public abstract String obtenerArtistaAlbum(int id);
     public abstract List<Integer> obtenerIdAlbumsFavoritos(String clienteNick);
     public abstract Object[][] obtenerAlbumArtistaNombres(String nickArtista);
-    
+    public abstract Album findAlbum(int id);
 }

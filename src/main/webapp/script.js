@@ -6,6 +6,8 @@
  
 
             function abrirCasoDeUso(cu, usuario) {
+               
+                       
                 var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
                 var url = cu;
 
@@ -21,7 +23,7 @@
                         document.getElementById('principal').innerHTML = xhr.responseText;
 
                         var functionName = 'scripts_' + cu.split('.')[0]; // Toma el nombre antes del punto
-
+                        
                         if (typeof window[functionName] === 'function') {
                             window[functionName](); // Llama la función si existe
                         } else {
@@ -69,6 +71,9 @@
             }
 
             function scripts_consultarUsuario() {
+                             
+                
+                
                 // Obtener los elementos de los botones y secciones
                 const listasSection = document.getElementById('listasSection');
                 const albumsSection = document.getElementById('albumsSection');
@@ -162,6 +167,22 @@
                                 });
                     }
     }
+    
+                  $(window).ready(function () {
+                   
+        var sourceImage = document.getElementById("imagenPerfil");
+        var colorThief = new ColorThief();
+        var color = colorThief.getColor(sourceImage);
+        var colorOscuro = [
+            Math.floor(color[0] * 0.7),
+            Math.floor(color[1] * 0.7),
+            Math.floor(color[2] * 0.7)
+        ];
+        console.log("Color obtenido:", color); // Log del color obtenido
+        document.getElementById("perfilUsuario").style.backgroundColor = "rgb(" + color + ")";
+        document.getElementById("listasSection").style.backgroundImage = "linear-gradient(to bottom, rgb(" + colorOscuro + ") 25%, rgb(23 23 23))";
+    });
+    
 
 }
 
@@ -195,3 +216,10 @@ function scripts_consultarPlaylist() {
                     .forEach(tr => table.appendChild(tr));
         })));
 }
+
+function scrips_ConsultarAlbum() {
+  
+}
+
+
+

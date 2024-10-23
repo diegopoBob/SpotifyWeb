@@ -30,4 +30,5 @@ public interface IPlaylistController {
     public abstract List<String> obtenerNombresPlaylists();
     public abstract List<String> obtenerNombresPlaylistPublicas();
     public abstract List<String> obtenerNombresDePlaylistsFavoritas(String clienteNick);
+    public abstract Playlist findPlaylist(int id);
 }

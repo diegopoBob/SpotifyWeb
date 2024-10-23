@@ -25,37 +25,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="includes/style.css" rel="stylesheet">
         <script src="script.js"></script>
-         <script>
-            function abrirCasoDeUso(cu, usuario) {
-                var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
-                var url = cu;
-                
-                // Si se proporciona un usuario válido, agregarlo como parámetro a la URL
-                if (usuario && usuario.trim() !== "") {
-                    url += '?user=' + encodeURIComponent(usuario); // Agrega el parámetro de usuario
-                }
-
-                xhr.open('GET', url, true);
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        document.getElementById('principal').innerHTML = xhr.responseText;
-
-                        var functionName = 'scripts_' + cu.split('.')[0]; // Toma el nombre antes del punto
-
-                        if (typeof window[functionName] === 'function') {
-                            window[functionName](); // Llama la función si existe
-                        } else {
-                            console.error("La función " + functionName + " no existe");
-                        }
-                    } else if (xhr.readyState === 4 && xhr.status !== 200) {
-                        console.error("Error en la solicitud: " + xhr.status);
-                    }
-                };
-
-                xhr.send(); // Enviar la solicitud
-            }
-        </script>
+        
 
 
     </head>
@@ -190,6 +160,7 @@
         </div>
     </body>
     <script>
+     
         
         
         
@@ -274,100 +245,8 @@
                 iconoVolumen.className = "fa-solid fa-volume-high";
         }
 
-        function scripts_consultarUsuario() {
-            // Obtener los elementos de los botones y secciones
-            const listasSection = document.getElementById('listasSection');
-            const albumsSection = document.getElementById('albumsSection');
-            const showListas = document.getElementById('showListas');
-            const showAlbums = document.getElementById('showAlbums');
 
-            //  quitar la clase "active" de ambos botones
-            function clearActiveClass() {
-                showListas.classList.remove('bg-green-800');
-                showAlbums.classList.remove('bg-green-800');
-            }
-
-            // Mostrar la sección de listas y cambiar el botón a activo
-            showListas.addEventListener('click', function () {
-                listasSection.style.display = 'grid';
-                albumsSection.style.display = 'none';
-
-                clearActiveClass(); // Quitamos las clases activas de ambos botones
-                showListas.classList.add('bg-green-800'); // Activamos el botón de Listas
-            });
-
-            // Mostrar la sección de álbums y cambiar el botón a activo
-            showAlbums.addEventListener('click', function () {
-                albumsSection.style.display = 'grid';
-                listasSection.style.display = 'none';
-
-                clearActiveClass(); // Quitamos las clases activas de ambos botones
-                showAlbums.classList.add('bg-green-800'); // Activamos el botón de Álbums
-            });
-
-
-
-            // Obtener el enlace y la sección de seguidores
-            const showSeguidores = document.getElementById('showSeguidores');
-            const seguidoresSection = document.getElementById('seguidoresSection');
-
-            // Evento de clic para mostrar la sección de seguidores
-            showSeguidores.addEventListener('click', function () {
-                // Alternar la visibilidad de la sección de seguidores
-                if (seguidoresSection.style.display === 'none' || seguidoresSection.style.display === '') {
-                    seguidoresSection.style.display = 'block'; // Mostrar
-                } else {
-                    seguidoresSection.style.display = 'none'; // Ocultar si ya está visible
-                }
-            });
-
-
-
-            let isFollowing = false; // Estado inicial, no está siguiendo
-            const followButton = document.getElementById('followButton');
-
-            function toggleFollow() {
-                if (!isFollowing) {
-                    // Aquí puedes hacer una llamada AJAX a tu backend para seguir al usuario
-                    // Por ejemplo: seguirUsuario(usuarioId);
-                    followButton.innerText = 'Dejar de seguir'; // Cambia el texto
-                    isFollowing = true; // Actualiza el estado
-                    // Ejemplo de llamada AJAX (requiere implementar la lógica en el backend)
-                    fetch('/tu-endpoint-para-seguir', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({userId: 'id_del_usuario_a_seguir'})
-                    })
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log(data); // Maneja la respuesta del servidor
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                } else {
-                    // Aquí puedes hacer otra llamada AJAX para dejar de seguir
-                    followButton.innerText = 'Seguir'; // Cambia el texto
-                    isFollowing = false; // Actualiza el estado
-                    // Ejemplo de llamada AJAX (requiere implementar la lógica en el backend)
-                    fetch('/tu-endpoint-para-dejar-de-seguir', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({userId: 'id_del_usuario_a_dejar_de_seguir'})
-                    })
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log(data); // Maneja la respuesta del servidor
-                            })
-                            .catch((error) => {
-                                console.error('Error:', error);
-                            });
-                }
-            }
-        }
+        
+ 
     </script>    
 </html>

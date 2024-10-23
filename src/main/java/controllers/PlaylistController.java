@@ -177,6 +177,14 @@ public class PlaylistController implements IPlaylistController{
             em.close();
         }
     }
+    
+    public Playlist findPlaylist(int id){
+       Playlist play = auxPlay.findPlaylist(id);
+        
+        return play;
+    }
+    
+    
     public Object[][] obtenerDatosPlaylistCliente(String nick) {
         EntityManager em = emf.createEntityManager();
         try {

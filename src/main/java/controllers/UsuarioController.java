@@ -231,6 +231,20 @@ public class UsuarioController implements IUsuarioController {
         aux.edit(cliente);
 
     }
+    
+     public void registrarAlbumFavoritoWeb(String nick, int id) throws Exception {
+        UsuarioJpaController aux = new UsuarioJpaController(emf);
+        
+        
+  
+        int idAlbum = id;
+        Album album = auxAlbum.findAlbum(idAlbum);
+        Cliente cliente = (Cliente) aux.findUsuario(nick);
+        cliente.getAlbumesFavoritos().add(album);
+        aux.edit(cliente);
+
+    }
+    
 
     public void registrarCancionFavorita(String nick, String nombreCancion) throws Exception {
         UsuarioJpaController aux = new UsuarioJpaController(emf);
@@ -270,6 +284,19 @@ public class UsuarioController implements IUsuarioController {
         aux.edit(cliente);
 
     }
+    
+        public void eliminarAlbumFavoritoWeb(String nick, int id) throws Exception {
+        UsuarioJpaController aux = new UsuarioJpaController(emf);
+        int idAlbum = id;
+        Album album = auxAlbum.findAlbum(idAlbum);
+        Cliente cliente = (Cliente) aux.findUsuario(nick);
+        cliente.getAlbumesFavoritos().remove(album);
+        aux.edit(cliente);
+
+    }
+    
+    
+    
 
     public List<String> obtenerNicknamesseguidos(String usuario) throws Exception {
         List<String> aux = null;
