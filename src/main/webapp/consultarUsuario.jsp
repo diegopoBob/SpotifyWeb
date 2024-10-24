@@ -100,7 +100,7 @@
         <div class="perfil  bg-transparent grid grid-cols-4 gap-2 lg:grid-rows-2 sm:grid-row-1 gap-2 mx-auto rounded" id="perfilUsuario">
 
             <!-- Imagen del perfil -->
-            <div class="logo p-2 row-span-2 col-span-1 col-start-1 flex justify-center font-bold py-2 px-2 border-r-4 border-black border-rounded">
+            <div class="logo p-2 row-span-2 col-span-1 col-start-1 flex justify-center font-bold py-2 px-2 border-r-4 border-black border-rounded shaow-lg">
                 <img style="width: clamp(6rem, 20vw, 16rem); height: clamp(6rem, 20vw, 16rem);" class="mr-2 rounded-full object-cover aspect-square shadow-lg" src="<%= imagen%>" alt="logo" id="imagenPerfil">
             </div>
 
@@ -133,7 +133,7 @@
                 <div class="p-2 align-right">
                     <form action="seguirUsuario" method="POST">
                         <input type="hidden" name="usuarioConsulta" value="<%= usuarioConsulta%>">
-                        <button class="border border-2 border-green-500 p-2 text-white font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="submit">
+                        <button class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="submit">
                             <% if (seguidores.contains(usuarioLogueado)) {
                                     out.print("Dejar de Seguir");
                                 } else {
