@@ -51,7 +51,7 @@
     String mail = "mail";
     LocalDate fecnac = LocalDate.now();
     String imagen = imagenDefault;
-    String web = "web";
+    String web = "";
     String biografia = "bio";
     int num = seguidores.size();
 
@@ -63,7 +63,11 @@
         imagen = (String) datos[0][5];
         if (tipoUsuario.equals("artista")) {
             biografia = (String) datos[0][6];
+            if(datos[0][7]!=null){
             web = (String) datos[0][7];
+            }
+            
+            
         }
 
         if (imagen == null || imagen == "" || imagen == "null" || imagen.isEmpty() || "null".equals(imagen)) {
@@ -97,7 +101,7 @@
 
             <!-- Imagen del perfil -->
             <div class="logo p-2 row-span-2 col-span-1 col-start-1 flex justify-center font-bold py-2 px-2 border-r-4 border-black border-rounded">
-                <img class="sm:max-w-16 sm:max-h-16 md:max-w-32 md:max-h-32 lg:max-w-64 lg:max-h-64 mr-2 rounded-full object-cover aspect-square shadow-lg" src="<%= imagen%>" alt="logo" id="imagenPerfil">
+                <img style="width: clamp(6rem, 20vw, 16rem); height: clamp(6rem, 20vw, 16rem);" class="mr-2 rounded-full object-cover aspect-square shadow-lg" src="<%= imagen%>" alt="logo" id="imagenPerfil">
             </div>
 
             <!-- Información del usuario -->
@@ -172,7 +176,7 @@
 
             <!-- Columna para la biografía -->
             <%if(tipoUsuario.equals("artista")){%>
-            <div class="col-span-1 col-start-4 row-span-2 p-2 text-white p-2 mt-5 shadow-xl text-center">
+            <div style="font-size:clamp(8px, 2vw, 20px);" class="col-span-1 col-start-4 row-span-2 p-2 text-white p-2 mt-5 shadow-xl text-center">
                 <%
                     out.println(biografia);
                 %>
