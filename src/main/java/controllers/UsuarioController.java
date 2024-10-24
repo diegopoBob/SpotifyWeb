@@ -341,6 +341,7 @@ public class UsuarioController implements IUsuarioController {
             transaction.commit();
         } catch (Exception e) {
             System.out.println(e);
+            out.println("No Anda");
         }
     }
 
@@ -358,6 +359,7 @@ public class UsuarioController implements IUsuarioController {
             transaction.commit();
         } catch (Exception e) {
             System.out.println(e);
+            out.println("No Anda");
         }
     }
 

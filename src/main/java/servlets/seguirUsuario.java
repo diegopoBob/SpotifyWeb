@@ -9,26 +9,24 @@ import controllers.IAlbumController;
 import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import static java.lang.System.console;
 import static java.lang.System.out;
 import java.util.List;
-import models.Album;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Machichu
  */
-@WebServlet(name = "guardarAlbumFavorito", urlPatterns = {"/guardarAlbumFavorito"})
-public class guardarAlbumFavorito extends HttpServlet {
-
+@WebServlet(name = "seguirUsuario", urlPatterns = {"/seguirUsuario"})
+public class seguirUsuario extends HttpServlet {
+    
     Fabrica fabrica = Fabrica.getInstance();
     private IUsuarioController ICU = fabrica.getIUsuarioController();
     private IAlbumController albController = fabrica.getIAlbumController();
@@ -44,8 +42,7 @@ public class guardarAlbumFavorito extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -76,33 +73,32 @@ public class guardarAlbumFavorito extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         HttpSession session = request.getSession();
-        String idAlbum = request.getParameter("albumId");
-        String usuario = (String) session.getAttribute("nick");
-        int id = Integer.valueOf(idAlbum);
-        Album album = albController.findAlbum(id);
-        String nombreArtista = album.getArtista().getNick();
-        List<Integer> favoritos = albController.obtenerIdAlbumsFavoritos(usuario);
+        String usuarioLogueado = (String) session.getAttribute("nick");
+        String usuarioASeguir = request.getParameter("usuarioConsulta");
         
-        if(favoritos.contains(id)){
-            try {
-            ICU.eliminarAlbumFavoritoWeb(usuario, id);
-            out.println("Anduvo");
-        } catch (Exception ex) {
-            ex.printStackTrace(); // Imprime la traza completa del error en la consola del servidor.
-            out.println("Error: " + ex.getMessage());
-        }
-        }else{
-            try {
-                ICU.registrarAlbumFavoritoWeb(usuario, id);
-            } catch (Exception ex) {
-                Logger.getLogger(guardarAlbumFavorito.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            List<String> seguidores = ICU.obtenerNicknamesseguidores(usuarioASeguir);
             
+            if(seguidores.contains(usuarioLogueado)){
+                ICU.dejarSeguirUsuario(usuarioLogueado, usuarioASeguir);
+                out.println("Anduvo Dejar de Seguir");
+                out.println(usuarioLogueado + " Usuario Logueado");
+        out.println(usuarioASeguir + " Usuario A Seguir");
+            }else{
+                ICU.seguirUsuario(usuarioLogueado, usuarioASeguir);
+                out.println("Anduvo Seguir");
+                out.println(usuarioLogueado + " Usuario Logueado");
+                out.println(usuarioASeguir + " Usuario A Seguir");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(seguirUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            out.println("No Anduvo");
         }
         
-
-        response.sendRedirect("index.jsp?caso=ConsultarAlbum.jsp?tipo=artista&nombre=" + nombreArtista);
-
+        
+        
+        response.sendRedirect("index.jsp?caso=consultarUsuario.jsp?user=" + usuarioASeguir);
+        
     }
 
     /**
