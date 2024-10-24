@@ -156,8 +156,8 @@
             <ul class="divide-y divide-gray-200">
                 <% if (canciones.length > 0) { %>
                     <% for (Object[] cancion : canciones) { %>
-                        <li class="flex justify-between py-2 hover:bg-neutral-400 hover:rounded cursor-pointer px-2">
-                            <a onclick="reproducirCancion('<%= cancion[3] %>'); cargarInfoCancion('<%= cancion[0] %>')">
+                        <li onclick="reproducirCancion('<%= cancion[3] %>'); cargarInfoCancion('<%= cancion[0] %>')" id="<%= cancion[3]%>" data-idCancion="<%= cancion[0]%>" name="cancion" class="flex justify-between py-2 hover:bg-neutral-400 hover:rounded cursor-pointer px-2">
+                            <a>
                                 <span class="text-white"><%= cancion[1] %></span>
                             </a>
                             <a href="#" class="text-blue-500 hover:underline">Descargar</a>

@@ -105,7 +105,7 @@ public class CancionController implements ICancionController  {
         
         EntityManager em = emf.createEntityManager();
         return (String) em.createNativeQuery(
-        "Select artista from album where id=(SELECT album_id FROM album_canciones where cancion_id ="+id+")").getSingleResult();     
+        "select CONCAT(nombre,' ',apellido) from usuario where nick=(Select artista from album where id=(SELECT album_id FROM album_canciones where cancion_id ="+id+"));").getSingleResult();     
     }
     public int obtenerIdAlbum(int id) {
         EntityManager em = emf.createEntityManager();

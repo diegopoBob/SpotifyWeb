@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
              //PARA PONER COLOR DE FONDO PLAYLIST
- 
+
 
             function abrirCasoDeUso(cu, usuario) {
                
@@ -35,6 +35,7 @@
                 };
 
                 xhr.send(); // Enviar la solicitud
+                 
             }
             function playPorPause() {
                 const icono = document.getElementById('playButton');

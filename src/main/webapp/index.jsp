@@ -41,19 +41,19 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="script.js"></script>
         <%
-    if (request.getAttribute("caso") == null) {
-        String caso = request.getRequestURI() + "?" + request.getQueryString();
+            if (request.getAttribute("caso") == null) {
+                String caso = request.getRequestURI() + "?" + request.getQueryString();
 
-        // Captura solo la parte después de "index.jsp?"
-        String casoCapturado = caso.substring(caso.indexOf("index.jsp?caso=") + "index.jsp?caso=".length());
-%>
+                // Captura solo la parte después de "index.jsp?"
+                String casoCapturado = caso.substring(caso.indexOf("index.jsp?caso=") + "index.jsp?caso=".length());
+        %>
         <script>
-            abrirCasoDeUso("<%= casoCapturado %>", "");
+            abrirCasoDeUso("<%= casoCapturado%>", "");
         </script>
-<%
-    }
-%>
-       
+        <%
+            }
+        %>
+
 
     </head>
     <body class="max-h-[100vh] overflow-hidden">
@@ -100,7 +100,7 @@
                         <div class="hover:ring hover:ring-2 hover:ring-green-800 bg-neutral-800 rounded-full px-[0.5rem]" id="mostrarPlaylists">
                             <button class="focus:ring-green-200" onclick="mostrarPlaylistsLibreria()">Playlists</button>
                         </div>
-                       
+
                     </div>
 
                     <div class="flex gap-2">
@@ -112,72 +112,75 @@
 
                     </div>
                     <div class="flex flex-col text-white">
-                        <% 
-                        for(Integer aux : idPLaylists){
-                            Object[][] listaDatos = IPC.obtenerPlaylistLista(aux);
-                            
-                            if(listaDatos[0][0] == null){
-                                listaDatos[0][0] = "includes/defaultPlaylist.png";
-                            }
-                            
+                        <%
+                            for (Integer aux : idPLaylists) {
+                                Object[][] listaDatos = IPC.obtenerPlaylistLista(aux);
+
+                                if (listaDatos[0][0] == null) {
+                                    listaDatos[0][0] = "includes/defaultPlaylist.png";
+                                }
+
                         %>
                         <div class="w-full hover:bg-neutral-600 rounded flex" name="divsPlaylists" id="<%=listaDatos[0][2]%>">
                             <div onclick='abrirCasoDeUso("consultarPlaylist.jsp", "<%=listaDatos[0][1]%>")' class="w-full hover:bg-neutral-600 rounded flex">
-                            <img src="<%=listaDatos[0][0]%>" alt="alt" class="w-16 h-16 rounded-xl p-1.5"/>
-                            <div name="textoLibreria" class="flex flex-col justify-center text-sm" name="playListDiv">
-                                <p name="nombrePlaylist"><%= listaDatos[0][2]%></p>
-                                <p>Playlist</p>
+                                <img src="<%=listaDatos[0][0]%>" alt="alt" class="w-16 h-16 rounded-xl p-1.5"/>
+                                <div name="textoLibreria" class="flex flex-col justify-center text-sm" name="playListDiv">
+                                    <p name="nombrePlaylist"><%= listaDatos[0][2]%></p>
+                                    <p>Playlist</p>
+                                </div>
                             </div>
                         </div>
-                        </div>
                         <%
-                           }                                              
-                        %>
-                        
-                        <% 
-                        for(Integer aux : idAlbums){
-                            Object[][] listaDatos = IAC.obtenerDatosAlbum(aux);
-                            if(listaDatos[0][0] == null){
-                                listaDatos[0][0] = "includes/defaultPlaylist.png";
                             }
+                        %>
+
+                        <%
+                            for (Integer aux : idAlbums) {
+                                Object[][] listaDatos = IAC.obtenerDatosAlbum(aux);
+                                if (listaDatos[0][0] == null) {
+                                    listaDatos[0][0] = "includes/defaultPlaylist.png";
+                                }
                         %>
                         <div class="w-full hover:bg-neutral-600 rounded flex" name="divsAlbums" id="<%=listaDatos[0][1]%>">
                             <div onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%=listaDatos[0][8]%>&user=<%=listaDatos[0][0]%>')" class="w-full hover:bg-neutral-600 rounded flex">
-                            <img src="<%= listaDatos[0][6]%>" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
-                            <div name="textoLibreria" class="flex flex-col justify-center text-sm">
-                                <p><%= listaDatos[0][1]%></p>
-                                <p>Album</p> 
+                                <img src="<%= listaDatos[0][6]%>" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
+                                <div name="textoLibreria" class="flex flex-col justify-center text-sm">
+                                    <p><%= listaDatos[0][1]%></p>
+                                    <p>Album</p> 
+                                </div>
                             </div>
                         </div>
-                        </div>
                         <%
-                           }                                              
+                            }
                         %>
                     </div>
                 </div>
                 <div id="principal" class="col-span-10 rounded-t-lg bg-neutral-900 overflow-y-auto ">                   
                 </div>
-               
+
             </div>
 
 
             <div class="min-h-24 flex items-center justify-between bg-black">
 
                 <div class="w-96 h-16 ml-4 flex items-center" id="dataCancion">
-                   
+
                 </div>
 
                 <div class="w-96 h-20 flex flex-col gap-2 items-center absolute left-1/2 transform -translate-x-1/2">
                     <div class="w-64 h-10 flex items-center justify-center">
-                        <button class="bg-transparent text-neutral-400 hover:text-white text-xl p-2">
+                        <button class="bg-transparent text-neutral-400 hover:text-white text-xl p-2" onclick="retrocederCancion()">
                             <i class="fas fa-backward"></i>
                         </button>
                         <button class="bg-transparent text-white text-xl p-2 hover:text-2xl" onclick="playPorPause()">
                             <i class="fas fa-pause" id="playButton"></i>                      
                         </button>       
-                        <button class="bg-transparent text-neutral-400 hover:text-white text-xl p-2">
+                        <button class="bg-transparent text-neutral-400 hover:text-white text-xl p-2" onclick="adelantarCancion()">
                             <i class="fas fa-forward"></i>
                         </button>
+                        <button id="shuffleBtn" class="bg-transparent text-neutral-400 hover:text-white text-xl p-2 absolute right-8" onclick="mezclarCola()">
+                            <i class="fa-solid fa-shuffle"></i>
+                        </button>                     
                     </div>
 
                     <div class="w-96 flex flex-col gap-2 items-center justify-center mb-2">
@@ -202,117 +205,181 @@
         </div>
     </body>
     <script>
-   document.getElementById('busquedaLibreria').addEventListener('input', function() {
-    let busqueda = document.getElementById('busquedaLibreria').value.toLowerCase();
+        document.getElementById('busquedaLibreria').addEventListener('input', function () {
+            let busqueda = document.getElementById('busquedaLibreria').value.toLowerCase();
 
-    let divsPlaylists = document.getElementsByName("divsPlaylists");
-    for (let i = 0; i < divsPlaylists.length; i++) {
-        // Si hay algo en el input, se filtra; si no, se muestra todo
-        if (busqueda !== "") {
-            if (divsPlaylists[i].id.toLowerCase().includes(busqueda) && !divsPlaylists[i].classList.contains("hidden")) {
-                divsPlaylists[i].classList.remove("hidden");
-            } else {
-                divsPlaylists[i].classList.add("hidden");
+            let divsPlaylists = document.getElementsByName("divsPlaylists");
+            for (let i = 0; i < divsPlaylists.length; i++) {
+                // Si hay algo en el input, se filtra; si no, se muestra todo
+                if (busqueda !== "") {
+                    if (divsPlaylists[i].id.toLowerCase().includes(busqueda) && !divsPlaylists[i].classList.contains("hidden")) {
+                        divsPlaylists[i].classList.remove("hidden");
+                    } else {
+                        divsPlaylists[i].classList.add("hidden");
+                    }
+                } else {
+                    // Mostrar los divs que no estén ocultos por otras funciones
+                    if (!divsPlaylists[i].classList.contains("hiddenPorFuncion")) {
+                        divsPlaylists[i].classList.remove("hidden");
+                    }
+                }
             }
-        } else {
-            // Mostrar los divs que no estén ocultos por otras funciones
-            if (!divsPlaylists[i].classList.contains("hiddenPorFuncion")) {
-                divsPlaylists[i].classList.remove("hidden");
+
+            let divsAlbums = document.getElementsByName("divsAlbums");
+            for (let i = 0; i < divsAlbums.length; i++) {
+                if (busqueda !== "") {
+                    if (divsAlbums[i].id.toLowerCase().includes(busqueda) && !divsAlbums[i].classList.contains("hidden")) {
+                        divsAlbums[i].classList.remove("hidden");
+                    } else {
+                        divsAlbums[i].classList.add("hidden");
+                    }
+                } else {
+                    if (!divsAlbums[i].classList.contains("hiddenPorFuncion")) {
+                        divsAlbums[i].classList.remove("hidden");
+                    }
+                }
             }
-        }
-    }
-
-    let divsAlbums = document.getElementsByName("divsAlbums");
-    for (let i = 0; i < divsAlbums.length; i++) {
-        if (busqueda !== "") {
-            if (divsAlbums[i].id.toLowerCase().includes(busqueda) && !divsAlbums[i].classList.contains("hidden")) {
-                divsAlbums[i].classList.remove("hidden");
-            } else {
-                divsAlbums[i].classList.add("hidden");
-            }
-        } else {
-            if (!divsAlbums[i].classList.contains("hiddenPorFuncion")) {
-                divsAlbums[i].classList.remove("hidden");
-            }
-        }
-    }
-});
-
-function mostrarPlaylistsLibreria(){
-    document.getElementById("mostrarAlbums").classList.toggle("hidden");
-    let divsAlbums = document.getElementsByName("divsAlbums");
-    for (let i = 0; i < divsAlbums.length; i++) {
-        divsAlbums[i].classList.toggle("hidden");
-        // Marcar si está oculto por la función y no por la búsqueda
-        if (divsAlbums[i].classList.contains("hidden")) {
-            divsAlbums[i].classList.add("hiddenPorFuncion");
-        } else {
-            divsAlbums[i].classList.remove("hiddenPorFuncion");
-        }
-    }
-}
-
-function mostrarAlbumsLibreria(){
-    document.getElementById("mostrarPlaylists").classList.toggle("hidden");
-    let divsPlaylists = document.getElementsByName("divsPlaylists");
-    for (let i = 0; i < divsPlaylists.length; i++) {
-        divsPlaylists[i].classList.toggle("hidden");
-        // Marcar si está oculto por la función y no por la búsqueda
-        if (divsPlaylists[i].classList.contains("hidden")) {
-            divsPlaylists[i].classList.add("hiddenPorFuncion");
-        } else {
-            divsPlaylists[i].classList.remove("hiddenPorFuncion");
-        }
-    }
-}
-
-
-        
-        
-        document.getElementById('searchBar').addEventListener('input', function() {
-            abrirCasoDeUso("busqueda.jsp?input="+document.getElementById('searchBar').value);
         });
-            
+
+        function mostrarPlaylistsLibreria() {
+            document.getElementById("mostrarAlbums").classList.toggle("hidden");
+            let divsAlbums = document.getElementsByName("divsAlbums");
+            for (let i = 0; i < divsAlbums.length; i++) {
+                divsAlbums[i].classList.toggle("hidden");
+                // Marcar si está oculto por la función y no por la búsqueda
+                if (divsAlbums[i].classList.contains("hidden")) {
+                    divsAlbums[i].classList.add("hiddenPorFuncion");
+                } else {
+                    divsAlbums[i].classList.remove("hiddenPorFuncion");
+                }
+            }
+        }
+
+        function mostrarAlbumsLibreria() {
+            document.getElementById("mostrarPlaylists").classList.toggle("hidden");
+            let divsPlaylists = document.getElementsByName("divsPlaylists");
+            for (let i = 0; i < divsPlaylists.length; i++) {
+                divsPlaylists[i].classList.toggle("hidden");
+                // Marcar si está oculto por la función y no por la búsqueda
+                if (divsPlaylists[i].classList.contains("hidden")) {
+                    divsPlaylists[i].classList.add("hiddenPorFuncion");
+                } else {
+                    divsPlaylists[i].classList.remove("hiddenPorFuncion");
+                }
+            }
+        }
+
+
+
+
+        document.getElementById('searchBar').addEventListener('input', function () {
+            abrirCasoDeUso("busqueda.jsp?input=" + document.getElementById('searchBar').value);
+        });
+
         const audio = document.getElementById('audioControl');
         const barraVolumen = document.getElementById('barraVolumen');
         const playButton = document.getElementById('playButton');
         const timeRange = document.getElementById('timeRange');
         audio.volume = 0.15;
         
+        //reproduccion de temas
         
-        
-        function reproducirCancion(nombre){
+        let posActual;
+        function reproducirCancion(nombre, esSiguienteCancionOCancionAnterior) {           
+            if(!esSiguienteCancionOCancionAnterior){
+                crearListaCanciones();              
+            }         
             document.getElementById('audioSource').src = nombre;
+            document.getElementById('shuffleBtn').classList.remove('text-white'); //desactivarshuffle si esta activado
             audio.load();
             audio.play();
-            cargarInfoCancion(this.value);
-        };
-        
-        function cargarInfoCancion(cu){
-             var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
-             var url = 'InfoCancion.jsp?idCancion='+cu;   
+            //cargarInfoCancion(this.value);
+            posActual = colaCanciones.indexOf(nombre);
+
+
+            let cancioneshtml = document.getElementsByName('cancion');
+            for (i = 0; i < cancioneshtml.length; i++) {
+                if (cancioneshtml[i].classList.contains('bg-neutral-400')) {
+                    cancioneshtml[i].classList.remove('bg-neutral-400');
+                }
+            }
+            document.getElementById(nombre).classList.add('bg-neutral-400');
+        }
+        ;
+        function cargarInfoCancion(cu) {
+            var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
+            var url = 'InfoCancion.jsp?idCancion=' + cu;
             
-             xhr.open('GET', url, true);
+            xhr.open('GET', url, true);
 
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        document.getElementById('dataCancion').innerHTML = xhr.responseText;
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById('dataCancion').innerHTML = xhr.responseText;
 
-                        var functionName = 'scripts_' + cu.split('.')[0]; // Toma el nombre antes del punto
+                    var functionName = 'scripts_' + cu.split('.')[0]; // Toma el nombre antes del punto
 
-                        if (typeof window[functionName] === 'function') {
-                            window[functionName](); // Llama la función si existe
-                        } else {
-                            console.error("La función " + functionName + " no existe");
-                        }
-                    } else if (xhr.readyState === 4 && xhr.status !== 200) {
-                        console.error("Error en la solicitud: " + xhr.status);
+                    if (typeof window[functionName] === 'function') {
+                        window[functionName](); // Llama la función si existe
+                    } else {
+                        console.error("La función " + functionName + " no existe");
                     }
-                };
-                xhr.send(); // Enviar la solicitud
+                } else if (xhr.readyState === 4 && xhr.status !== 200) {
+                    console.error("Error en la solicitud: " + xhr.status);
+                }
+            };
+            xhr.send(); // Enviar la solicitud
         }
         
         
+        let colaCanciones = [];
+        let colaCancionesRespaldo = []; 
+ 
+        function crearListaCanciones() {
+            let canciones = document.getElementsByName('cancion');
+            colaCanciones = [];  // Limpiar colaCanciones por si se crea de nuevo
+            for (let i = 0; i < canciones.length; i++) {
+                colaCanciones[i] = canciones[i].id;
+            }
+            colaCancionesRespaldo = [...colaCanciones];  // Hacer el respaldo después de crear la lista
+        }
+        function mezclarCola() {
+            document.getElementById('shuffleBtn').classList.toggle('text-white');
+            posActual = 0;
+            if (!(document.getElementById('shuffleBtn').classList.contains('text-white'))) {
+                colaCanciones = [...colaCancionesRespaldo];
+            }
+            if (document.getElementById('shuffleBtn').classList.contains('text-white')) {
+                for (let i = colaCanciones.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [colaCanciones[i], colaCanciones[j]] = [colaCanciones[j], colaCanciones[i]];
+                }
+            }
+
+        }
+        function adelantarCancion() {            
+            if (posActual < colaCanciones.length - 1) {
+                posActual++;
+                reproducirCancion(colaCanciones[posActual], true);              
+                cargarInfoCancion(document.getElementById(colaCanciones[posActual]).getAttribute('data-idCancion'));
+            } else {
+                alert('No hay más canciones para adelantar');
+                cargarInfoCancion();
+            }
+        }
+        function retrocederCancion() {
+            if (posActual > 0) {
+                posActual--;
+                reproducirCancion(colaCanciones[posActual], true);
+                cargarInfoCancion(document.getElementById(colaCanciones[posActual]).getAttribute('data-idCancion'));
+            } else {
+                alert('No hay más canciones para retroceder');
+                cargarInfoCancion();
+            }
+        }
+
+        //detectar que se abrio un nuevo cu
+      
+
         //event listeners del audio
         audio.addEventListener('loadedmetadata', () => {
             document.getElementById('minutosActuales').innerHTML = '0:00';
@@ -330,7 +397,7 @@ function mostrarAlbumsLibreria(){
             minutosActuales.innerHTML = minutos + ':' + segundos;
             timeRange.value = tiempoActual;
         });
-        
+
         //event listeners de los inputs
         timeRange.addEventListener('input', function () {
             audio.currentTime = Math.floor(timeRange.value);
@@ -339,15 +406,15 @@ function mostrarAlbumsLibreria(){
             audio.volume = barraVolumen.value / 100;
         });
         playButton.addEventListener('click', function () {
-            if(playButton.classList.contains("fa-play")){
-               audio.play(); 
+            if (playButton.classList.contains("fa-play")) {
+                audio.play();
             }
-            if(playButton.classList.contains("fa-pause")){
-               audio.pause(); 
-            }       
+            if (playButton.classList.contains("fa-pause")) {
+                audio.pause();
+            }
         });
 
-        
+
 
         function playPorPause() {
             const icono = document.getElementById('playButton');
@@ -383,6 +450,6 @@ function mostrarAlbumsLibreria(){
                 iconoVolumen.className = "fa-solid fa-volume-high";
         }
 
-        
+
     </script>    
 </html>

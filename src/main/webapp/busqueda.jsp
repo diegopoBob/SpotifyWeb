@@ -51,7 +51,7 @@ List<Object[]> ObtenidosPlaylists = em.createNativeQuery("SELECT p.id ,nombre,ru
 
         %>
          
-    <div onclick="reproducirCancion('<%= aux[3]%>') ; cargarInfoCancion('<%= aux[0]%>')" class="w-full hover:bg-neutral-600 rounded flex ">
+    <div onclick="cargarInfoCancion('<%= aux[0]%>'); reproducirCancion('<%= aux[3]%>')" class="w-full hover:bg-neutral-600 rounded flex ">
                 <img src="<%= datosAlb[0][6]%>" alt="alt" class=" aspect-square min-w-16  max-w-20  rounded-xl p-1.5"/>
                 <div style="font-size:clamp(15px, 2vw, 20px);" name="textoLibreria" class=" ml-2 flex flex-col justify-center ">
                     <p class=" whitespace-nowrap  font-semibold text-white mt-2"><%= aux[1]%></p>
