@@ -131,4 +131,8 @@ public class CancionController implements ICancionController  {
         EntityManager em = emf.createEntityManager();
         return em.createQuery("SELECT a.id FROM Album a JOIN a.canciones c WHERE c.id = :cancionId",int.class).setParameter("cancionId", id).getSingleResult();
     }
+    
+    
+    
+    
 }

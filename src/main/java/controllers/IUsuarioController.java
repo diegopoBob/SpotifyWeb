@@ -41,6 +41,7 @@ public interface IUsuarioController {
     public boolean checkPassword(String password, String hashedPassword);
     public abstract String getNickPorMail(String mail);
     
-    public abstract Map<String, String> getDatosUsuario(String nick);    
+    public abstract Map<String, String> getDatosUsuario(String nick);
+    public abstract String artistaNombre(String nick);    
     
 }

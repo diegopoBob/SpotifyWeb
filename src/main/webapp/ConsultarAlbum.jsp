@@ -80,6 +80,7 @@
     <!-- Géneros y artistas -->
     <div class="grid grid-cols-2 gap-4 mb-6">
         <ul class="bg-black p-4 rounded-lg shadow">
+            <p class="text-center text-green-500 font-bold">Generos: </p>
             <% for (String genero : generos) { %>
                 <li class="text-white hover:bg-neutral-400 hover:rounded cursor-pointer">
                     <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=genero&nombre=<%= genero %>')" class="hover:text-green-500">
@@ -90,10 +91,11 @@
         </ul>
 
         <ul class="bg-black p-4 rounded-lg shadow">
+            <p class="text-center text-green-500 font-bold">Artistas: </p>
             <% for (String artista : artistas) { %>
                 <li class="text-white hover:bg-neutral-400 hover:rounded cursor-pointer">
                     <a onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista %>')" class="hover:text-green-500">
-                        <%= artista %>
+                        <% out.print(usrController.artistaNombre(artista)); %>
                     </a>
                 </li>
             <% } %>
