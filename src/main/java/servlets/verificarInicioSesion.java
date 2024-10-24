@@ -13,7 +13,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import models.Usuario;
 import persistence.UsuarioJpaController;
 
@@ -63,7 +68,7 @@ public class verificarInicioSesion extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-     protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         String username = request.getParameter("email");
         String password = request.getParameter("password");
@@ -73,15 +78,24 @@ public class verificarInicioSesion extends HttpServlet {
         
         if(ICU.inicioSesion(username, password)){
             HttpSession session = request.getSession();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
+            EntityManager em = emf.createEntityManager();
+            List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='ppArgento'").getResultList();                    
+            session.setAttribute("playlistFavoritas", playlistFavoritas);
+            List<Integer> albumsFavoritos = em.createNativeQuery("Select id from album join cliente_albumesfavoritos where id = album_id and cliente_id='ppArgento'").getResultList();                    
+            session.setAttribute("albumsFavoritos", albumsFavoritos);
+            List<Integer> cancionesFavoritas = em.createNativeQuery("Select id from cancion join cliente_cancionesfavoritas where cancion_id = id and cliente_id='ppArgento'").getResultList();                    
+            session.setAttribute("cancionesFavoritas", cancionesFavoritas);
+            
+            
             Map<String, String> datos = ICU.getDatosUsuario(username);
             for (Map.Entry<String, String> entry : datos.entrySet()) {
-                session.setAttribute(entry.getKey(), entry.getValue());            
+                session.setAttribute(entry.getKey(), entry.getValue());               
             }
             response.sendRedirect("index.jsp?");           
         }else{
             response.sendRedirect("login.jsp?credencialesInvalidas=1");
-        }
-        
+        }    
     }
 
     /**

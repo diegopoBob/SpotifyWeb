@@ -222,7 +222,7 @@
                         String artista = albController.obtenerArtistaAlbum(id);
             %>
             
-            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista.trim() %>&user=<%= idAlbum%>')">
+            <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="abrirCasoDeUso('ConsultarAlbumasd.jsp?tipo=artista&nombre=<%= artista.trim() %>&user=<%= idAlbum%>')">
                 <img class="w-full h-48 object-cover hover:shadow-inner" src="<%=imagenAlbum%>" alt="Imagen de tarjeta">
                 <div class="p-6 hover:shadow-inner">
                     <h2 class="text-lg font-semibold text-gray-800"><%= album%></h2>

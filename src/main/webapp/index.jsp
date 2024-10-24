@@ -4,13 +4,27 @@
     Author     : dylan
 --%>
 
+<%@page import="controllers.ICancionController"%>
+<%@page import="controllers.IAlbumController"%>
+<%@page import="controllers.IPlaylistController"%>
+<%@page import="controllers.Fabrica"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-
     if (session == null || session.getAttribute("nick") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
+
+    List<Integer> idPLaylists = new ArrayList<>();
+    idPLaylists = (List<Integer>) session.getAttribute("playlistFavoritas");
+    List<Integer> idAlbums = new ArrayList<>();
+    idAlbums = (List<Integer>) session.getAttribute("albumsFavoritos");
+
+    Fabrica fabrica = Fabrica.getInstance();
+    IPlaylistController IPC = fabrica.getIPlaylistController();
+    IAlbumController IAC = fabrica.getIAlbumController();
 %>
 <!DOCTYPE html>
 <html>
@@ -67,46 +81,68 @@
                         </a>
                     </div> 
                     <div class="flex gap-2">
-                        <div class="hover:ring hover:ring-2 hover:ring-green-800 bg-neutral-800 rounded-full px-[0.5rem]">
-                            <button class="">Albums</button>
+                        <div class="hover:ring hover:ring-2 hover:ring-green-800 bg-neutral-800 rounded-full px-[0.5rem]" id="mostrarAlbums">
+                            <button class="focus:ring-green-200" onclick="mostrarAlbumsLibreria()">Albums</button>
                         </div>
-                        <div class="hover:ring hover:ring-2 hover:ring-green-800 bg-neutral-800 rounded-full px-[0.5rem]">
-                            <button class="">Playlists</button>
+                        <div class="hover:ring hover:ring-2 hover:ring-green-800 bg-neutral-800 rounded-full px-[0.5rem]" id="mostrarPlaylists">
+                            <button class="focus:ring-green-200" onclick="mostrarPlaylistsLibreria()">Playlists</button>
                         </div>
-                        <div class="hover:ring hover:ring-2 hover:ring-green-800 bg-neutral-800 rounded-full px-[0.5rem]">
-                            <button class="">Canciones</button>
-                        </div>
+                       
                     </div>
 
                     <div class="flex gap-2">
 
                         <button class="flex  bg-neutral-800 rounded-md hover:bg-neutral-600  focus-within:border text-sm">
                             <img src="includes/search-icon.png" class="w-8 h-8" alt="alt""/>
-                            <input class="text-transparent bg-transparent focus:text-white absolute w-8 h-8 focus:static focus:w-full focus:outline-0" id="name" name="name" type="text" />
+                            <input class="text-transparent bg-transparent focus:text-white absolute w-8 h-8 focus:static focus:w-full focus:outline-0" id="busquedaLibreria" name="busquedaLibreria" type="text" />
                         </button>
 
                     </div>
                     <div class="flex flex-col text-white">
-                        <div class="w-full hover:bg-neutral-600 rounded flex">
-                            <div onclick='abrirCasoDeUso("consultarPlaylist.jsp", "6")' class="w-full hover:bg-neutral-600 rounded flex">
-                            <img src="includes/posi.jpg" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
-                            <div name="textoLibreria" class="flex flex-col justify-center text-sm">
-                                <p>CLIK ACA PARA PROBNAR PLAylist</p>
-                                <p>jejee</p>
+                        <% 
+                        for(Integer aux : idPLaylists){
+                            Object[][] listaDatos = IPC.obtenerPlaylistLista(aux);
+                            
+                            if(listaDatos[0][0] == null){
+                                listaDatos[0][0] = "includes/defaultPlaylist.png";
+                            }
+                            
+                        %>
+                        <div class="w-full hover:bg-neutral-600 rounded flex" name="divsPlaylists" id="<%=listaDatos[0][2]%>">
+                            <div onclick='abrirCasoDeUso("consultarPlaylist.jsp", "<%=listaDatos[0][1]%>")' class="w-full hover:bg-neutral-600 rounded flex">
+                            <img src="<%=listaDatos[0][0]%>" alt="alt" class="w-16 h-16 rounded-xl p-1.5"/>
+                            <div name="textoLibreria" class="flex flex-col justify-center text-sm" name="playListDiv">
+                                <p name="nombrePlaylist"><%= listaDatos[0][2]%></p>
+                                <p>Playlist</p>
                             </div>
                         </div>
                         </div>
-                        <div class="w-full hover:bg-neutral-600 rounded flex">
-                            <img src="includes/posi.jpg" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
+                        <%
+                           }                                              
+                        %>
+                        
+                        <% 
+                        for(Integer aux : idAlbums){
+                            Object[][] listaDatos = IAC.obtenerDatosAlbum(aux);
+                            if(listaDatos[0][0] == null){
+                                listaDatos[0][0] = "includes/defaultPlaylist.png";
+                            }
+                        %>
+                        <div class="w-full hover:bg-neutral-600 rounded flex" name="divsAlbums" id="<%=listaDatos[0][1]%>">
+                            <div onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%=listaDatos[0][8]%>&user=<%=listaDatos[0][0]%>')" class="w-full hover:bg-neutral-600 rounded flex">
+                            <img src="<%= listaDatos[0][6]%>" alt="alt" class="min-w-16 h-16 rounded-xl p-1.5"/>
                             <div name="textoLibreria" class="flex flex-col justify-center text-sm">
-                                <p>holaaa</p>
-                                <p>jejee</p>
+                                <p><%= listaDatos[0][1]%></p>
+                                <p>Album</p> 
                             </div>
                         </div>
+                        </div>
+                        <%
+                           }                                              
+                        %>
                     </div>
                 </div>
-                <div id="principal" class="col-span-10 rounded-t-lg bg-neutral-900 overflow-y-auto ">
-
+                <div id="principal" class="col-span-10 rounded-t-lg bg-neutral-900 overflow-y-auto ">                   
                 </div>
                
             </div>
@@ -153,6 +189,72 @@
         </div>
     </body>
     <script>
+   document.getElementById('busquedaLibreria').addEventListener('input', function() {
+    let busqueda = document.getElementById('busquedaLibreria').value.toLowerCase();
+
+    let divsPlaylists = document.getElementsByName("divsPlaylists");
+    for (let i = 0; i < divsPlaylists.length; i++) {
+        // Si hay algo en el input, se filtra; si no, se muestra todo
+        if (busqueda !== "") {
+            if (divsPlaylists[i].id.toLowerCase().includes(busqueda) && !divsPlaylists[i].classList.contains("hidden")) {
+                divsPlaylists[i].classList.remove("hidden");
+            } else {
+                divsPlaylists[i].classList.add("hidden");
+            }
+        } else {
+            // Mostrar los divs que no estén ocultos por otras funciones
+            if (!divsPlaylists[i].classList.contains("hiddenPorFuncion")) {
+                divsPlaylists[i].classList.remove("hidden");
+            }
+        }
+    }
+
+    let divsAlbums = document.getElementsByName("divsAlbums");
+    for (let i = 0; i < divsAlbums.length; i++) {
+        if (busqueda !== "") {
+            if (divsAlbums[i].id.toLowerCase().includes(busqueda) && !divsAlbums[i].classList.contains("hidden")) {
+                divsAlbums[i].classList.remove("hidden");
+            } else {
+                divsAlbums[i].classList.add("hidden");
+            }
+        } else {
+            if (!divsAlbums[i].classList.contains("hiddenPorFuncion")) {
+                divsAlbums[i].classList.remove("hidden");
+            }
+        }
+    }
+});
+
+function mostrarPlaylistsLibreria(){
+    document.getElementById("mostrarAlbums").classList.toggle("hidden");
+    let divsAlbums = document.getElementsByName("divsAlbums");
+    for (let i = 0; i < divsAlbums.length; i++) {
+        divsAlbums[i].classList.toggle("hidden");
+        // Marcar si está oculto por la función y no por la búsqueda
+        if (divsAlbums[i].classList.contains("hidden")) {
+            divsAlbums[i].classList.add("hiddenPorFuncion");
+        } else {
+            divsAlbums[i].classList.remove("hiddenPorFuncion");
+        }
+    }
+}
+
+function mostrarAlbumsLibreria(){
+    document.getElementById("mostrarPlaylists").classList.toggle("hidden");
+    let divsPlaylists = document.getElementsByName("divsPlaylists");
+    for (let i = 0; i < divsPlaylists.length; i++) {
+        divsPlaylists[i].classList.toggle("hidden");
+        // Marcar si está oculto por la función y no por la búsqueda
+        if (divsPlaylists[i].classList.contains("hidden")) {
+            divsPlaylists[i].classList.add("hiddenPorFuncion");
+        } else {
+            divsPlaylists[i].classList.remove("hiddenPorFuncion");
+        }
+    }
+}
+
+
+        
         
         document.getElementById('searchBar').addEventListener('input', function() {
             abrirCasoDeUso("busqueda.jsp?input="+document.getElementById('searchBar').value);

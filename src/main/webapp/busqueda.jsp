@@ -34,7 +34,7 @@ List<Object[]> ObtenidosCanciones = em.createNativeQuery("Select id,nombre,durac
 List<Object[]> ObtenidosClientes = em.createNativeQuery("Select nick,imagen from usuario where nick like '%"+input+"%'and  tipo_usuario='cliente' LIMIT 4").getResultList();
 List<Object[]> ObtenidosArtistas = em.createNativeQuery("Select nick,imagen from usuario where nick like '%"+input+"%'and tipo_usuario='artista' LIMIT 4").getResultList();
 List<Object[]> ObtenidosAlbums = em.createNativeQuery("Select id,nombre,direccion_imagen,artista,anioo from album where nombre like '%"+input+"%' LIMIT 4").getResultList();
-List<Object[]> ObtenidosPlaylists = em.createNativeQuery("Select id,nombre,rutaImagen from playlist where nombre like '%"+input+"%' LIMIT 4").getResultList();
+List<Object[]> ObtenidosPlaylists = em.createNativeQuery("SELECT p.id ,nombre,rutaImagen,DTYPE,propietario,genero_nombre FROM playlist p LEFT JOIN playlistpordefecto pp ON p.id = pp.id LEFT JOIN playlistparticular pc ON p.id = pc.id WHERE ((privada is NULL) OR (privada = 0))and nombre like '%"+input+"%' LIMIT 4").getResultList();
    
 %>
 <html>
@@ -169,8 +169,18 @@ for (Object[] aux : ObtenidosArtistas) {
                             style="-webkit-box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); -moz-box-shadow: 0px 0px 32px -11px rgba(0font-bold text-white,0,0,1); box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); border-radius: 0.5rem;" 
                             />
                     </div>
+                    <div class="whitespace-nowrap">
                     <p class=" ml-3 font-semibold text-white mt-2"><%= aux[1]%></p>
-                    <p class="ml-3 mb-3 text-gray-400">Artista</p>
+                    
+                    <% if( aux[3].equals("PlaylistParticular")){ %>
+                        <p onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp","<%= aux[4]%>")' class="ml-3 mb-3 text-gray-400 hover:bg-neutral-600 cursor-pointer" class="ml-3 mb-3 text-gray-400"><%= aux[4] %>
+                        <%} else{%>
+                        <p class="ml-3 mb-3 text-gray-400"> <%= aux[5]%>
+                        <% }%> ● 
+                        <%= playlistController.obtenerDatosCancionesPlaylist((Integer)aux[0]).length%> Canciones 
+                        </p>
+                        
+                    </div>
                 </div>
 
         <% }}else {%>
