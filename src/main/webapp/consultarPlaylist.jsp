@@ -4,6 +4,7 @@
     Author     : diego
 --%>
 
+<%@page import="controllers.ICancionController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="controllers.IPlaylistController"%>
@@ -17,32 +18,54 @@ Fabrica fabrica = Fabrica.getInstance();
 IUsuarioController usrController = fabrica.getIUsuarioController();
 IPlaylistController playController = fabrica.getIPlaylistController();
 IAlbumController albController = fabrica.getIAlbumController();
+ICancionController canController = fabrica.getICancionController();
+
 
 String imagenDefault = "includes/defaultPlaylist.png";
 String usuarioLogueado = session.getAttribute("nick").toString();
 
 int idPlaylist = Integer.parseInt(request.getParameter("user"));
-Object[][] datosCan = playController.obtenerDatosCancionesPlaylist(idPlaylist);
-Object[][] datos = playController.obtenerPlaylistLista(idPlaylist);
 
-
-
-String titulo = "Nombre";
-String propietario = "Apellido";
-String tipo = "Apellido";
+String titulo = "Canciones Favoritas";
+String propietario = session.getAttribute("nick").toString();
+String tipo = "Particular";
 
 String imagenPlay = imagenDefault;
 String imagenClie = imagenDefault;
+Object[][] datosCan = playController.obtenerDatosCancionesPlaylist(idPlaylist);
 
-if (datos.length > 0) {
+if (idPlaylist != -1) {
+    datosCan = playController.obtenerDatosCancionesPlaylist(idPlaylist);
+    Object[][] datos = playController.obtenerPlaylistLista(idPlaylist);
+    
+    if (datos.length > 0) {
         titulo = (String) datos[0][2];
         tipo = (String) datos[0][3];
         propietario = (String) datos[0][6];
         imagenPlay = (String) datos[0][0];
-        if (imagenPlay == null || imagenPlay == "" || imagenPlay == "null" || imagenPlay.isEmpty() || "null".equals(imagenPlay)) {
+        if (imagenPlay == null || imagenPlay.isEmpty() || "null".equals(imagenPlay)) {
             imagenPlay = imagenDefault;
         }
     }
+    
+} else {
+    // Obtener los IDs de las canciones favoritas
+    List<Integer> cancionesFavIds = (List<Integer>)session.getAttribute("cancionesFavoritas");
+
+    if (cancionesFavIds != null && !cancionesFavIds.isEmpty()) {
+        imagenPlay = "includes/cancionesFavoritas.png";
+        datosCan = new Object[cancionesFavIds.size()][7];
+
+        // Llenar datosCan con los datos de cada canción favorita
+        for (int i = 0; i < cancionesFavIds.size(); i++) {
+            datosCan[i] = canController.obtenerDatosCancion(cancionesFavIds.get(i));
+        }
+    }
+}
+
+
+
+
     Object[][] datosCli = usrController.obtenerDatosCliente(propietario);
     if (datosCli.length > 0) {
         imagenClie = (String) datosCli[0][5];
@@ -137,14 +160,17 @@ if (datos.length > 0) {
                                                 <% out.print(datosCan[i][1]);%>
                                             </p>
                                             <p class="cursor-pointer hover:underline z-50"> 
-                                               <a class="z-50" onclick='abrirCasoDeUso("consultarUsuario.jsp","<%= datosCan[i][8]%>")' class="hover:underline w-1/6 text-white cursor-pointer pr-2"><%= datosCan[i][7]%></a>
-                                            </p>
+<% if (datosCan[i].length > 7) { %>
+    <a class="z-50" onclick='abrirCasoDeUso("consultarUsuario.jsp","<%= datosCan[i][8] %>")' class="hover:underline w-1/6 text-white cursor-pointer pr-2"><%= datosCan[i][7] %></a>
+<% } %>                                            </p>
                                         </td>
 
-                                        <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline" 
-                                            onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>&user=<%= datosCan[i][9]%>');  event.stopPropagation();">
-                                            <p class="cursor-pointer"><%= datosCan[i][6]%></p>
-                                        </td>
+                                        <% if (datosCan[i].length > 9) { %>
+    <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline" 
+        onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8] %>&user=<%= datosCan[i][9] %>'); event.stopPropagation();">
+        <p class="cursor-pointer"><%= datosCan[i][6] %></p>
+    </td>
+<% } %>
 
                                         <td class="whitespace-nowrap px-6 py-4">
                                             <%= datosCan[i][2]%>

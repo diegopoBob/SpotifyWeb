@@ -14,6 +14,7 @@ public interface ICancionController {
     public abstract boolean CrearCancion(String nombre, int duracion);
     public abstract List<String> obtenerNombresCanciones();
     public abstract List<String> obtenerNombresCancionesFavoritas(String clienteNick);
+    public abstract List<Integer> obtenerIdsCancionesFavoritas(String clienteNick);
     public abstract Object[] obtenerDatosCancion(int id);
     public abstract String obtenerFoto(int id);
     public abstract int obtenerIdAlbum(int id);
