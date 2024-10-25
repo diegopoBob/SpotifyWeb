@@ -77,6 +77,24 @@ public class CancionController implements ICancionController  {
                 .map(cancion -> cancion.getId() + " - " + cancion.getNombre())
                 .collect(Collectors.toList());
     }
+    
+    
+    
+    
+    public List<Integer> obtenerIdsCancionesFavoritas(String clienteNick) {
+
+    Cliente cliente = (Cliente) auxCliente.findUsuario(clienteNick);
+
+    if (cliente == null) {
+        return new ArrayList<>();
+    }
+
+    List<Cancion> cancionesFavoritas = cliente.getCancionesFavoritas();
+
+    return cancionesFavoritas.stream()
+            .map(Cancion::getId) // Aquí extraemos solo el ID
+            .collect(Collectors.toList());
+}
 
     public Object[] obtenerDatosCancion(int id) {
         Cancion aux = cancionJpaController.findCancion(id);
@@ -94,6 +112,8 @@ public class CancionController implements ICancionController  {
         datos[6] = obtenerArtista(id);
         return datos;
     }
+    
+   
 
     public String obtenerFoto(int id) {
         
@@ -111,4 +131,8 @@ public class CancionController implements ICancionController  {
         EntityManager em = emf.createEntityManager();
         return em.createQuery("SELECT a.id FROM Album a JOIN a.canciones c WHERE c.id = :cancionId",int.class).setParameter("cancionId", id).getSingleResult();
     }
+    
+    
+    
+    
 }

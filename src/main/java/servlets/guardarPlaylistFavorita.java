@@ -10,16 +10,19 @@ import controllers.IPlaylistController;
 import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import static java.lang.System.out;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import models.Playlist;
 
 /**
@@ -73,29 +76,42 @@ public class guardarPlaylistFavorita extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-         HttpSession session = request.getSession();
-        String idPlaylist = request.getParameter("playId");
+        HttpSession session = request.getSession();
+        Integer idPlaylist = Integer.valueOf(request.getParameter("playId"));
         String usuario = (String) session.getAttribute("nick");
-        List<String> favoritos = playController.obtenerNombresDePlaylistsFavoritas(usuario);
+        List<Integer> favoritos = playController.obtenerIdPlaylistFavoritos(usuario);
         Playlist play = playController.findPlaylist(Integer.valueOf(idPlaylist));
-        String nombrePlay = play.getNombre();
-        if(favoritos.contains(nombrePlay)){
-            try {
-            ICU.eliminarPlaylistFavorita(usuario, nombrePlay);
-            out.println("Anduvo");
-        } catch (Exception ex) {
-            ex.printStackTrace(); // Imprime la traza completa del error en la consola del servidor.
-            out.println("Error: " + ex.getMessage());
+
+        // Imprimir los valores para depuración
+        System.out.println("ID de Playlist: " + idPlaylist);
+        System.out.println("Favoritos: " + favoritos);
+
+        if (favoritos.contains(idPlaylist)) {
+            System.out.println("La lista contiene el ID de la playlist.");
+        } else {
+            System.out.println("La lista NO contiene el ID de la playlist.");
         }
-        }else{
+        if (favoritos.contains(idPlaylist)) {
             try {
-                ICU.registrarPlaylistFavorita(usuario, nombrePlay);
+                ICU.eliminarPlaylistFavorita(usuario, idPlaylist + "-");
+                out.println("Anduvo");
+            } catch (Exception ex) {
+                ex.printStackTrace(); // Imprime la traza completa del error en la consola del servidor.
+                out.println("Error: " + ex.getMessage());
+            }
+        } else {
+            try {
+                ICU.registrarPlaylistFavorita(usuario, idPlaylist + "-");
             } catch (Exception ex) {
                 Logger.getLogger(guardarAlbumFavorito.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        response.sendRedirect("index.jsp?caso=consultarPlaylist.jsp?id=" + play.getId());
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
+        EntityManager em = emf.createEntityManager();
+        List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuario + "'").getResultList();
+        session.setAttribute("playlistFavoritas", playlistFavoritas);
+        response.sendRedirect("index.jsp?caso=consultarPlaylist.jsp?user=" + play.getId());
     }
 
     /**

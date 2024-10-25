@@ -61,7 +61,7 @@
 
             <div class="flex min-h-16 w-dvh items-center justify-between bg-black"> 
                 <div class="px-4 flex">
-                    <img src="includes/logo.png" class="h-10 w-auto object-contain" alt="alt"/>
+                    <img src="includes/logo.png" class="h-10 w-auto object-contain cursor-pointer" onclick='abrirCasoDeUso("principal.jsp", "<%= session.getAttribute("nick")%>")' alt="alt"/>
                 </div>
                 <div class="bg-black flex items-center gap-2"> 
                     <div><a onclick='abrirCasoDeUso("principal.jsp", "<%= session.getAttribute("nick")%>")'><i class="fa-solid fa-house text-xl text-neutral-400 hover:text-white rounded-full  p-2 hover:bg-neutral-600"></i></a></div>                   

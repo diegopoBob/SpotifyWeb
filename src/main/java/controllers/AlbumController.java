@@ -20,6 +20,7 @@ import models.Cancion;
 import models.Cliente;
 import models.Genero;
 import persistence.ArtistaJpaController;
+import persistence.CancionJpaController;
 import persistence.ClienteJpaController;
 import persistence.GeneroJpaController;
 
@@ -35,6 +36,7 @@ public class AlbumController implements IAlbumController {
     private ClienteJpaController auxCliente;
     private AlbumJpaController auxAL;
     private GeneroJpaController auxG;
+    private CancionJpaController auxCan;
 
     public AlbumController() {
         Fabrica fabrica = Fabrica.getInstance();
@@ -42,6 +44,7 @@ public class AlbumController implements IAlbumController {
         this.auxCliente = fabrica.getClienteJpaController();
         this.auxAL = fabrica.getAlbumJpaController();
         this.auxG = fabrica.getGeneroJpaController();
+        this.auxCan = fabrica.getCancionJpaController();
     }
 
     public AlbumController(EntityManagerFactory emf) {
@@ -351,5 +354,60 @@ public class AlbumController implements IAlbumController {
         }
         return datos;
   }
+    
+    public Object[] obtenerDatosCompletoCancion(int idCancion) {
+    Cancion cancion = auxCan.findCancion(idCancion);
+    
+    if (cancion == null) {
+        return new Object[0]; // Devuelve un arreglo vacío si la canción no existe.
+    }
+
+    // Obtener el álbum asociado a la canción.
+    List<Album> albumsAux = auxAL.findAlbumEntities();
+    Album albumAux = new Album();
+   
+    
+    for (Album album : albumsAux) {
+        // Obtener las canciones asociadas al álbum actual
+        List<Cancion> canciones = album.getCanciones();
+        
+        // Recorrer las canciones del álbum
+        for (Cancion cancionaux : canciones) {
+            // Verificar si la canción tiene el ID que estamos buscando
+            if (cancion.getId() == idCancion) {
+                // Si la canción es encontrada, devolvemos el álbum
+                albumAux = album;
+            }
+        }
+    }
+    
+    
+    
+    // Crear el arreglo de datos que contendrá toda la información.
+    Object[] datos = new Object[11];
+
+    // Rellenar el arreglo con los datos de la canción y su álbum.
+    datos[0] = cancion.getId();
+    datos[1] = cancion.getNombre();
+    datos[2] = cancion.getDuracion();
+    datos[3] = cancion.getDireccion_archivo_de_audio();
+    datos[4] = albumAux.getDireccion_imagen();
+
+    // Verificar si la canción tiene un género asociado.
+    if (cancion.getGenero() != null) {
+        datos[5] = cancion.getGenero().toString();
+    } else {
+        datos[5] = "Sin Genero asociado";
+    }
+
+    // Datos del álbum y el artista
+    datos[6] = albumAux.getNombre();
+    datos[7] = albumAux.getArtista().getNombre();
+    datos[8] = albumAux.getArtista().getNick();
+    datos[9] = albumAux.getId();
+    datos[10] = albumAux.getArtista().getApellido();
+
+    return datos;
+}
     
 }

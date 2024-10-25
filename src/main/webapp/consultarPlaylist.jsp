@@ -4,6 +4,7 @@
     Author     : diego
 --%>
 
+<%@page import="controllers.ICancionController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="controllers.IPlaylistController"%>
@@ -41,7 +42,24 @@
         if (imagenPlay == null || imagenPlay == "" || imagenPlay == "null" || imagenPlay.isEmpty() || "null".equals(imagenPlay)) {
             imagenPlay = imagenDefault;
         }
+
+    } else {
+        // Obtener los IDs de las canciones favoritas
+        List<Integer> cancionesFavIds = (List<Integer>) session.getAttribute("cancionesFavoritas");
+
+        if (cancionesFavIds != null && !cancionesFavIds.isEmpty()) {
+            imagenPlay = "includes/cancionesFavoritas.png";
+            datosCan = new Object[cancionesFavIds.size()][11];
+
+            // Llenar datosCan con los datos de cada canción favorita
+            for (int i = 0; i < cancionesFavIds.size(); i++) {
+                datosCan[i] = albController.obtenerDatosCompletoCancion(cancionesFavIds.get(i));
+            }
+        }
+        
+        
     }
+
     Object[][] datosCli = usrController.obtenerDatosCliente(propietario);
     if (datosCli.length > 0) {
         imagenClie = (String) datosCli[0][5];
@@ -63,7 +81,7 @@
         <!-- Importar la librería Color Thief -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-       
+
     </head>
 
     <body class="">
