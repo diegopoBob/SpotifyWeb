@@ -111,11 +111,13 @@ function scripts_consultarUsuario() {
     // Evento de clic para mostrar la sección de seguidores
     showSeguidores.addEventListener('click', function () {
         // Alternar la visibilidad de la sección de seguidores
+        
         if (seguidoresSection.style.display === 'none' || seguidoresSection.style.display === '') {
             seguidoresSection.style.display = 'block'; // Mostrar
         } else {
             seguidoresSection.style.display = 'none'; // Ocultar si ya está visible
         }
+        
     });
 
 
@@ -199,10 +201,11 @@ function previewImage(event) {
     }
 }
 function scripts_busqueda(){}
+
+
+
+
 //FUNCIONES FAVORITOS y todas las AJAX
-
-
-
 function agregarEliminarFavoritoCancionPlay(canId) {
     if (!isEmptyField()) {
         dataString = $("#favoritosForm").serialize();
@@ -235,7 +238,7 @@ function agregarEliminarFavoritoCancionPlay(canId) {
         });
     }
  }
- function AJAXSeguiraUsuario(IdUser) {
+ function AJAXSeguiraUsuario() {
     if (!isEmptyFieldSeguir()) {
         let dataString = $("#SeguiraUsuario").serialize();
 
@@ -256,9 +259,11 @@ function agregarEliminarFavoritoCancionPlay(canId) {
 
                     if (button.text() === "Seguir") {
                         button.text("Dejar de seguir"); // Cambia el texto a "Dejar de seguir"
-                    } else {
+                    } else if (button.text() === "Dejar de seguir"){
                         button.text("Seguir"); // Cambia el texto a "Seguir"
                     }
+                     
+                     abrirCasoDeUso("consultarUsuario.jsp",IdUser.toString());
                 }
                 return false;
             }
@@ -292,29 +297,47 @@ function agregarEliminarFavoritoCancionPlay(canId) {
                         icon.removeClass("fa-circle-plus text-white")
                                 .addClass("fa-circle-check text-green-500");
                     }
-                    //actualizarTablaPlaylists();
+                    actualizarTablaPlaylists();
                 }
                 return false;
             }
         });
     }
  }
- function actualizarTablaPlaylists() {
-    const playlists = JSON.parse(sessionStorage.getItem('playlistFavoritas')); // Suponiendo que guardas los datos en sessionStorage
-    const tableBody = $("#tablaPlaylists tbody");
-    tableBody.empty(); // Limpia la tabla antes de actualizar
+ function AjaXguardarAlbumFavorita() {
+    if (!isEmptyFieldAlbum()) {
+        let dataString = $("#idguardarAlbumFavorito").serialize();
 
-    playlists.forEach(playlist => {
-        const row = `<tr>
-                        <td>${playlist.nombre}</td>
-                        <td>${playlist.fechaCreacion}</td>
-                        <td>
-                            <button onclick="accion()">Acción</button>
-                        </td>
-                     </tr>`;
-        tableBody.append(row);
-    });
-}
+        // Obtén el valor del campo de entrada donde se guarda el nickname
+        const nickname = $("#idAlbum").val(); // Asegúrate de que el ID sea correcto
+        dataString = "&albumId=" + encodeURIComponent(nickname); // 
+        console.log(dataString);
+        $.ajax({
+            type: "POST",
+            url: "guardarAlbumFavorito",
+            data: dataString,
+            dataType: "json",
+
+            success: function (data) {
+
+                if (data.success) {
+                    
+                    //abrirCasoDeUso('ConsultarAlbum.jsp',"");
+                    actualizarTablaPlaylists();
+                }
+                return false;
+            }
+        });
+    }
+ }
+
+ function isEmptyFieldAlbum() {
+     if (!$("#idAlbum").val().length) {
+         alert("name Field is required");
+         return true;
+     }
+     return false;
+ }
  function isEmptyFieldPlaylist() {
      if (!$("#playlistFav").val().length) {
          alert("name Field is required");

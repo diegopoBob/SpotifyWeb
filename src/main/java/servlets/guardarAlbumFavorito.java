@@ -105,10 +105,11 @@ public class guardarAlbumFavorito extends HttpServlet {
             }
             
         }
-        
+        response.setContentType("application/json");
+        response.getWriter().write("{\"success\": true, \"message\": \"Canción eliminada de favoritos\"}");
         List<Integer> albumsFavoritos = em.createNativeQuery("Select id from album join cliente_albumesfavoritos where id = album_id and cliente_id='" + usuario + "'").getResultList();                    
         session.setAttribute("albumsFavoritos", albumsFavoritos);
-        response.sendRedirect("index.jsp?caso=ConsultarAlbum.jsp?tipo=artista&nombre=" + nombreArtista);
+        
 
     }
 

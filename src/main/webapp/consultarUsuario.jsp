@@ -107,7 +107,7 @@
             </div>
 
             <!-- Información del usuario -->
-            <div class="col-span-2 col-start-2 row-span-2 shadow-xl rounded">
+            <div Id="infoUsurio" class="col-span-2 col-start-2 row-span-2 shadow-xl rounded">
 
                 <h1 class="text-neutral-500">
                     <%
@@ -132,10 +132,11 @@
                 </a>
                 <%}%>
                 <% if (!usuario.equals(usuarioLogueado)) {%>
+                <div id ="SeguidoresTodo">
                 <div class="p-2 align-right">
                     <form id="SeguiraUsuario" method="POST">
                         <input  id="usuarioConsulta" type="hidden" name="usuarioConsulta" value="<%= (String) usuarioConsulta%>">
-                        <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
+                        <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario();"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
                             <% if (seguidores.contains(usuarioLogueado)) {
                                     out.print("Dejar de Seguir");
                                 } else {
@@ -145,18 +146,21 @@
                     </form>
                 </div>
                 <% } %>
-
+                
                 <a class="cursor-pointer text-green-600 hover:text-green-800 p-2" id="showSeguidores">
                     <%
+                        seguidores = usrController.obtenerNicknamesseguidores(usuario);
                         out.print("Seguidores (" + num + ")");
                     %>
                 </a>
 
                 <!-- Sección de Seguidores -->
                 <div id="seguidoresSection" class="hidden  p-3">
-                    <h2 class="text-lg font-semibold text-green-800">Lista de Seguidores:</h2>
+                    
+                    <h2 class="text-lg font-semibold text-green-800">Lista de Seguidores: </h2>
                     <div>
                         <%
+                            seguidores = usrController.obtenerNicknamesseguidores(usuario);
                             int count = 0;
                             for (String seguidor : seguidores) {
                                 if (count % 10 == 0 && count != 0) {
@@ -175,7 +179,7 @@
                     </div>
                 </div>
             </div>
-
+ </div>
             <!-- Columna para la biografía -->
             <%if(tipoUsuario.equals("artista")){%>
             <div style="font-size:clamp(8px, 2vw, 20px);" class="col-span-1 col-start-4 row-span-2 p-2 text-white p-2 mt-5 shadow-xl text-center">
@@ -278,5 +282,7 @@
                 %>
             </div>
         </div>
+            <script>
+    }</script>
     </body>
 </html>      

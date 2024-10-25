@@ -17,10 +17,7 @@
         return;
     }
 
-    List<Integer> idPLaylists = new ArrayList<>();
-    idPLaylists = (List<Integer>) session.getAttribute("playlistFavoritas");
-    List<Integer> idAlbums = new ArrayList<>();
-    idAlbums = (List<Integer>) session.getAttribute("albumsFavoritos");
+    
 
     Fabrica fabrica = Fabrica.getInstance();
     IPlaylistController IPC = fabrica.getIPlaylistController();
@@ -161,14 +158,18 @@
                         </button>
 
                     </div>
-                    <div class=" min-w-16 flex flex-col text-white">
-                        <% 
-                        for(Integer aux : idPLaylists){
-                            Object[][] listaDatos = IPC.obtenerPlaylistLista(aux);
-                            
-                            if(listaDatos[0][0] == null){
-                                listaDatos[0][0] = "includes/defaultPlaylist.png";
-                            }
+                    <div id="PlaylistAlbumes" class=" min-w-16 flex flex-col text-white">
+                        <%
+                            List<Integer> idPLaylists = new ArrayList<>();
+                            idPLaylists = (List<Integer>) session.getAttribute("playlistFavoritas");
+                            List<Integer> idAlbums = new ArrayList<>();
+                            idAlbums = (List<Integer>) session.getAttribute("albumsFavoritos");
+                            for (Integer aux : idPLaylists) {
+                                Object[][] listaDatos = IPC.obtenerPlaylistLista(aux);
+
+                                if (listaDatos[0][0] == null) {
+                                    listaDatos[0][0] = "includes/defaultPlaylist.png";
+                                }
                             
                         %>
                         <div class="w-full hover:bg-neutral-600 rounded flex" name="divsPlaylists" id="<%=listaDatos[0][2]%>">
@@ -499,7 +500,17 @@
             if (barra.value >= 50)
                 iconoVolumen.className = "fa-solid fa-volume-high";
         }
+        
+        
+        
+          function actualizarTablaPlaylists() {
+        const playlistAlbumesDiv = $("#PlaylistAlbumes");
+        playlistAlbumesDiv.load(location.href + " #PlaylistAlbumes > *");
+    }
 
 
+
+
+        
     </script>    
 </html>

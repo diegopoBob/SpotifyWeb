@@ -123,10 +123,10 @@
                         <p class="text-white">Año: <%= albumActual[2]%></p>
                         <p class="text-white">Artista: <%= albumActual[3]%>  <% if(albumActual[7]!= null){out.print(albumActual[7]);} %> </p>
                         <!-- Botón de favorito dinámico -->
-                        <form action="guardarAlbumFavorito" method="POST">
-                            <input type="hidden" name="albumId" value="<%= albumActual[0]%>">
-                            <input type="hidden" name="action" value="<%= esFavorito ? "eliminarDeFavoritos" : "agregarAFavoritos"%>">
-                            <button type="submit" class="<%= esFavorito ? "text-red-500" : "text-green-500"%> pt-3 font-bold hover:underline cursor-pointer text-center">
+                        <form id="idguardarAlbumFavorito" action="guardarAlbumFavorito" method="POST">
+                            <input id="idAlbum" type="hidden" name="albumId" value="<%= albumActual[0]%>">
+                            <input id="esFAv" type="hidden" name="action" value="<%= esFavorito ? "eliminarDeFavoritos" : "agregarAFavoritos"%>">
+                            <button type="button" onclick="AjaXguardarAlbumFavorita()" class="<%= esFavorito ? "text-red-500" : "text-green-500"%> pt-3 font-bold hover:underline cursor-pointer text-center">
                                 <%= esFavorito ? "Eliminar de favoritos" : "Guardar en favoritos"%>
                             </button >
                         </form>
