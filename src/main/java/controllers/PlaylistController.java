@@ -221,7 +221,7 @@ public class PlaylistController implements IPlaylistController{
             return new Object[0][0]; 
         }
         List<Cancion> canciones = playlist.getCanciones();
-        Object[][] datos = new Object[canciones.size()][10];
+        Object[][] datos = new Object[canciones.size()][11];
 
         for (int i = 0; i < canciones.size(); i++) {
             Cancion cancion = canciones.get(i);
@@ -240,7 +240,7 @@ public class PlaylistController implements IPlaylistController{
             datos[i][6] =albumAux.getNombre();
             datos[i][7] =albumAux.getArtista().getNombre();
             datos[i][8] =albumAux.getArtista().getNick();
-            
+            datos[i][10] =albumAux.getArtista().getApellido();
         }
         return datos;
     }
@@ -395,3 +395,6 @@ public List<String> obtenerNombresDePlaylistsFavoritas(String clienteNick) {
    
     
 }
+   
+   
+

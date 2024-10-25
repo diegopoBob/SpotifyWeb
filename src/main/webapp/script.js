@@ -145,6 +145,8 @@ function scripts_consultarUsuario() {
 }
 
 function scripts_consultarPlaylist() {
+    
+    
     //FUNCION COLOR
     $(window).ready(function () {
         var sourceImage = document.getElementById("imagenPLaylistPrincipal");
@@ -174,7 +176,34 @@ function scripts_consultarPlaylist() {
                     .forEach(tr => table.appendChild(tr));
         })));
 }
-function agregarEliminarFavorito(canId) {
+
+function scrips_ConsultarAlbum() {
+
+}
+
+
+// Function to trigger file input click
+function openFileSelector() {
+    document.getElementById("fileInput").click();
+}
+
+// Function to change the profile image after selecting a file
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById("profileImage").src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+function scripts_busqueda(){}
+//FUNCIONES FAVORITOS y todas las AJAX
+
+
+
+function agregarEliminarFavoritoCancionPlay(canId) {
     if (!isEmptyField()) {
         dataString = $("#favoritosForm").serialize();
 
@@ -206,25 +235,104 @@ function agregarEliminarFavorito(canId) {
         });
     }
  }
+ function AJAXSeguiraUsuario(IdUser) {
+    if (!isEmptyFieldSeguir()) {
+        let dataString = $("#SeguiraUsuario").serialize();
 
-function scrips_ConsultarAlbum() {
+        // Obtén el valor del campo de entrada donde se guarda el nickname
+        const nickname = $("#usuarioConsulta").val(); // Asegúrate de que el ID sea correcto
+        dataString = "&usuarioConsulta=" + encodeURIComponent(nickname); // 
+        $.ajax({
+            type: "POST",
+            url: "seguirUsuario",
+            data: dataString,
+            dataType: "json",
 
-}
+            success: function (data) {
 
+                if (data.success) {
+                    const button = $("#botonSeguir");
+                    console.log(button);
 
-// Function to trigger file input click
-function openFileSelector() {
-    document.getElementById("fileInput").click();
-}
-
-// Function to change the profile image after selecting a file
-function previewImage(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById("profileImage").src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+                    if (button.text() === "Seguir") {
+                        button.text("Dejar de seguir"); // Cambia el texto a "Dejar de seguir"
+                    } else {
+                        button.text("Seguir"); // Cambia el texto a "Seguir"
+                    }
+                }
+                return false;
+            }
+        });
     }
+ }
+ function AjaXguardarPlaylistFavorita() {
+    if (!isEmptyFieldPlaylist()) {
+        let dataString = $("#idguardarPlaylistFavorita").serialize();
+
+        // Obtén el valor del campo de entrada donde se guarda el nickname
+        const nickname = $("#playlistFav").val(); // Asegúrate de que el ID sea correcto
+        dataString = "&playId=" + encodeURIComponent(nickname); // 
+        console.log(dataString);
+        $.ajax({
+            type: "POST",
+            url: "guardarPlaylistFavorita",
+            data: dataString,
+            dataType: "json",
+
+            success: function (data) {
+
+                if (data.success) {
+                    const icon = $("#iconoPlayFav");
+                    console.log(icon);
+
+                    if (icon.hasClass("fa-circle-check")) {
+                        icon.removeClass("fa-circle-check text-green-500")
+                                .addClass("fa-circle-plus text-white");
+                    } else {
+                        icon.removeClass("fa-circle-plus text-white")
+                                .addClass("fa-circle-check text-green-500");
+                    }
+                    //actualizarTablaPlaylists();
+                }
+                return false;
+            }
+        });
+    }
+ }
+ function actualizarTablaPlaylists() {
+    const playlists = JSON.parse(sessionStorage.getItem('playlistFavoritas')); // Suponiendo que guardas los datos en sessionStorage
+    const tableBody = $("#tablaPlaylists tbody");
+    tableBody.empty(); // Limpia la tabla antes de actualizar
+
+    playlists.forEach(playlist => {
+        const row = `<tr>
+                        <td>${playlist.nombre}</td>
+                        <td>${playlist.fechaCreacion}</td>
+                        <td>
+                            <button onclick="accion()">Acción</button>
+                        </td>
+                     </tr>`;
+        tableBody.append(row);
+    });
 }
+ function isEmptyFieldPlaylist() {
+     if (!$("#playlistFav").val().length) {
+         alert("name Field is required");
+         return true;
+     }
+     return false;
+ }
+  function isEmptyFieldSeguir() {
+     if (!$("#usuarioConsulta").val().length) {
+         alert("name Field is required");
+         return true;
+     }
+     return false;
+ }
+ function isEmptyField() {
+     if (!$("#canId").val().length) {
+         alert("name Field is required");
+         return true;
+     }
+     return false;
+ }

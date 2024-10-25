@@ -45,7 +45,9 @@
     List<String> seguidores = usrController.obtenerNicknamesseguidores(usuario);
     List<String> listas = playController.obtenerNombresPlaylistParticularCliente(usuario);
     List<String> listas2 = playController.obtenerNombresDePlaylistsFavoritas(usuario);
-
+    List<Integer> cancionesFavIds = (List<Integer>)session.getAttribute("cancionesFavoritas");
+    
+    
     String nombre = "Nombre";
     String apellido = "Apellido";
     String mail = "mail";
@@ -131,9 +133,9 @@
                 <%}%>
                 <% if (!usuario.equals(usuarioLogueado)) {%>
                 <div class="p-2 align-right">
-                    <form action="seguirUsuario" method="POST">
-                        <input type="hidden" name="usuarioConsulta" value="<%= usuarioConsulta%>">
-                        <button class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="submit">
+                    <form id="SeguiraUsuario" method="POST">
+                        <input  id="usuarioConsulta" type="hidden" name="usuarioConsulta" value="<%= (String) usuarioConsulta%>">
+                        <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
                             <% if (seguidores.contains(usuarioLogueado)) {
                                     out.print("Dejar de Seguir");
                                 } else {
@@ -200,6 +202,17 @@
 
             <!-- Sección de Listas -->
             <div id="listasSection" class="playlists  bg-transparent pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto p-2 rounded">
+               
+                
+                <%if(usuario.equals(usuarioLogueado) && !cancionesFavIds.isEmpty()){%>
+                 <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick='abrirCasoDeUso("consultarPlaylist.jsp", "-1")'>
+                    <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/cancionesFavoritas.png" alt="Imagen de tarjeta">
+                    <div class="p-6 hover:shadow-inner">
+                        <h2 class="text-lg font-semibold text-gray-800">Canciones Favoritas</h2>
+                    </div>
+                </div>
+                <%}%>
+                
                 <%
                     // Combinar las dos listas (listas particulares y listas favoritas)
                     List<String> todasLasListas = new ArrayList<>(listas);
@@ -226,7 +239,7 @@
                     }
                 } else {
                 %>
-                <p class="text-white">No hay listas disponibles.</p>
+                <p class="text-white"><% if(usuarioLogueado.equals(usuarioConsulta)){}else{out.println("No hay listas disponibles");}%></p>
                 <%
                     }
                 %>

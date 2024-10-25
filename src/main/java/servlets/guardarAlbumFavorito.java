@@ -20,6 +20,9 @@ import javax.servlet.http.HttpSession;
 import static java.lang.System.console;
 import static java.lang.System.out;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import models.Album;
 
 /**
@@ -74,7 +77,10 @@ public class guardarAlbumFavorito extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         processRequest(request, response);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
+        EntityManager em = emf.createEntityManager();
         HttpSession session = request.getSession();
         String idAlbum = request.getParameter("albumId");
         String usuario = (String) session.getAttribute("nick");
@@ -100,7 +106,8 @@ public class guardarAlbumFavorito extends HttpServlet {
             
         }
         
-
+        List<Integer> albumsFavoritos = em.createNativeQuery("Select id from album join cliente_albumesfavoritos where id = album_id and cliente_id='" + usuario + "'").getResultList();                    
+        session.setAttribute("albumsFavoritos", albumsFavoritos);
         response.sendRedirect("index.jsp?caso=ConsultarAlbum.jsp?tipo=artista&nombre=" + nombreArtista);
 
     }

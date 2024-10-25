@@ -32,4 +32,6 @@ public interface IPlaylistController {
     public abstract List<String> obtenerNombresDePlaylistsFavoritas(String clienteNick);
     public abstract List<Integer> obtenerIdPlaylistFavoritos(String clienteNick);
     public abstract Playlist findPlaylist(int id);
+   
+   
 }

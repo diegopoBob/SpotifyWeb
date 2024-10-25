@@ -455,5 +455,17 @@ public class UsuarioController implements IUsuarioController {
         return datos;
     }
 
-
+    public String artistaNombre(String nick){
+       Artista art = (Artista) usrController.findUsuario(nick);
+       String nombre = art.getNombre();
+       String apellido = art.getApellido();
+       
+       
+        if (apellido == null || apellido.isEmpty()) {
+        return nombre; // Retorna solo el nombre si no hay apellido
+    } else {
+        return nombre + " " + apellido; // Retorna nombre completo con un espacio
+    }
+        
+    }
 }

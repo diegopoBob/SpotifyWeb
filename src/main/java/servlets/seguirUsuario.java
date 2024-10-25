@@ -96,8 +96,8 @@ public class seguirUsuario extends HttpServlet {
         }
         
         
-        
-        response.sendRedirect("index.jsp?caso=consultarUsuario.jsp?user=" + usuarioASeguir);
+         response.setContentType("application/json");
+      response.getWriter().write("{\"success\": true, \"message\": \"\"}");
         
     }
 
