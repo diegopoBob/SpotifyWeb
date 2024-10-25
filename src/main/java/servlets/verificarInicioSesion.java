@@ -7,12 +7,12 @@ package servlets;
 import controllers.Fabrica;
 import controllers.IUsuarioController;
 import java.io.IOException;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,11 +80,11 @@ public class verificarInicioSesion extends HttpServlet {
             HttpSession session = request.getSession();
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
             EntityManager em = emf.createEntityManager();
-            List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='ppArgento'").getResultList();                    
+            List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + username + "'").getResultList();                    
             session.setAttribute("playlistFavoritas", playlistFavoritas);
-            List<Integer> albumsFavoritos = em.createNativeQuery("Select id from album join cliente_albumesfavoritos where id = album_id and cliente_id='ppArgento'").getResultList();                    
+            List<Integer> albumsFavoritos = em.createNativeQuery("Select id from album join cliente_albumesfavoritos where id = album_id and cliente_id='" + username + "'").getResultList();                    
             session.setAttribute("albumsFavoritos", albumsFavoritos);
-            List<Integer> cancionesFavoritas = em.createNativeQuery("Select id from cancion join cliente_cancionesfavoritas where cancion_id = id and cliente_id='ppArgento'").getResultList();                    
+            List<Integer> cancionesFavoritas = em.createNativeQuery("Select id from cancion join cliente_cancionesfavoritas where cancion_id = id and cliente_id='" + username + "'").getResultList();                    
             session.setAttribute("cancionesFavoritas", cancionesFavoritas);
             
             

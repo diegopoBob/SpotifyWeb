@@ -20,7 +20,8 @@ IAlbumController albController = fabrica.getIAlbumController();
 
 String imagenDefault = "includes/defaultPlaylist.png";
 String usuarioLogueado = session.getAttribute("nick").toString();
-
+List<Integer> playlistFav = (List<Integer>)session.getAttribute("playlistFavoritas");
+List<Integer> CanFav = (List<Integer>)session.getAttribute("cancionesFavoritas");
 int idPlaylist = Integer.parseInt(request.getParameter("user"));
 Object[][] datosCan = playController.obtenerDatosCancionesPlaylist(idPlaylist);
 Object[][] datos = playController.obtenerPlaylistLista(idPlaylist);
@@ -30,7 +31,6 @@ Object[][] datos = playController.obtenerPlaylistLista(idPlaylist);
 String titulo = "Nombre";
 String propietario = "Apellido";
 String tipo = "Apellido";
-
 String imagenPlay = imagenDefault;
 String imagenClie = imagenDefault;
 
@@ -93,13 +93,25 @@ if (datos.length > 0) {
             <div class=" text-white flex flex-row min-h-20 mb-4 max-h-20 w-2/3 text-4xl  h-1/6">
                 <img id="playButtonPlaylist" src="includes/playP.png" class="rounded-full h-16 w-auto m-8 mt-5 ml-6 mr-3" alt="alt"/>
                 <i class="fa-solid  fa-shuffle   ml-4  mt-9" ></i>
-                <i class="fa-solid fa-circle-plus  ml-5  mt-9" ></i>
-                <i class="fa-regular fa-circle-down ml-5  mt-9"></i>
+                
+                    <% if (!usuarioLogueado.equals(propietario)){%>
+                    <form action="guardarPlaylistFavorita" method="POST">
+                        <input type="hidden" name="playId" value="<%=datos[0][1]%>">
+                        <button  type="submit">
+                            <% if (playlistFav.contains((Integer)datos[0][1])) { %>
+                            <i class="text-green-500 fa-solid fa-circle-check  ml-5  mt-9" ></i>
+                            <%} else { %>
+                            <i class="text-white fa-solid fa-circle-plus  ml-5  mt-9"></i>
+                            <% } %>
+                        </button>
+                    </form>
+                    <% } %>
+                    <i class="fa-regular fa-circle-down ml-5  mt-9"></i>
             </div>
             <div class=" text-white flex  min-h-20 mb-4 max-h-20 w-1/3 text-4xl text-right">
                 <i class="fa-solid fa-magnifying-glass ml-5  mt-9  "></i>
             </div>
-</div>
+        </div>
                 <div  class="flex flex-col m--10">
                 <div class="">
                     <div class="inline-block min-w-full py-2 sm:px-6 lg:px-7">
@@ -112,7 +124,9 @@ if (datos.length > 0) {
                                         <th scope="col" class="hover:text-gray-400 whitespace-nowrap flex max-w-8 mt-3 px-6 py-1">#<i class="  ml-1 fa-solid fa-sort"></i></th>
                                         <th scope="col" class="hover:text-gray-400 whitespace-nowrap  py-4">Titulo<i class="ml-1  fa-solid fa-sort"></i></th>
                                         <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Album<i class="ml-1  fa-solid fa-sort"></i></th>
+                                        <th></th>
                                         <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Duracion<i class="ml-1  fa-solid fa-sort"></i></th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -145,8 +159,22 @@ if (datos.length > 0) {
                                             onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>&user=<%= datosCan[i][9]%>');  event.stopPropagation();">
                                             <p class="cursor-pointer"><%= datosCan[i][6]%></p>
                                         </td>
+                                        <td class="whitespace-nowrap pb-8 text-xl">
 
+                                            <form id="favoritosForm" method="POST">
+                                                <input type="hidden" id="canId" name="canId" value="<%=(Integer) datosCan[i][0]%>">
+                                                <button type="button" onclick="agregarEliminarFavorito(<%=(Integer) datosCan[i][0]%>); event.stopPropagation();"> <!-- Cambié type="submit" a type="button" -->
+                                                    <% if (CanFav.contains((Integer) datosCan[i][0])) {%>
+                                                    <i id="can<%= (Integer) datosCan[i][0]%>" class="text-green-500 fa-solid fa-circle-check ml-5 mt-9"></i>
+                                                    <% } else {%>
+                                                    <i id="can<%= (Integer) datosCan[i][0]%>" class="text-white fa-solid fa-circle-plus ml-5 mt-9"></i>
+                                                    <% }%>
+                                                </button>
+                                            </form>
+
+                                        </td>
                                         <td class="whitespace-nowrap px-6 py-4">
+
                                             <%= datosCan[i][2]%>
                                         </td>
 

@@ -61,23 +61,24 @@ public class PlaylistController implements IPlaylistController{
             playlist.setRutaImagen(rutaImagen);
         try {
              auxPlay.create(playlist);
+            
             } 
             catch (Exception ex) {
              Logger.getLogger(PlaylistController.class.getName()).log(Level.SEVERE, null, ex);
          }
     }
 
-    public void crearPlaylistParticular(String Nombre, String rutaImagen, String nick_usuario) {
+    public int crearPlaylistParticular(String Nombre, String rutaImagen, String nick_usuario) {
         Cliente el_usr = usr_ctr.findCliente(nick_usuario);
         PlaylistParticular la_nueva_lista = new PlaylistParticular(true, Nombre, rutaImagen, new LinkedList<Cancion>(), el_usr);
         try {
             auxPlay.create(la_nueva_lista);
-            //usr_ctr.edit(el_usr);
-            //no se necesita
+            
+             
         } catch (Exception ex) {
             Logger.getLogger(PlaylistController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return la_nueva_lista.getId();
     }
   
     public Object[][] obtenerPlaylistLista( int id) {
@@ -374,7 +375,23 @@ public List<String> obtenerNombresDePlaylistsFavoritas(String clienteNick) {
             .collect(Collectors.toList());
 }
 
-  
+  public List<Integer> obtenerIdPlaylistFavoritos(String clienteNick) {
+        // Busca al cliente por su nick
+        Cliente cliente = usr_ctr.findCliente(clienteNick);
+
+        // Si no se encuentra el cliente, retorna una lista vacía
+        if (cliente == null) {
+            return new ArrayList<>();
+        }
+
+        // Obtener los álbumes favoritos del cliente
+        List<Playlist> playlistsFavoritas = cliente.getPlaylistFavoritos();
+
+        // Mapear los álbumes favoritos a una lista de nombres
+        return playlistsFavoritas.stream()
+                .map(album -> album.getId())
+                .collect(Collectors.toList());
+    }
    
     
 }

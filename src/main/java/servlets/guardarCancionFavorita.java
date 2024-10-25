@@ -6,34 +6,36 @@ package servlets;
 
 import controllers.Fabrica;
 import controllers.IAlbumController;
-import controllers.IPlaylistController;
 import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import static java.lang.System.console;
 import static java.lang.System.out;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import models.Playlist;
+import models.Album;
+import models.Cancion;
 
 /**
  *
  * @author Machichu
  */
-@WebServlet(name = "guardarPlaylistFavorita", urlPatterns = {"/guardarPlaylistFavorita"})
-public class guardarPlaylistFavorita extends HttpServlet {
+@WebServlet(name = "guardarCancionFavorita", urlPatterns = {"/guardarCancionFavorita"})
+public class guardarCancionFavorita extends HttpServlet {
+
     Fabrica fabrica = Fabrica.getInstance();
     private IUsuarioController ICU = fabrica.getIUsuarioController();
-    private IPlaylistController playController = fabrica.getIPlaylistController();
+   
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,7 +48,8 @@ public class guardarPlaylistFavorita extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        response.setContentType("text/html;charset=UTF-8");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -75,18 +78,19 @@ public class guardarPlaylistFavorita extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        HttpSession session = request.getSession();
-        Integer idPlaylist = Integer.valueOf(request.getParameter("playId"));
-        String usuario = (String) session.getAttribute("nick");
-        List<Integer> favoritos = playController.obtenerIdPlaylistFavoritos(usuario);
-        Playlist play = playController.findPlaylist(Integer.valueOf(idPlaylist));
-
-        // Imprimir los valores para depuración
         
-        if (favoritos.contains(idPlaylist)) {
+        HttpSession session = request.getSession();
+        Integer  idCan=  Integer.valueOf(request.getParameter("canId"));
+        String usuario = (String) session.getAttribute("nick");
+         EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
+            EntityManager em = emf.createEntityManager();
+         
+        List<Integer> favoritos = (List<Integer>)session.getAttribute("cancionesFavoritas");
+        
+        
+        if (favoritos.contains(idCan)) {
             try {
-                ICU.eliminarPlaylistFavorita(usuario, idPlaylist + "-");
+                ICU.eliminarCancionFavorita(usuario, idCan +"-");
                 out.println("Anduvo");
             } catch (Exception ex) {
                 ex.printStackTrace(); // Imprime la traza completa del error en la consola del servidor.
@@ -94,17 +98,18 @@ public class guardarPlaylistFavorita extends HttpServlet {
             }
         } else {
             try {
-                ICU.registrarPlaylistFavorita(usuario, idPlaylist + "-");
+                ICU.registrarCancionFavorita(usuario, idCan+"-");
             } catch (Exception ex) {
                 Logger.getLogger(guardarAlbumFavorito.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
-        EntityManager em = emf.createEntityManager();
-        List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuario + "'").getResultList();
-        session.setAttribute("playlistFavoritas", playlistFavoritas);
-        response.sendRedirect("index.jsp?caso=consultarPlaylist.jsp?user=" + play.getId());
+
+      response.setContentType("application/json");
+      response.getWriter().write("{\"success\": true, \"message\": \"Canción eliminada de favoritos\"}");
+         List<Integer> cancionesFavoritas = em.createNativeQuery("Select id from cancion join cliente_cancionesfavoritas where cancion_id = id and cliente_id='" + usuario + "'").getResultList();                    
+            session.setAttribute("cancionesFavoritas", cancionesFavoritas);
+            
     }
 
     /**
