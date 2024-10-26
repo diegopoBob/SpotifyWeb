@@ -8,19 +8,27 @@ import controllers.IPlaylistController;
 import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import static java.lang.System.out;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
+import models.Album;
 
 /**
  *
@@ -29,8 +37,8 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "cambiarEstadoSubscripcion", urlPatterns = {"/cambiarEstadoSubscripcion"})
 @MultipartConfig
 public class cambiarEstadoSubscripcion extends HttpServlet {
-    Fabrica fabrica = Fabrica.getInstance();
-    private IPlaylistController ICP = fabrica.getIPlaylistController();
+     Fabrica fabrica = Fabrica.getInstance();
+    private IUsuarioController ICU = fabrica.getIUsuarioController();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -72,8 +80,26 @@ public class cambiarEstadoSubscripcion extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        processRequest(request, response);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
+        EntityManager em = emf.createEntityManager();
+        HttpSession session = request.getSession();
+        String planSeleccionado = request.getParameter("planSub");
+        LocalDate fechaActual = LocalDate.now();
+        String usuario = (String) session.getAttribute("nick");
+        int tipo = Integer.valueOf(planSeleccionado);
        
-}
+        try {
+            ICU.CambiarEstadosubscripcion(usuario,"Pendiente",tipo,null);
+            out.println("Anduvo");
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Imprime la traza completa del error en la consola del servidor.
+            out.println("Error: " + ex.getMessage());
+        }
+
+       response.sendRedirect("index.jsp?");  
+
+    }
 
 
 

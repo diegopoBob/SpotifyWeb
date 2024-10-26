@@ -39,16 +39,16 @@
                     mostrarTooltip = true;
                     Vencida = true;
                 }
-                if ("Cancelado".equals((String) datosCli[0][6])) {
+                else if  ("Cancelado".equals((String) datosCli[0][6])) {
                     
                     mostrarTooltip = true;
                 }
-                if ("Pendiente".equals((String) datosCli[0][6])) {
-                    
+                else if ("Pendiente".equals((String) datosCli[0][6])) {
+                   
                     mostrarTooltip = true;
                     Pendiente = true;
                 }
-                if ("Vigente".equals((String) datosCli[0][6])) {
+                else if ("Vigente".equals((String) datosCli[0][6])) {
                     
                     mostrarTooltip = false;
                     Vigente = true;
@@ -328,7 +328,7 @@
 
     <!-- COSO DE BOTTOM -->
 
-    <%     
+    <%    
         if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
                 if (Vencida) {%>
     <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
@@ -347,7 +347,8 @@
             </button>
         </div>
     </div>
-    <% } else if (Pendiente) {%>
+    <% }
+            else if (Pendiente ==true) {%>
     <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
         <div class="flex mx-auto">
             <p class="flex text-left text-sm font-normal text-white">
@@ -367,10 +368,10 @@
 
 
     <% } else if (mostrarTooltip) {%>
-    <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
-        <div class="flex mx-auto">
-            <p class="flex text-left text-sm font-normal text-white">
-                <span class="text-xl p-4">Tu suscripción está pendiente de comprobación.   ¿listo para crear playlists o descargar música?:</span>
+    <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-purple-800 via-pink-500 to-blue-800 rounded-xl absolute bottom-0 left-0 z-50 flex  w-full p-4  ">
+        <div class="flex  mx-auto">
+            <p class="flex text-left text-sm text-bold font-normal text-white ">
+                <span class="text-xl p-4">Quieres crear playlists o descargar musica? Pos Suscribete :</span><button data-modal-target="select-modal" data-modal-toggle="select-modal" class="bg-white rounded-full p-4 shadow-md text-base font-semibold text-black">Suscribirse</button>
 
             </p>
         </div>
@@ -379,7 +380,7 @@
                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                 </svg>
-                <span class="sr-only">Cerrar banner</span>
+                <span class="sr-only">Close banner</span>
             </button>
         </div>
     </div>
@@ -408,7 +409,7 @@
                         <ul class="space-y-4 mb-4">
                             <!-- Plan de 12 meses -->
                             <li>
-                                <input type="radio" id="plan-12" name="plan" value="plan-12" class="hidden peer" required />
+                                <input type="radio" id="plan-12" name="planSub" value="365" class="hidden peer" required />
                                 <label for="plan-12" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
                                     <div class="block">
                                         <div class="w-full text-lg font-semibold">Plan Anual (12 meses)</div>
@@ -421,7 +422,7 @@
                             </li>
                             <!-- Plan de 6 meses -->
                             <li>
-                                <input type="radio" id="plan-6" name="plan" value="plan-6" class="hidden peer" />
+                                <input type="radio" id="plan-6" name="planSub" value="180" class="hidden peer" />
                                 <label for="plan-6" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
                                     <div class="block">
                                         <div class="w-full text-lg font-semibold">Plan Semestral (6 meses)</div>
@@ -434,7 +435,7 @@
                             </li>
                             <!-- Plan de 1 mes -->
                             <li>
-                                <input type="radio" id="plan-1" name="plan" value="plan-1" class="hidden peer" />
+                                <input type="radio" id="plan-1" name="planSub" value="31" class="hidden peer" />
                                 <label for="plan-1" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
                                     <div class="block">
                                         <div class="w-full text-lg font-semibold">Plan Mensual (1 mes)</div>
