@@ -17,8 +17,6 @@
         return;
     }
 
-    
-
     Fabrica fabrica = Fabrica.getInstance();
     IPlaylistController IPC = fabrica.getIPlaylistController();
     IAlbumController IAC = fabrica.getIAlbumController();
@@ -85,13 +83,14 @@
 
             </div>
 
-           <div class="grow grid grid-cols-12 gap-2 bg-black overflow-hidden">
+            <div class="grow grid grid-cols-12 gap-2 bg-black overflow-hidden">
                 <div id="libreria" class="col-span-2 rounded-t-lg ml-2 bg-neutral-900 p-2 text-white flex flex-col gap-2 overflow-y-auto">
                     <div class="flex justify-between">
                         <div  class="text-neutral-400 text-white text-bold flex items-center gap-4">                        
                             <h1 style="font-size: clamp(15px, 3vw, 30px);" class="text-lg">Tu Libreria   </h1>  
                         </div>
                         <div>
+
                             <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" 
                                     type="button">
                                 <i style="font-size: clamp(15px, 3vw, 20px);" class="hover:text-gray-400 fa-solid fa-plus"></i>
@@ -119,16 +118,16 @@
                                             <div class="bg-neutral-800 grid gap-4 mb-4 grid-cols-2">
                                                 <label for="name" class="block  text-sm font-medium text-gray-900 dark:text-white">Nombre de playlist:</label>
                                                 <div class="col-span-2">
-                
+
                                                     <input type="text" name="nombre" id="nombre" class="bg-neutral-50 border border-neutral-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-neutral-600 dark:border-neutral-500 dark:placeholder-neutral-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Inserte nombre de nueva playlist" required="">
                                                 </div>
                                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Imagen de perfil:</label>
                                                 <div class="flex align-middle col-span-2">
-                                    
+
                                                     <img id="profileImage" class="rounded-full w-24 h-24 object-cover" src="includes/imagenDefault.png" alt="Profile Picture"/>
                                                     <input type="file" id="fileInput" name="foto" accept="image/*" onchange="previewImage(event)" class=" w-full m-8 text-xs text-neutral-900 border border-gray-300 rounded-lg cursor-pointer bg-neutral-50 dark:text-white focus:outline-none dark:bg-neutral-700 dark:border-gray-600 dark:placeholder-gray-400" id="small_size" type="file">
                                                 </div>
-                                                
+
                                             </div>
                                             <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                                 <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
@@ -138,6 +137,8 @@
                                     </div>
                                 </div>
                             </div> 
+                            <!-- Main modal -->
+
                         </div>   
                     </div> 
                     <div class="flex gap-2">
@@ -147,7 +148,7 @@
                         <div class="hover:ring hover:ring-2 hover:ring-green-800 bg-neutral-800 rounded-full px-[0.5rem]" id="mostrarPlaylists">
                             <button class="focus:ring-green-200" onclick="mostrarPlaylistsLibreria()">Playlists</button>
                         </div>
-                       
+
                     </div>
 
                     <div class="flex gap-2">
@@ -170,39 +171,39 @@
                                 if (listaDatos[0][0] == null) {
                                     listaDatos[0][0] = "includes/defaultPlaylist.png";
                                 }
-                            
+
                         %>
                         <div class="w-full hover:bg-neutral-600 rounded flex" name="divsPlaylists" id="<%=listaDatos[0][2]%>">
                             <div onclick='abrirCasoDeUso("consultarPlaylist.jsp", "<%=listaDatos[0][1]%>")' class="w-full hover:bg-neutral-600 rounded flex">
-                            <img src="<%=listaDatos[0][0]%>" alt="alt" class="w-16 h-16 min-w-16 rounded-xl p-1.5"/>
-                            <div name="textoLibreria" class="hidden md:flex flex-col justify-center text-sm" name="playListDiv">
-                                <p name="nombrePlaylist"><%= listaDatos[0][2]%></p>
-                                <p>Playlist</p>
+                                <img src="<%=listaDatos[0][0]%>" alt="alt" class="w-16 h-16 min-w-16 rounded-xl p-1.5"/>
+                                <div name="textoLibreria" class="hidden md:flex flex-col justify-center text-sm" name="playListDiv">
+                                    <p name="nombrePlaylist"><%= listaDatos[0][2]%></p>
+                                    <p>Playlist</p>
+                                </div>
                             </div>
                         </div>
-                        </div>
                         <%
-                           }                                              
-                        %>
-                        
-                        <% 
-                        for(Integer aux : idAlbums){
-                            Object[][] listaDatos = IAC.obtenerDatosAlbum(aux);
-                            if(listaDatos[0][0] == null){
-                                listaDatos[0][0] = "includes/defaultPlaylist.png";
                             }
+                        %>
+
+                        <%
+                            for (Integer aux : idAlbums) {
+                                Object[][] listaDatos = IAC.obtenerDatosAlbum(aux);
+                                if (listaDatos[0][0] == null) {
+                                    listaDatos[0][0] = "includes/defaultPlaylist.png";
+                                }
                         %>
                         <div class="w-full hover:bg-neutral-600 rounded flex" name="divsAlbums" id="<%=listaDatos[0][1]%>">
                             <div onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%=listaDatos[0][8]%>&user=<%=listaDatos[0][0]%>')" class="w-full hover:bg-neutral-600 rounded flex">
-                            <img src="<%= listaDatos[0][6]%>" alt="alt" class="min-w-16 w-16 h-16 rounded-xl p-1.5"/>
-                            <div name="textoLibreria" class="hidden md:flex flex-col justify-center text-sm">
-                                <p><%= listaDatos[0][1]%></p>
-                                <p>Album</p> 
+                                <img src="<%= listaDatos[0][6]%>" alt="alt" class="min-w-16 w-16 h-16 rounded-xl p-1.5"/>
+                                <div name="textoLibreria" class="hidden md:flex flex-col justify-center text-sm">
+                                    <p><%= listaDatos[0][1]%></p>
+                                    <p>Album</p> 
+                                </div>
                             </div>
                         </div>
-                        </div>
                         <%
-                           }                                              
+                            }
                         %>
                     </div> 
                 </div>
@@ -332,14 +333,14 @@
         const playButton = document.getElementById('playButton');
         const timeRange = document.getElementById('timeRange');
         audio.volume = 0.15;
-        
+
         //reproduccion de temas
-        
+
         let posActual;
-        function reproducirCancion(nombre, esSiguienteCancionOCancionAnterior) {           
-            if(!esSiguienteCancionOCancionAnterior){
-                crearListaCanciones();              
-            }         
+        function reproducirCancion(nombre, esSiguienteCancionOCancionAnterior) {
+            if (!esSiguienteCancionOCancionAnterior) {
+                crearListaCanciones();
+            }
             document.getElementById('audioSource').src = nombre;
             document.getElementById('shuffleBtn').classList.remove('text-white'); //desactivarshuffle si esta activado
             audio.load();
@@ -360,7 +361,7 @@
         function cargarInfoCancion(cu) {
             var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
             var url = 'InfoCancion.jsp?idCancion=' + cu;
-            
+
             xhr.open('GET', url, true);
 
             xhr.onreadystatechange = function () {
@@ -380,11 +381,11 @@
             };
             xhr.send(); // Enviar la solicitud
         }
-        
-        
+
+
         let colaCanciones = [];
-        let colaCancionesRespaldo = []; 
- 
+        let colaCancionesRespaldo = [];
+
         function crearListaCanciones() {
             let canciones = document.getElementsByName('cancion');
             colaCanciones = [];  // Limpiar colaCanciones por si se crea de nuevo
@@ -407,10 +408,10 @@
             }
 
         }
-        function adelantarCancion() {            
+        function adelantarCancion() {
             if (posActual < colaCanciones.length - 1) {
                 posActual++;
-                reproducirCancion(colaCanciones[posActual], true);              
+                reproducirCancion(colaCanciones[posActual], true);
                 cargarInfoCancion(document.getElementById(colaCanciones[posActual]).getAttribute('data-idCancion'));
             } else {
                 alert('No hay más canciones para adelantar');
@@ -429,7 +430,7 @@
         }
 
         //detectar que se abrio un nuevo cu
-      
+
 
         //event listeners del audio
         audio.addEventListener('loadedmetadata', () => {
@@ -500,17 +501,17 @@
             if (barra.value >= 50)
                 iconoVolumen.className = "fa-solid fa-volume-high";
         }
-        
-        
-        
-          function actualizarTablaPlaylists() {
-        const playlistAlbumesDiv = $("#PlaylistAlbumes");
-        playlistAlbumesDiv.load(location.href + " #PlaylistAlbumes > *");
-    }
+
+
+
+        function actualizarTablaPlaylists() {
+            const playlistAlbumesDiv = $("#PlaylistAlbumes");
+            playlistAlbumesDiv.load(location.href + " #PlaylistAlbumes > *");
+        }
 
 
 
 
-        
+
     </script>    
 </html>

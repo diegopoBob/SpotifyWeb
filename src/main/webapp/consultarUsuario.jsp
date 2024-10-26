@@ -136,7 +136,7 @@
                 <div class="p-2 align-right">
                     <form id="SeguiraUsuario" method="POST">
                         <input  id="usuarioConsulta" type="hidden" name="usuarioConsulta" value="<%= (String) usuarioConsulta%>">
-                        <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario();"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
+                        <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
                             <% if (seguidores.contains(usuarioLogueado)) {
                                     out.print("Dejar de Seguir");
                                 } else {

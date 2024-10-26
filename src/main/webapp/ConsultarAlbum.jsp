@@ -23,6 +23,7 @@
     
     List<String> artistas = usrController.obtenerNombresArtistas();
     List<String> generos = genController.obtenerNombresGeneros();
+    List<Integer> CanFav = (List<Integer>) session.getAttribute("cancionesFavoritas");
     
     String usuarioLogueado = (String) session.getAttribute("nick");
     String tipo = request.getParameter("tipo");
@@ -125,8 +126,9 @@
                         <!-- Botón de favorito dinámico -->
                         <form id="idguardarAlbumFavorito" action="guardarAlbumFavorito" method="POST">
                             <input id="idAlbum" type="hidden" name="albumId" value="<%= albumActual[0]%>">
+                            <input id="artistaAlbum" type="hidden" name="artistaAlbum" value="<%= albumActual[8] %>">
                             <input id="esFAv" type="hidden" name="action" value="<%= esFavorito ? "eliminarDeFavoritos" : "agregarAFavoritos"%>">
-                            <button type="button" onclick="AjaXguardarAlbumFavorita()" class="<%= esFavorito ? "text-red-500" : "text-green-500"%> pt-3 font-bold hover:underline cursor-pointer text-center">
+                            <button id="botonGuardar" type="button" onclick="AjaXguardarAlbumFavorita()" class="<%= esFavorito ? "text-red-500" : "text-green-500"%> pt-3 font-bold hover:underline cursor-pointer text-center">
                                 <%= esFavorito ? "Eliminar de favoritos" : "Guardar en favoritos"%>
                             </button >
                         </form>
@@ -163,6 +165,17 @@
                                 <span class="text-white"><%= cancion[1] %></span>
                             </a>
                             <a href="#" class="text-blue-500 hover:underline">Descargar</a>
+                            <form id="favoritosForm" method="POST">
+                                                <input type="hidden" id="canId" name="canId" value="<%=(Integer) cancion[0]%>">
+                                                <button type="button" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) cancion[0]%>);"> <!-- Cambié type="submit" a type="button" -->
+                                                    <% if (CanFav.contains((Integer) cancion[0])) {%>
+                                                    <i id="can<%= (Integer) cancion[0]%>" class="text-green-500 fa-solid fa-circle-check ml-5 mt-9"></i>
+                                                    <% } else {%>
+                                                    <i id="can<%= (Integer) cancion[0]%>" class="text-white fa-solid fa-circle-plus ml-5 mt-9"></i>
+                                                    <% }%>
+                                                </button>
+                                            </form>
+                            <a href="#" class="text-blue-500 hover:underline">Agregar a playlist</a>
                         </li>
                     <% } %>
                 <% } else { %>
