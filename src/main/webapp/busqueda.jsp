@@ -36,7 +36,7 @@ Map<String, String> canciones = new HashMap<>();
 
 List<Object[]> ObtenidosCanciones = em.createNativeQuery("Select id,nombre,duracion,direccion_archivo_de_audio from cancion where nombre like '%"+input+"%' LIMIT 4").getResultList();
 List<Object[]> ObtenidosClientes = em.createNativeQuery("Select nick,imagen from usuario where nick like '%"+input+"%'and  tipo_usuario='cliente' LIMIT 4").getResultList();
-List<Object[]> ObtenidosArtistas = em.createNativeQuery("Select nick,imagen from usuario where nick like '%"+input+"%'and tipo_usuario='artista' LIMIT 4").getResultList();
+List<Object[]> ObtenidosArtistas = em.createNativeQuery("Select nick,imagen,nombre,apellido from usuario where (apellido like '%"+input+"%' or nombre like '%"+input+"%')and tipo_usuario='artista' LIMIT 4").getResultList();
 List<Object[]> ObtenidosAlbums = em.createNativeQuery("Select id,nombre,direccion_imagen,artista,anioo from album where nombre like '%"+input+"%' LIMIT 4").getResultList();
 List<Object[]> ObtenidosPlaylists = em.createNativeQuery("SELECT p.id ,nombre,rutaImagen,DTYPE,propietario,genero_nombre FROM playlist p LEFT JOIN playlistpordefecto pp ON p.id = pp.id LEFT JOIN playlistparticular pc ON p.id = pc.id WHERE ((privada is NULL) OR (privada = 0))and nombre like '%"+input+"%' LIMIT 4").getResultList();
    
@@ -100,7 +100,7 @@ for (Object[] aux : ObtenidosArtistas) {
                             class="w-full h-full object-cover rounded-full shadow-lg"
                             />
                     </div>
-                    <p  class=" ml-3 font-semibold text-white mt-2"><%= aux[0]%></p>
+                    <p  class=" ml-3 font-semibold text-white mt-2"><%= aux[2] %> <% if(aux[3]!=null){out.println(aux[3]);}%></p>
                     <p class="ml-3 mb-3 text-gray-400">Artista</p>
                 </div>
                     <% }} else {%>

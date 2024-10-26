@@ -171,13 +171,13 @@
                                             <% out.print(datosCan[i][1]);%>
                                         </p>
                                         <p class="cursor-pointer hover:underline z-50"> 
-                                            <a class="z-50" onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= datosCan[i][8]%>")' class="hover:underline w-1/6 text-white cursor-pointer pr-2"><%= datosCan[i][7]%></a>
+                                            <a class="z-50" onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp", "<%= datosCan[i][8]%>")' class="hover:underline w-1/6 text-white cursor-pointer pr-2"><%= datosCan[i][7] %> <% if(datosCan[i][10]!=null){out.println(datosCan[i][10]);}%></a>
                                         </p>
                                     </td>
 
                                     <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline" 
                                             onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>&user=<%= datosCan[i][9]%>');  event.stopPropagation();">
-                                            <p class="cursor-pointer"><%= datosCan[i][6]%></p>
+                                            <p class="cursor-pointer"><%= datosCan[i][6] %> </p>
                                         </td>
                                         <td class="whitespace-nowrap pb-8 text-xl">
 

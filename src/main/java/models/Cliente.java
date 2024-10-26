@@ -27,6 +27,7 @@ import javax.persistence.ManyToMany;
 @Table(name="Cliente")
 @DiscriminatorValue("cliente")
 
+
 public class Cliente extends Usuario {
     @ManyToMany
     @JoinTable(
