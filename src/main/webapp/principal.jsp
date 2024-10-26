@@ -42,7 +42,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div class="bg-gradient-to-tl from-green-800 to-neutral-900">
+        <div class="bg-gradient-to-b from-neutral-900 via-green-600 to-neutral-900"> 
             <div>
                 <div class="m-4 flex flex-col text-white">
                     <h4 style="font-size:clamp(30px, 3vw, 40px);" class="ml-4 mb-4 mt-2 leading-none font-bold m-1">Favoritos</h4>
