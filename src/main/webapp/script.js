@@ -356,6 +356,44 @@ function agregarEliminarFavoritoCancionPlay(canId) {
         });
     }
  }
+function AjaXAltaPlaylist() {
+    const nombre = $("#nombre").val();
+
+    // Verifica si el campo "nombre" está vacío
+    if (nombre.length > 0) {
+        // Crea un objeto FormData a partir del formulario
+        const formData = new FormData(document.getElementById('altaPlaylist'));
+
+        // Obtiene el estado del checkbox y lo agrega a FormData
+        const privada = $("#privada").is(':checked') ? 'true' : 'false'; 
+        formData.append('privada', privada); // Agrega el valor del checkbox
+
+        console.log([...formData]); // Para verificar el contenido de FormData
+
+        $.ajax({
+            type: "POST",
+            url: "altaPlaylist",
+            data: formData,
+            processData: false, // No procesa los datos como un string
+            contentType: false, // Permite el envío de multipart/form-data
+
+            success: function (data) {
+                // Aquí puedes acceder directamente a "data"
+                if (data.success) {
+                    const id = data.id; // Obtén el ID de la respuesta
+                   abrirCasoDeUso('consultarPlaylist.jsp?user=' + id);
+                } else {
+                    console.log("Hubo un problema con la solicitud");
+                }
+            },
+            error: function (error) {
+                console.error("Error al enviar datos:", error); // Manejo de errores
+            }
+        });
+    } else {
+        console.log("El nombre no puede estar vacío."); // Mensaje de error
+    }
+}
 
  function isEmptyFieldAlbum() {
      if (!$("#idAlbum").val().length) {

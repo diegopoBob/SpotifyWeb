@@ -13,7 +13,7 @@ import models.Playlist;
  */
 public interface IPlaylistController {
     public abstract void crearPlaylistPorDefecto(String nombre ,String genero,String rutaImagen);
-    public abstract int crearPlaylistParticular(String Nombre, String rutaImagen, String nick_usuario);
+    public abstract int crearPlaylistParticular(String Nombre, String rutaImagen, String nick_usuario,boolean privada);
     public abstract Object[][] obtenerPlaylistLista();
     public abstract Object[][] obtenerPlaylistLista(int id);
     public abstract Object[][] obtenerDatosPlaylistGenero(String genero);

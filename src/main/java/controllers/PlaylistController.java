@@ -68,9 +68,10 @@ public class PlaylistController implements IPlaylistController{
          }
     }
 
-    public int crearPlaylistParticular(String Nombre, String rutaImagen, String nick_usuario) {
+    public int crearPlaylistParticular(String Nombre, String rutaImagen, String nick_usuario,boolean privada) {
         Cliente el_usr = usr_ctr.findCliente(nick_usuario);
         PlaylistParticular la_nueva_lista = new PlaylistParticular(true, Nombre, rutaImagen, new LinkedList<Cancion>(), el_usr);
+        la_nueva_lista.setPrivada(privada);
         try {
             auxPlay.create(la_nueva_lista);
             
@@ -80,6 +81,7 @@ public class PlaylistController implements IPlaylistController{
         }
         return la_nueva_lista.getId();
     }
+    
   
     public Object[][] obtenerPlaylistLista( int id) {
         Playlist playlist = auxPlay.findPlaylist(id);
@@ -392,6 +394,7 @@ public List<String> obtenerNombresDePlaylistsFavoritas(String clienteNick) {
                 .map(album -> album.getId())
                 .collect(Collectors.toList());
     }
+  
    
     
 }

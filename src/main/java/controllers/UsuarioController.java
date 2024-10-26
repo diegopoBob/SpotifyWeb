@@ -54,7 +54,7 @@ public class UsuarioController implements IUsuarioController {
     AlbumJpaController auxAlbum = new AlbumJpaController(emf);
     CancionJpaController auxCan = new CancionJpaController(emf);
     UsuarioJpaController usrController = new UsuarioJpaController(emf);
-    //ClienteJpaController auxCliente =  new ClienteJpaController(emf);
+    ClienteJpaController auxCliente =  new ClienteJpaController(emf);
 
     //  private ClienteJpaController cliente_ctr = new ClienteJpaController(emf);
     public List<String> obtenerNombresClientes() {
@@ -477,5 +477,17 @@ public class UsuarioController implements IUsuarioController {
         return nombre + " " + apellido; // Retorna nombre completo con un espacio
     }
         
+    }
+     public void CambiarEstadosubscripcion(String nick ,String estado,Integer tipo,LocalDate fecha) throws Exception {
+        // Busca al cliente por su nick
+        Cliente cliente = auxCliente.findCliente(nick);
+        if(estado!=null){
+         cliente.setEstado(estado);
+        }if (tipo != null) {
+         cliente.setTipo(tipo);
+        }if (fecha != null) {
+         cliente.setFecSub(fecha);
+        }
+        auxCliente.edit(cliente);
     }
 }

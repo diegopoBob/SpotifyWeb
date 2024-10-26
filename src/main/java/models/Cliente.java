@@ -37,7 +37,7 @@ public class Cliente extends Usuario {
     @Column(name = "estado")
     private String estado = "Cancelado";
     @Column(name = "tipo")
-    private String tipo;
+    private int tipo;
     
     @ManyToMany
     @JoinTable(
@@ -116,11 +116,11 @@ public class Cliente extends Usuario {
         this.estado = estado;
     }
 
-    public String getTipo() {
+    public int getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(int tipo) {
         this.tipo = tipo;
     }
     

@@ -75,11 +75,11 @@
                     <h1 class="text-white text-">Tipo de Usuario</h1>
                     <div class="flex gap-4">
                         <div class="flex items-center">
-                            <input id="default-radio-1" type="radio" value="artista" name="userType" class="w-4 h-4 bg-gray-100 border-gray-300" onclick="document.getElementById('artistaFields').className = ''">
+                            <input id="default-radio-1" type="radio" value="Artista" name="userType" class="w-4 h-4 bg-gray-100 border-gray-300" onclick="document.getElementById('artistaFields').className = ''">
                             <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" >Artista</label>
                         </div>
                         <div class="flex items-center">
-                            <input checked id="default-radio-2" type="radio" value="cliente" name="userType" class="w-4 h-4 bg-gray-100 border-gray-300" onclick="document.getElementById('artistaFields').className = 'hidden'">
+                            <input checked id="default-radio-2" type="radio" value="Cliente" name="userType" class="w-4 h-4 bg-gray-100 border-gray-300" onclick="document.getElementById('artistaFields').className = 'hidden'">
                             <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" >Cliente</label>
                         </div>
                     </div>
@@ -136,8 +136,8 @@
                     <div id="artistaFields" class="flex flex-col gap-2 hidden">
                         <div>
                             <label for="link" class="block text-sm font-medium text-gray-900 dark:text-white">Link</label>
-                            <input type="url" name="link" id="link" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                
+                            <input type="url" name="link" id="link" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                >
                                 
                         </div>
                         <div>

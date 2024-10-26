@@ -95,13 +95,14 @@
             </div> 
             <div class="mt-5">
                 <div  name="textoLibreria" class="h-2/3 flex flex-col justify-center overflow-hidden">
-                    <h4>Playlist <%= tipo%></h4>
+                    <h4>Playlist <%= tipo%> </h4>
+                    <h4> <% if(tipo == ("Particular")){ if((boolean)datos[0][4]){out.println("Privada");}else{out.println("Publica");}}%> </h4>
                     <h2 style="font-size: clamp(20px, 5vw, 110px);" class=" Class leading-none font-bold "><%= titulo%> </h2>
                 </div>
                 <div name="masInfoPlay" class="flex  pt-5 pb-5 ">
                     <%if (tipo == "Particular") {%>
                     <img src="<%= imagenClie%>" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/><a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= propietario%>");' class=" hover:underline text-white cursor-pointer pr-2 ">
-                        <p class="decoration-1"> <%= propietario%></p>
+                        <p class="decoration-1"> <%= propietario %></p>
                     </a> <% } else {%>
                     <img src="includes/logo.png" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/>
                     <p class="decoration-1"> <i class="fa-solid fa-circle-check"></i> Spotify</p>

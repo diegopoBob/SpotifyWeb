@@ -4,6 +4,7 @@
     Author     : dylan
 --%>
 
+<%@page import="java.time.LocalDate"%>
 <%@page import="controllers.IUsuarioController"%>
 <%@page import="controllers.ICancionController"%>
 <%@page import="controllers.IAlbumController"%>
@@ -17,11 +18,48 @@
         response.sendRedirect("login.jsp");
         return;
     }
-    String nicknameLogeado =(String) session.getAttribute("nick");
+    boolean Visitante ;
+    String nicknameLogeado ="";
+    if ((String) session.getAttribute("nick") != null) {
+            nicknameLogeado = (String) session.getAttribute("nick");
+            Visitante = true;
+        }
     Fabrica fabrica = Fabrica.getInstance();
     IPlaylistController IPC = fabrica.getIPlaylistController();
     IAlbumController IAC = fabrica.getIAlbumController();
     IUsuarioController IUC = fabrica.getIUsuarioController();
+    boolean mostrarTooltip = true;
+    boolean Pendiente = false;
+    boolean Vigente = false;
+    boolean Vencida = false;
+    LocalDate fechaSub = null ;
+        if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
+                Object[][] datosCli = IUC.obtenerDatosCliente(nicknameLogeado);
+                if ("Vencida".equals((String) datosCli[0][6])) {
+                    mostrarTooltip = true;
+                    Vencida = true;
+                }
+                if ("Cancelado".equals((String) datosCli[0][6])) {
+                    
+                    mostrarTooltip = true;
+                }
+                if ("Pendiente".equals((String) datosCli[0][6])) {
+                    
+                    mostrarTooltip = true;
+                    Pendiente = true;
+                }
+                if ("Vigente".equals((String) datosCli[0][6])) {
+                    
+                    mostrarTooltip = false;
+                    Vigente = true;
+                    fechaSub = (LocalDate) datosCli[0][7];
+                    fechaSub = fechaSub.plusDays( (Integer) datosCli[0][8]);
+                    
+                    
+                   
+                }
+            }
+    
 %>
 <!DOCTYPE html>
 <html>
@@ -69,7 +107,7 @@
                         <input class="focus:outline-none w-96 h-full  bg-transparent text-white text-lg" id="searchBar" name="searchBar" type="text" />
                     </form>
                 </div>
-                <div class=" h-auto bg-black pr-4 flex items-center userDropdown">
+                    <div class=" h-auto bg-black pr-4 flex items-center text-white userDropdown"><span><%if(Vigente){out.print("<i class=' pr-3 fa-regular fa-star'>  Subcripcion hasta: "+ fechaSub +" </i>  ");} %> </span>
                     <a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= session.getAttribute("nick")%>")' class="text-white pr-2 cursor-pointer"><% out.print(session.getAttribute("nick")); %></a>
 
                     <button class=""><img src="<% out.print(session.getAttribute("imagen"));%>" class=" rounded-full h-10 w-10 bg-white " alt="alt"/></button>
@@ -93,12 +131,33 @@
                         </div>
                         <div>
 
-                            <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" 
-                                    type="button">
-                                <i style="font-size: clamp(15px, 3vw, 20px);" class="hover:text-gray-400 fa-solid fa-plus"></i>
+                            <!-- Botón ALTA-->
+                            <button 
+                                type="button"
+                                <%= mostrarTooltip ? "data-popover-target='popover-user-profile'" : "data-modal-target='crud-modal'"%>"
+                                <%= mostrarTooltip ? "data-popover-target='popover-user-profile'" : "data-modal-toggle='crud-modal'"%>">
+                                <i style="font-size: clamp(15px, 3vw, 20px);" 
+                                   class="hover:text-gray-400 fa-solid fa-plus""></i>
                             </button>
 
-                            <!-- Main modal -->
+                            <!-- POPOVER PLAYLIST SIn SUB CREAR Modal -->
+                            <div data-popover id="popover-user-profile" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm transition-opacity duration-300 bg-gray-900 border border-green-500 rounded-lg shadow-lg opacity-0">
+                                <div class="p-3 text-white">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div>
+                                            <button type="button" data-modal-target="select-modal" data-modal-toggle="select-modal" class="text-black bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5">
+                                                Suscribirse
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p class="mb-4 text-sm">
+                                        Para crear playlists y más, ¡suscríbete ahora!
+                                    </p>
+                                    
+                                </div>
+                                <div data-popper-arrow class="fill-current text-gray-900"></div>
+                            </div>
+                            <!-- Main ALTA PLAY modal -->
                             <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden  overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="text-white relative p-4 w-full max-w-md max-h-full">
                                     <!-- Modal content -->
@@ -115,24 +174,30 @@
                                                 <span class="sr-only">Close modal</span>
                                             </button>
                                         </div>
-                                        <!-- Modal body -->
-                                        <form enctype="multipart/form-data" action="altaPlaylist" method="POST" class="bg-neutral-800 p-4 md:p-5">
+                                        
+                                        <!-- Modal ALTA body -->
+                                        <form id='altaPlaylist' enctype="multipart/form-data" action="altaPlaylist" method="POST" class="bg-neutral-800 p-4 md:p-5">
                                             <div class="bg-neutral-800 grid gap-4 mb-4 grid-cols-2">
-                                                <label for="name" class="block  text-sm font-medium text-gray-900 dark:text-white">Nombre de playlist:</label>
+                                                <label for="nombre" class="block text-sm font-medium text-gray-900 dark:text-white">Nombre de playlist:</label>
                                                 <div class="col-span-2">
-
                                                     <input type="text" name="nombre" id="nombre" class="bg-neutral-50 border border-neutral-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-neutral-600 dark:border-neutral-500 dark:placeholder-neutral-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Inserte nombre de nueva playlist" required="">
                                                 </div>
-                                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Imagen de perfil:</label>
+
+                                                <label for="foto" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Imagen de perfil:</label>
                                                 <div class="flex align-middle col-span-2">
-
                                                     <img id="profileImage" class="rounded-full w-24 h-24 object-cover" src="includes/imagenDefault.png" alt="Profile Picture"/>
-                                                    <input type="file" id="fileInput" name="foto" accept="image/*" onchange="previewImage(event)" class=" w-full m-8 text-xs text-neutral-900 border border-gray-300 rounded-lg cursor-pointer bg-neutral-50 dark:text-white focus:outline-none dark:bg-neutral-700 dark:border-gray-600 dark:placeholder-gray-400" id="small_size" type="file">
+                                                    <input type="file" id="fileInput" name="foto" accept="image/*" onchange="previewImage(event)" class="w-full m-8 text-xs text-neutral-900 border border-gray-300 rounded-lg cursor-pointer bg-neutral-50 dark:text-white focus:outline-none dark:bg-neutral-700 dark:border-gray-600 dark:placeholder-gray-400">
                                                 </div>
-
+                                                <fieldset class="col-span-2">
+                                                    <legend class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">¿Es privada?</legend>
+                                                     <input type="checkbox" id="privada" name="privada" value="true">
+                                                </fieldset>
                                             </div>
-                                            <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                                <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+
+                                            <button type="button" data-modal-hide="crud-modal" onclick="event.stopPropagation(); AjaXAltaPlaylist(); this.closest('form').reset(); "  class="text-white inline-flex items-center bg-blue-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                                                </svg>
                                                 Crear Playlist
                                             </button>
                                         </form>
@@ -263,16 +328,30 @@
 
     <!-- COSO DE BOTTOM -->
 
-    <%      if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
-            Object[][] datosCli = IUC.obtenerDatosCliente(nicknameLogeado);
-            
-            if (datosCli[0][6].equals("Cancelado")) {
-
-    %>
-    <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-purple-800 via-pink-500 to-blue-800 rounded-xl absolute bottom-0 left-0 z-50 flex  w-full p-4  ">
-        <div class="flex  mx-auto">
-            <p class="flex text-left text-sm text-bold font-normal text-white ">
-                <span class="text-xl p-4">Quieres crear playlists o descargar musica? Pos Suscribete :</span><button data-modal-target="select-modal" data-modal-toggle="select-modal" class="bg-white rounded-full p-4 shadow-md text-base font-semibold text-black">Suscribirse</button>
+    <%     
+        if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
+                if (Vencida) {%>
+    <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
+        <div class="flex mx-auto">
+            <p class="flex text-left text-sm font-normal text-white">
+                <span class="text-xl p-4">Tu suscripción ha vencido. ¡Renueva ahora para continuar disfrutando de tus playlists y descargas!</span>
+                <button data-modal-target="select-modal" data-modal-toggle="select-modal" class="bg-white rounded-full p-4 shadow-md text-base font-semibold text-black">Renovar Suscripción</button>
+            </p>
+        </div>
+        <div class="flex items-center">
+            <button data-dismiss-target="#bottom-banner" type="button" class="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Cerrar banner</span>
+            </button>
+        </div>
+    </div>
+    <% } else if (Pendiente) {%>
+    <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
+        <div class="flex mx-auto">
+            <p class="flex text-left text-sm font-normal text-white">
+                <span class="text-xl p-4">Tu suscripción está pendiente de comprobación.   ¿listo para crear playlists o descargar música?:</span>
 
             </p>
         </div>
@@ -281,12 +360,31 @@
                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                 </svg>
-                <span class="sr-only">Close banner</span>
+                <span class="sr-only">Cerrar banner</span>
             </button>
         </div>
     </div>
-    <% }%>
-    <!-- Main modal -->
+
+
+    <% } else if (mostrarTooltip) {%>
+    <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
+        <div class="flex mx-auto">
+            <p class="flex text-left text-sm font-normal text-white">
+                <span class="text-xl p-4">Tu suscripción está pendiente de comprobación.   ¿listo para crear playlists o descargar música?:</span>
+
+            </p>
+        </div>
+        <div class="flex items-center">
+            <button data-dismiss-target="#bottom-banner" type="button" class="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Cerrar banner</span>
+            </button>
+        </div>
+    </div>
+    <% } %>
+    <!-- SUBSCRIPCION modal -->
     <div id="select-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
             <!-- Modal content -->
@@ -306,65 +404,61 @@
                 <!-- Modal body -->
                 <div class="p-4 md:p-5">
                     <p class="text-gray-400 mb-4">Elige un plan que se adapte a tus necesidades:</p>
-                    <ul class="space-y-4 mb-4">
-                        <!-- Plan de 12 meses -->
-                        <li>
-                            <input type="radio" id="plan-12" name="plan" value="plan-12" class="hidden peer" required />
-                            <label for="plan-12" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
-                                <div class="block">
-                                    <div class="w-full text-lg font-semibold">Plan Anual (12 meses)</div>
-                                    <div class="w-full text-gray-400">Precio: $99.99</div>
-                                </div>
-                                <svg class="w-4 h-4 ms-3 text-gray-400 peer-checked:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                                </svg>
-                            </label>
-                        </li>
-                        <!-- Plan de 6 meses -->
-                        <li>
-                            <input type="radio" id="plan-6" name="plan" value="plan-6" class="hidden peer" />
-                            <label for="plan-6" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
-                                <div class="block">
-                                    <div class="w-full text-lg font-semibold">Plan Semestral (6 meses)</div>
-                                    <div class="w-full text-gray-400">Precio: $59.99</div>
-                                </div>
-                                <svg class="w-4 h-4 ms-3 text-gray-400 peer-checked:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                                </svg>
-                            </label>
-                        </li>
-                        <!-- Plan de 1 mes -->
-                        <li>
-                            <input type="radio" id="plan-1" name="plan" value="plan-1" class="hidden peer" />
-                            <label for="plan-1" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
-                                <div class="block">
-                                    <div class="w-full text-lg font-semibold">Plan Mensual (1 mes)</div>
-                                    <div class="w-full text-gray-400">Precio: $9.99</div>
-                                </div>
-                                <svg class="w-4 h-4 ms-3 text-gray-400 peer-checked:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                                </svg>
-                            </label>
-                        </li>
-                    </ul>
-                    <button class="text-white inline-flex w-full justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        Confirmar plan
-                    </button>
+                    <form action="cambiarEstadoSubscripcion" method="POST">
+                        <ul class="space-y-4 mb-4">
+                            <!-- Plan de 12 meses -->
+                            <li>
+                                <input type="radio" id="plan-12" name="plan" value="plan-12" class="hidden peer" required />
+                                <label for="plan-12" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
+                                    <div class="block">
+                                        <div class="w-full text-lg font-semibold">Plan Anual (12 meses)</div>
+                                        <div class="w-full text-gray-400">Precio: $99.99</div>
+                                    </div>
+                                    <svg class="w-4 h-4 ms-3 text-gray-400 peer-checked:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                    </svg>
+                                </label>
+                            </li>
+                            <!-- Plan de 6 meses -->
+                            <li>
+                                <input type="radio" id="plan-6" name="plan" value="plan-6" class="hidden peer" />
+                                <label for="plan-6" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
+                                    <div class="block">
+                                        <div class="w-full text-lg font-semibold">Plan Semestral (6 meses)</div>
+                                        <div class="w-full text-gray-400">Precio: $59.99</div>
+                                    </div>
+                                    <svg class="w-4 h-4 ms-3 text-gray-400 peer-checked:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                    </svg>
+                                </label>
+                            </li>
+                            <!-- Plan de 1 mes -->
+                            <li>
+                                <input type="radio" id="plan-1" name="plan" value="plan-1" class="hidden peer" />
+                                <label for="plan-1" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
+                                    <div class="block">
+                                        <div class="w-full text-lg font-semibold">Plan Mensual (1 mes)</div>
+                                        <div class="w-full text-gray-400">Precio: $9.99</div>
+                                    </div>
+                                    <svg class="w-4 h-4 ms-3 text-gray-400 peer-checked:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                    </svg>
+                                </label>
+                            </li>
+                        </ul>
+                        <button type="submit" class="text-white inline-flex w-full justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            Confirmar plan
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
-
     <%}%>
-    <!-- COSO DE BOTTOM -->
-
 
 </body>
 <script>
+  
         document.getElementById('busquedaLibreria').addEventListener('input', function () {
             let busqueda = document.getElementById('busquedaLibreria').value.toLowerCase();
 
@@ -616,8 +710,7 @@
             const playlistAlbumesDiv = $("#PlaylistAlbumes");
             playlistAlbumesDiv.load(location.href + " #PlaylistAlbumes > *");
         }
-
-
+      
 
 
 

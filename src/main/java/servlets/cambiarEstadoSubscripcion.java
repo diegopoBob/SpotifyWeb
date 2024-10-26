@@ -26,9 +26,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author dylan
  */
-@WebServlet(name = "altaPlaylist", urlPatterns = {"/altaPlaylist"})
+@WebServlet(name = "cambiarEstadoSubscripcion", urlPatterns = {"/cambiarEstadoSubscripcion"})
 @MultipartConfig
-public class altaPlaylist extends HttpServlet {
+public class cambiarEstadoSubscripcion extends HttpServlet {
     Fabrica fabrica = Fabrica.getInstance();
     private IPlaylistController ICP = fabrica.getIPlaylistController();
     /**
@@ -71,10 +71,8 @@ public class altaPlaylist extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String nombrePlay = request.getParameter("nombre");
-        Part filePart = request.getPart("foto");
-        String privadaParam = request.getParameter("privada");
-        boolean privada = "true".equalsIgnoreCase(privadaParam);
+        
+        Part filePart = request.getPart("tipo");
         HttpSession session = request.getSession();
         String usuario = (String) session.getAttribute("nick");
 

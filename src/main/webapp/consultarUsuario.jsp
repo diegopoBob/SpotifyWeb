@@ -16,7 +16,7 @@
 <%@page import="controllers.Fabrica"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    if (session == null || session.getAttribute("nick") == null) {
+      if (session == null || session.getAttribute("nick") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
@@ -49,8 +49,9 @@
     List<String> seguidores = usrController.obtenerNicknamesseguidores(usuario);
     List<String> listas = playController.obtenerNombresPlaylistParticularCliente(usuario);
     List<String> listas2 = playController.obtenerNombresDePlaylistsFavoritas(usuario);
-    List<Integer> cancionesFavIds = (List<Integer>) session.getAttribute("cancionesFavoritas");
-
+    List<Integer> cancionesFavIds = (List<Integer>)session.getAttribute("cancionesFavoritas");
+    
+    
     String nombre = "Nombre";
     String apellido = "Apellido";
     String mail = "mail";
@@ -68,10 +69,11 @@
         imagen = (String) datos[0][5];
         if (tipoUsuario.equals("artista")) {
             biografia = (String) datos[0][6];
-            if (datos[0][7] != null) {
-                web = (String) datos[0][7];
+            if(datos[0][7]!=null){
+            web = (String) datos[0][7];
             }
-
+            
+            
         }
 
         if (imagen == null || imagen == "" || imagen == "null" || imagen.isEmpty() || "null".equals(imagen)) {
@@ -118,73 +120,73 @@
                 </h1>
 
                 <p class="sm:text-2xl text-white font-bold md:text-7xl font-bold p-2 block">
-                    <%
-                        if (null != apellido) {
-                            out.print(nombre + " " + apellido);
-                        } else {
-                            out.print(nombre);
+                    <% 
+                        if(null!=apellido){
+                        out.print(nombre + " " + apellido);
+                        }else{
+                        out.print(nombre);
                         }
-
+                        
                     %>
                 </p>
 
-                <%if (tipoUsuario.equals("artista")) {%>
+                <%if(tipoUsuario.equals("artista")){%>
                 <a href="<%= web.startsWith("http") ? web : "http://" + web%>" target="_blank" class="p-2 text-green-500 hover:cursor-pointer hover:text-green-700">
                     <% out.println(web); %>
                 </a>
                 <%}%>
                 <% if (!usuario.equals(usuarioLogueado)) {%>
                 <div id ="SeguidoresTodo">
-                    <div class="p-2 align-right">
-                        <form id="SeguiraUsuario" method="POST">
-                            <input  id="usuarioConsulta" type="hidden" name="usuarioConsulta" value="<%= (String) usuarioConsulta%>">
-                            <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
-                                <% if (seguidores.contains(usuarioLogueado)) {
-                                        out.print("Dejar de Seguir");
-                                    } else {
-                                        out.print("Seguir");
-                                    } %>
-                            </button>
-                        </form>
-                    </div>
-                    <% } %>
+                <div class="p-2 align-right">
+                    <form id="SeguiraUsuario" method="POST">
+                        <input  id="usuarioConsulta" type="hidden" name="usuarioConsulta" value="<%= (String) usuarioConsulta%>">
+                        <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
+                            <% if (seguidores.contains(usuarioLogueado)) {
+                                    out.print("Dejar de Seguir");
+                                } else {
+                                    out.print("Seguir");
+                                } %>
+                        </button>
+                    </form>
+                </div>
+                <% } %>
+                
+                <a class="cursor-pointer text-green-600 hover:text-green-800 p-2" id="showSeguidores">
+                    <%
+                        seguidores = usrController.obtenerNicknamesseguidores(usuario);
+                        out.print("Seguidores (" + num + ")");
+                    %>
+                </a>
 
-                    <a class="cursor-pointer text-green-600 hover:text-green-800 p-2" id="showSeguidores">
+                <!-- Sección de Seguidores -->
+                <div id="seguidoresSection" class="hidden  p-3">
+                    
+                    <h2 class="text-lg font-semibold text-green-800">Lista de Seguidores: </h2>
+                    <div>
                         <%
                             seguidores = usrController.obtenerNicknamesseguidores(usuario);
-                            out.print("Seguidores (" + num + ")");
-                        %>
-                    </a>
-
-                    <!-- Sección de Seguidores -->
-                    <div id="seguidoresSection" class="hidden  p-3">
-
-                        <h2 class="text-lg font-semibold text-green-800">Lista de Seguidores: </h2>
-                        <div>
-                            <%
-                                seguidores = usrController.obtenerNicknamesseguidores(usuario);
-                                int count = 0;
-                                for (String seguidor : seguidores) {
-                                    if (count % 10 == 0 && count != 0) {
-                                        out.print("</p>");
-                                    }
-                                    if (count % 10 == 0) {
-                                        out.print("<p class='text-neutral-600'>");
-                                    }
-                                    out.print(seguidor + (count < seguidores.size() - 1 ? " - " : ""));
-                                    count++;
-                                }
-                                if (count > 0) {
+                            int count = 0;
+                            for (String seguidor : seguidores) {
+                                if (count % 10 == 0 && count != 0) {
                                     out.print("</p>");
                                 }
-                            %>
-                        </div>
+                                if (count % 10 == 0) {
+                                    out.print("<p class='text-neutral-600'>");
+                                }
+                                out.print(seguidor + (count < seguidores.size() - 1 ? " - " : ""));
+                                count++;
+                            }
+                            if (count > 0) {
+                                out.print("</p>");
+                            }
+                        %>
                     </div>
                 </div>
             </div>
+ </div>
             <!-- Columna para la biografía -->
-            <%if (tipoUsuario.equals("artista")) {%>
-            <div style="font-size:clamp(8px, 2vw, 20px);" class="col-span-1 col-start-4 row-start-1 row-span-2 p-2 text-white mt-5 shadow-xl text-center">
+            <%if(tipoUsuario.equals("artista")){%>
+            <div style="font-size:clamp(8px, 2vw, 20px);" class="col-span-1 col-start-4 row-span-2 p-2 text-white p-2 mt-5 shadow-xl text-center">
                 <%
                     out.println(biografia);
                 %>
@@ -208,17 +210,17 @@
 
             <!-- Sección de Listas -->
             <div id="listasSection" class="playlists  bg-transparent pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto p-2 rounded">
-
-
-                <%if (usuario.equals(usuarioLogueado) && !cancionesFavIds.isEmpty()) {%>
-                <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick='abrirCasoDeUso("consultarPlaylist.jsp", "-1")'>
+               
+                
+                <%if(usuario.equals(usuarioLogueado) && !cancionesFavIds.isEmpty()){%>
+                 <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick='abrirCasoDeUso("consultarPlaylist.jsp", "-1")'>
                     <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/cancionesFavoritas.png" alt="Imagen de tarjeta">
                     <div class="p-6 hover:shadow-inner">
                         <h2 class="text-lg font-semibold text-gray-800">Canciones Favoritas</h2>
                     </div>
                 </div>
                 <%}%>
-
+                
                 <%
                     // Combinar las dos listas (listas particulares y listas favoritas)
                     List<String> todasLasListas = new ArrayList<>(listas);
@@ -245,10 +247,7 @@
                     }
                 } else {
                 %>
-                <p class="text-white"><% if (usuarioLogueado.equals(usuarioConsulta)) {
-                    } else {
-                        out.println("No hay listas disponibles");
-                    }%></p>
+                <p class="text-white"><% if(usuarioLogueado.equals(usuarioConsulta)){}else{out.println("No hay listas disponibles");}%></p>
                 <%
                     }
                 %>
@@ -287,7 +286,7 @@
                 %>
             </div>
         </div>
-        <script>
-                }</script>
+            <script>
+    }</script>
     </body>
 </html>      
