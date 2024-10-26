@@ -107,7 +107,7 @@
                         <input class="focus:outline-none w-96 h-full  bg-transparent text-white text-lg" id="searchBar" name="searchBar" type="text" />
                     </form>
                 </div>
-                    <div class=" h-auto bg-black pr-4 flex items-center text-white userDropdown"><span><%if(Vigente){out.print("<i class=' pr-3 fa-regular fa-star'>  Subcripcion hasta: "+ fechaSub +" </i>  ");} %> </span>
+                    <div class=" h-auto bg-black pr-4 flex items-center text-white userDropdown"><span><%if(Vigente){out.print("<i class=' pr-3 fa-regular fa-star text-green-500 text-sm'>  Subcripcion hasta: "+ fechaSub +" </i>  ");} %> </span>
                     <a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= session.getAttribute("nick")%>")' class="text-white pr-2 cursor-pointer"><% out.print(session.getAttribute("nick")); %></a>
 
                     <button class=""><img src="<% out.print(session.getAttribute("imagen"));%>" class=" rounded-full h-10 w-10 bg-white " alt="alt"/></button>

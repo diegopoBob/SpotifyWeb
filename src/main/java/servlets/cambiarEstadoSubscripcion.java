@@ -72,47 +72,7 @@ public class cambiarEstadoSubscripcion extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Part filePart = request.getPart("tipo");
-        HttpSession session = request.getSession();
-        String usuario = (String) session.getAttribute("nick");
-
-        String fileName = null; // Inicializa fileName como null
-        String uploads = getServletContext().getRealPath("") + File.separator + "playlist";
-
-// Verifica si filePart es nulo o está vacío
-        if (filePart != null && filePart.getSize() > 0) {
-            fileName = filePart.getSubmittedFileName(); // Obtiene el nombre del archivo
-
-            File uploadDir = new File(uploads);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs(); // Crea la carpeta si no existe
-            }
-
-            // Guarda el archivo en la carpeta
-            File file = new File(uploadDir, fileName);
-            try (InputStream fileContent = filePart.getInputStream(); FileOutputStream fos = new FileOutputStream(file)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = fileContent.read(buffer)) != -1) {
-                    fos.write(buffer, 0, bytesRead);
-                }
-            } catch (IOException e) {
-                e.printStackTrace(); // Manejo de excepciones
-            }
-        }
-int idPlay;
-        try {
-            if (filePart != null && filePart.getSize() > 0) {
-               idPlay = ICP.crearPlaylistParticular(nombrePlay, "playlist/" + fileName, usuario, privada);
-            } else {
-               idPlay = ICP.crearPlaylistParticular(nombrePlay, fileName, usuario, privada);
-            }
-        response.setContentType("application/json");
-        response.getWriter().write("{\"success\": true, \"id\": " + idPlay + "}");   
-    } catch (Exception e) {
-        PrintWriter out = response.getWriter();
-        out.print(e);
-    }
+       
 }
 
 

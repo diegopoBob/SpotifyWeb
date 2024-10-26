@@ -32,14 +32,15 @@
     Object[][] datosCan = playController.obtenerDatosCancionesPlaylist(idPlaylist);
     Object[][] datos = playController.obtenerPlaylistLista(idPlaylist);
 
-    String titulo = "Nombre";
-    String propietario = "Apellido";
-    String tipo = "Apellido";
-
+    String titulo = "Canciones Favoritas";
+    String propietario = usuarioLogueado;
+    String tipo = "Particular";
     String imagenPlay = imagenDefault;
     String imagenClie = imagenDefault;
+    
+    
 
-    if (datos.length > 0) {
+    if (idPlaylist >= 0) {
         titulo = (String) datos[0][2];
         tipo = (String) datos[0][3];
         propietario = (String) datos[0][6];
@@ -49,6 +50,8 @@
         }
 
     } else {
+    
+        
         // Obtener los IDs de las canciones favoritas
         List<Integer> cancionesFavIds = (List<Integer>) session.getAttribute("cancionesFavoritas");
 
@@ -61,8 +64,9 @@
                 datosCan[i] = albController.obtenerDatosCompletoCancion(cancionesFavIds.get(i));
             }
         }
-
     }
+    
+    
 
     Object[][] datosCli = usrController.obtenerDatosCliente(propietario);
     if (datosCli.length > 0) {
@@ -96,7 +100,15 @@
             <div class="mt-5">
                 <div  name="textoLibreria" class="h-2/3 flex flex-col justify-center overflow-hidden">
                     <h4>Playlist <%= tipo%> </h4>
-                    <h4> <% if(tipo == ("Particular")){ if((boolean)datos[0][4]){out.println("Privada");}else{out.println("Publica");}}%> </h4>
+                    <h4> <% 
+if ("Particular".equals(tipo) && datos.length > 0) { 
+    if ((boolean) datos[0][4]) {
+        out.println("Privada");
+    } else {
+        out.println("Pública");
+    }
+}
+%> </h4>
                     <h2 style="font-size: clamp(20px, 5vw, 110px);" class=" Class leading-none font-bold "><%= titulo%> </h2>
                 </div>
                 <div name="masInfoPlay" class="flex  pt-5 pb-5 ">
