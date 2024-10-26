@@ -28,7 +28,17 @@ import javax.persistence.ManyToMany;
 @DiscriminatorValue("cliente")
 
 
+
+
 public class Cliente extends Usuario {
+
+    @Column(name = "fecSub")
+    private LocalDate fecSub;
+    @Column(name = "estado")
+    private String estado = "Cancelado";
+    @Column(name = "tipo")
+    private String tipo;
+    
     @ManyToMany
     @JoinTable(
             name = "cliente_playlistFavoritas",
@@ -88,6 +98,30 @@ public class Cliente extends Usuario {
 
     public void setUsuariosSeguidos(List<Usuario> usuariosSeguidos) {
         this.usuariosSeguidos = usuariosSeguidos;
+    }
+    
+    public LocalDate getFecSub() {
+        return fecSub;
+    }
+
+    public void setFecSub(LocalDate fecCont) {
+        this.fecSub = fecSub;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
     
     

@@ -4,6 +4,7 @@
     Author     : dylan
 --%>
 
+<%@page import="controllers.IUsuarioController"%>
 <%@page import="controllers.ICancionController"%>
 <%@page import="controllers.IAlbumController"%>
 <%@page import="controllers.IPlaylistController"%>
@@ -16,10 +17,11 @@
         response.sendRedirect("login.jsp");
         return;
     }
-
+    String nicknameLogeado =(String) session.getAttribute("nick");
     Fabrica fabrica = Fabrica.getInstance();
     IPlaylistController IPC = fabrica.getIPlaylistController();
     IAlbumController IAC = fabrica.getIAlbumController();
+    IUsuarioController IUC = fabrica.getIUsuarioController();
 %>
 <!DOCTYPE html>
 <html>
@@ -87,7 +89,7 @@
                 <div id="libreria" class="col-span-2 rounded-t-lg ml-2 bg-neutral-900 p-2 text-white flex flex-col gap-2 overflow-y-auto">
                     <div class="flex justify-between">
                         <div  class="text-neutral-400 text-white text-bold flex items-center gap-4">                        
-                            <h1 style="font-size: clamp(15px, 3vw, 30px);" class="text-lg">Tu Libreria   </h1>  
+                            <h1 style="font-size: clamp(15px, 3vw, 30px);" class="text-lg"><i class=" m-1 fa-solid fa-book"></i> Tu Libreria   </h1>  
                         </div>
                         <div>
 
@@ -255,34 +257,114 @@
 
             </div>  
         </div>
-                    
-                    
-                    
 
-<!-- COSO DE modal -->
-                    <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-purple-800 via-pink-500 to-blue-800 rounded-xl absolute bottom-0 left-0 z-50 flex justify-between w-full p-4  ">
-                        <div class="flex items-center mx-auto">
-                            <p class="flex items-left text-sm text-bold font-normal text-white ">
-                                
-                                    
-                                    <span class="">Muestra de Spotify </span>
-                                
-                                <span> <a href="https://flowbite.com" class="flex items-center ms-0 text-sm font-medium text-blue-600 md:ms-1 md:inline-flex dark:text-blue-500 hover:underline">Become a partner <svg class="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                                        </svg></a></span>
-                            </p>
-                        </div>
-                        <div class="flex items-center">
-                            <button data-dismiss-target="#bottom-banner" type="button" class="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white">
-                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+
+    </div>               
+
+    <!-- COSO DE BOTTOM -->
+
+    <%      if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
+            Object[][] datosCli = IUC.obtenerDatosCliente(nicknameLogeado);
+            
+            if (datosCli[0][6].equals("Cancelado")) {
+
+    %>
+    <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-purple-800 via-pink-500 to-blue-800 rounded-xl absolute bottom-0 left-0 z-50 flex  w-full p-4  ">
+        <div class="flex  mx-auto">
+            <p class="flex text-left text-sm text-bold font-normal text-white ">
+                <span class="text-xl p-4">Quieres crear playlists o descargar musica? Pos Suscribete :</span><button data-modal-target="select-modal" data-modal-toggle="select-modal" class="bg-white rounded-full p-4 shadow-md text-base font-semibold text-black">Suscribirse</button>
+
+            </p>
+        </div>
+        <div class="flex items-center">
+            <button data-dismiss-target="#bottom-banner" type="button" class="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close banner</span>
+            </button>
+        </div>
+    </div>
+    <% }%>
+    <!-- Main modal -->
+    <div id="select-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-neutral-900 rounded-lg shadow">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b border-gray-600 rounded-t">
+                    <h3 class="text-lg font-semibold text-white">
+                        Planes de Spotify
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-green-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="select-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5">
+                    <p class="text-gray-400 mb-4">Elige un plan que se adapte a tus necesidades:</p>
+                    <ul class="space-y-4 mb-4">
+                        <!-- Plan de 12 meses -->
+                        <li>
+                            <input type="radio" id="plan-12" name="plan" value="plan-12" class="hidden peer" required />
+                            <label for="plan-12" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
+                                <div class="block">
+                                    <div class="w-full text-lg font-semibold">Plan Anual (12 meses)</div>
+                                    <div class="w-full text-gray-400">Precio: $99.99</div>
+                                </div>
+                                <svg class="w-4 h-4 ms-3 text-gray-400 peer-checked:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                                 </svg>
-                                <span class="sr-only">Close banner</span>
-                            </button>
-                        </div>
-                    </div></div>
-    </body>
-    <script>
+                            </label>
+                        </li>
+                        <!-- Plan de 6 meses -->
+                        <li>
+                            <input type="radio" id="plan-6" name="plan" value="plan-6" class="hidden peer" />
+                            <label for="plan-6" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
+                                <div class="block">
+                                    <div class="w-full text-lg font-semibold">Plan Semestral (6 meses)</div>
+                                    <div class="w-full text-gray-400">Precio: $59.99</div>
+                                </div>
+                                <svg class="w-4 h-4 ms-3 text-gray-400 peer-checked:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                </svg>
+                            </label>
+                        </li>
+                        <!-- Plan de 1 mes -->
+                        <li>
+                            <input type="radio" id="plan-1" name="plan" value="plan-1" class="hidden peer" />
+                            <label for="plan-1" class="inline-flex items-center justify-between w-full p-5 text-white bg-neutral-800 border border-gray-600 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:text-green-500 hover:bg-neutral-700">
+                                <div class="block">
+                                    <div class="w-full text-lg font-semibold">Plan Mensual (1 mes)</div>
+                                    <div class="w-full text-gray-400">Precio: $9.99</div>
+                                </div>
+                                <svg class="w-4 h-4 ms-3 text-gray-400 peer-checked:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                </svg>
+                            </label>
+                        </li>
+                    </ul>
+                    <button class="text-white inline-flex w-full justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Confirmar plan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <%}%>
+    <!-- COSO DE BOTTOM -->
+
+
+</body>
+<script>
         document.getElementById('busquedaLibreria').addEventListener('input', function () {
             let busqueda = document.getElementById('busquedaLibreria').value.toLowerCase();
 
