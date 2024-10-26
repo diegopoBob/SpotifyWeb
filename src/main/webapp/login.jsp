@@ -5,8 +5,9 @@
 --%>
 
 <%
-    if (!(session == null || session.getAttribute("user") == null)) {
-        response.sendRedirect("index.jsp");       
+    if (session == null || session.getAttribute("nick") == null) {        
+    }else{
+        response.sendRedirect("index.jsp");
         return;
     }
 %>

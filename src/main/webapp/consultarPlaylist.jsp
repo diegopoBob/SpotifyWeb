@@ -15,6 +15,10 @@
 
 
 <%
+     if (session == null || session.getAttribute("nick") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
     Fabrica fabrica = Fabrica.getInstance();
     IUsuarioController usrController = fabrica.getIUsuarioController();
     IPlaylistController playController = fabrica.getIPlaylistController();

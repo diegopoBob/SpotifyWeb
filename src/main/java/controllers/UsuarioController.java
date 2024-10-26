@@ -5,6 +5,7 @@
 package controllers;
 
 import static java.lang.System.out;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 import models.Album;
 import models.Artista;
@@ -33,6 +35,7 @@ import persistence.CancionJpaController;
 import persistence.ClienteJpaController;
 import persistence.PlaylistJpaController;
 import persistence.UsuarioJpaController;
+import persistence.exceptions.PreexistingEntityException;
 
 /*
 import models.Artista;
@@ -129,7 +132,7 @@ public class UsuarioController implements IUsuarioController {
         }
         try {
             aux.create(usr);
-        } catch (Exception ex) {
+        } catch (PreexistingEntityException | RollbackException ex) {
             System.out.print(ex);
             throw ex;
         }
@@ -408,14 +411,18 @@ public class UsuarioController implements IUsuarioController {
     return usr != null && checkPassword(password, usr.getContraseña());
     }
     public String getNickPorMail(String mail) {
-    EntityManager em = emf.createEntityManager();
-    String nick = em.createQuery("SELECT u.nick FROM Usuario u WHERE u.mail = :mail", String.class).
-            setParameter("mail", mail).
-            getSingleResult();
-    System.out.print(nick);
-    return nick;
+        EntityManager em = emf.createEntityManager();
+        String nick;
+        try {
+            nick = em.createQuery("SELECT u.nick FROM Usuario u WHERE u.mail = :mail", String.class).
+                    setParameter("mail", mail).
+                    getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+        return nick;
     }
-    
+
 
 //encriptar pw
     public String hashPassword(String password) {

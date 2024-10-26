@@ -16,6 +16,10 @@
 <%@page import="controllers.Fabrica"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+      if (session == null || session.getAttribute("nick") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
     Fabrica fabrica = Fabrica.getInstance();
     IUsuarioController usrController = fabrica.getIUsuarioController();
     IPlaylistController playController = fabrica.getIPlaylistController();

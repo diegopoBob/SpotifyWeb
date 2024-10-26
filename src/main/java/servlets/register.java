@@ -8,17 +8,21 @@ import controllers.Fabrica;
 import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import static java.lang.System.out;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
+import javax.persistence.RollbackException;
+import persistence.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -79,9 +83,12 @@ public class register extends HttpServlet {
     String biografia = request.getParameter("biografia");
     String userType = request.getParameter("userType");
     
-    Part filePart = request.getPart("foto"); // "profileImage" es el nombre del input file
-    String fileName = filePart.getSubmittedFileName(); // Obtiene el nombre del archivo    
     
+    Part filePart = request.getPart("foto");// "profileImage" es el nombre del input file
+    String fileName = filePart.getSubmittedFileName();// Obtiene el nombre del archivo    
+    if(fileName.isEmpty()){ // si no se selecciono ninguna imagen
+        fileName="imagenDefault.png";
+    }
     String uploads = getServletContext().getRealPath("") + File.separator + "fotosDePerfil";
     
     // Asegúrate de que la carpeta de destino existe
@@ -105,8 +112,13 @@ public class register extends HttpServlet {
         ICU.registroUsuario(username, nombre, apellido, email, LocalDate.parse(birthdate), "fotosDePerfil/"+fileName, biografia, link, userType, password);
         response.sendRedirect("login.jsp?");
     } catch (Exception e) {
-        PrintWriter out = response.getWriter();
-        out.print(e);
+        //segun el tipo de exception obtenido
+        if(e instanceof PreexistingEntityException){
+            response.sendRedirect("register.jsp?nick");
+        }
+        if(e instanceof RollbackException){
+            response.sendRedirect("register.jsp?correo");
+        }
     }
 }
 

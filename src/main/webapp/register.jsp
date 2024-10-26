@@ -5,8 +5,9 @@
 --%>
 
 <%
-    if (!(session == null || session.getAttribute("user") == null)) {
-        response.sendRedirect("index.jsp");       
+    if (session == null || session.getAttribute("nick") == null) {        
+    }else{
+        response.sendRedirect("index.jsp");
         return;
     }
 %>
@@ -21,7 +22,6 @@
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <script>
-            // Function to toggle password visibility
             function togglePasswordVisibility() {
                 var passwordInput = document.getElementById("password");
                 var toggleIcon = document.getElementById("togglePasswordIcon");
@@ -36,12 +36,10 @@
                 }
             }
 
-            // Function to trigger file input click
             function openFileSelector() {
                 document.getElementById("fileInput").click();
             }
 
-            // Function to change the profile image after selecting a file
             function previewImage(event) {
                 const file = event.target.files[0];
                 if (file) {
@@ -69,7 +67,7 @@
                     <i class="fas fa-camera absolute right-2 bottom-2 text-white bg-gray-900 rounded-full p-2"></i>
                 </div>
                 
-                <!-- Hidden file input -->
+                <!-- donde se carga la ruta de la imagen -->
                 <input type="file" id="fileInput" name="foto" accept="image/*" class="hidden" onchange="previewImage(event)">
                 
                 

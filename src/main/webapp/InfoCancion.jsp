@@ -12,6 +12,10 @@
 <html>
     <body>
         <%
+            if (session == null || session.getAttribute("nick") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
             int idCancion = Integer.parseInt(request.getParameter("idCancion"));
             Fabrica fabrica = Fabrica.getInstance();
             ICancionController ICC = fabrica.getICancionController();

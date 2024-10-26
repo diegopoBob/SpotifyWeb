@@ -19,6 +19,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%  
+    if (session == null || session.getAttribute("nick") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
 String input = request.getParameter("input"); 
 Fabrica fabrica = Fabrica.getInstance();
 ICancionController cancionController = fabrica.getICancionController();
