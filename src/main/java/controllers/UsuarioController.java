@@ -478,16 +478,33 @@ public class UsuarioController implements IUsuarioController {
     }
         
     }
-     public void CambiarEstadosubscripcion(String nick ,String estado,Integer tipo,LocalDate fecha) throws Exception {
-        // Busca al cliente por su nick
-        Cliente cliente = auxCliente.findCliente(nick);
-        if(estado!=null){
-         cliente.setEstado(estado);
-        }if (tipo != null) {
-         cliente.setTipo(tipo);
-        }if (fecha != null) {
-         cliente.setFecSub(fecha);
-        }
-        auxCliente.edit(cliente);
+     public void CambiarEstadosubscripcion(String nick, String estado, Integer tipo, LocalDate fecha) throws Exception {
+    // 1. Busca al cliente por su nick
+    Cliente cliente = (Cliente) usrController.findUsuario(nick);
+    
+    if (cliente == null) {
+        throw new Exception("Cliente no encontrado con nick: " + nick);
     }
+
+    boolean cambios = false;
+
+    // 2. Actualiza los campos solo si hay cambios
+    if (estado != null && !estado.equals(cliente.getEstado())) {
+        cliente.setEstado(estado);
+        cambios = true;
+    }
+    if (tipo != null && !tipo.equals(cliente.getTipo())) {
+        cliente.setTipo(tipo);
+        cambios = true;
+    }
+    if (fecha != null && !fecha.equals(cliente.getFecSub())) {
+        cliente.setFecSub(fecha);
+        cambios = true;
+    }
+
+    // 3. Solo persiste si hubo cambios
+    if (cambios) {
+       usrController.edit(cliente);  // Verifica que este método use merge() correctamente.
+    }
+}
 }

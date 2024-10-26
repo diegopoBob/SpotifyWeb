@@ -43,5 +43,5 @@ public interface IUsuarioController {
     
     public abstract Map<String, String> getDatosUsuario(String nick);
     public abstract String artistaNombre(String nick);    
-    
+    public abstract void CambiarEstadosubscripcion(String nick ,String estado,Integer tipo,LocalDate fecha) throws Exception; 
 }
