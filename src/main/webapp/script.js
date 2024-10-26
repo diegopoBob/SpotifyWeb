@@ -179,7 +179,7 @@ function scripts_consultarPlaylist() {
         })));
 }
 
-function scrips_ConsultarAlbum() {
+function scripts_ConsultarAlbum() {
 
 }
 
@@ -263,7 +263,7 @@ function agregarEliminarFavoritoCancionPlay(canId) {
                         button.text("Seguir"); // Cambia el texto a "Seguir"
                     }
                      
-                     abrirCasoDeUso("consultarUsuario.jsp",IdUser.toString());
+                     abrirCasoDeUso("consultarUsuario.jsp",nickname.toString());
                 }
                 return false;
             }
@@ -310,7 +310,9 @@ function agregarEliminarFavoritoCancionPlay(canId) {
 
         // Obtén el valor del campo de entrada donde se guarda el nickname
         const nickname = $("#idAlbum").val(); // Asegúrate de que el ID sea correcto
+        const artista = $("#artistaAlbum").val(); // Asegúrate de que el ID sea correcto
         dataString = "&albumId=" + encodeURIComponent(nickname); // 
+       
         console.log(dataString);
         $.ajax({
             type: "POST",
@@ -321,8 +323,7 @@ function agregarEliminarFavoritoCancionPlay(canId) {
             success: function (data) {
 
                 if (data.success) {
-                    
-                    //abrirCasoDeUso('ConsultarAlbum.jsp',"");
+                    abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre='+ artista + '&user=' + nickname);
                     actualizarTablaPlaylists();
                 }
                 return false;
@@ -359,3 +360,5 @@ function agregarEliminarFavoritoCancionPlay(canId) {
      }
      return false;
  }
+ 
+ 
