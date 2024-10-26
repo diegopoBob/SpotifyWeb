@@ -167,18 +167,25 @@
                             <a>
                                 <span class="text-white"><%= cancion[1] %></span>
                             </a>
-                            <a href="#" class="text-blue-500 hover:underline">Descargar</a>
-                            <form id="favoritosForm" method="POST">
-                                                <input type="hidden" id="canId" name="canId" value="<%=(Integer) cancion[0]%>">
-                                                <button type="button" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) cancion[0]%>);"> <!-- Cambié type="submit" a type="button" -->
-                                                    <% if (CanFav.contains((Integer) cancion[0])) {%>
-                                                    <i id="can<%= (Integer) cancion[0]%>" class="text-green-500 fa-solid fa-circle-check ml-5 mt-9"></i>
-                                                    <% } else {%>
-                                                    <i id="can<%= (Integer) cancion[0]%>" class="text-white fa-solid fa-circle-plus ml-5 mt-9"></i>
-                                                    <% }%>
-                                                </button>
-                                            </form>
-                            <a href="#" class="text-blue-500 hover:underline">Agregar a playlist</a>
+                            <div class="flex items-center space-x-4">
+    <!-- Botón de Descargar -->
+    <a href="#" class="text-blue-500 hover:underline">Descargar</a>
+
+    <!-- Formulario de Favoritos -->
+    <form id="favoritosForm" method="POST">
+        <input type="hidden" id="canId" name="canId" value="<%=(Integer) cancion[0]%>">
+        <button type="button" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) cancion[0]%>);">
+            <% if (CanFav.contains((Integer) cancion[0])) { %>
+                <i id="can<%= (Integer) cancion[0] %>" class="text-green-500 fa-solid fa-circle-check"></i>
+            <% } else { %>
+                <i id="can<%= (Integer) cancion[0] %>" class="text-white fa-solid fa-circle-plus"></i>
+            <% } %>
+        </button>
+    </form>
+
+    <!-- Botón de Agregar a Playlist -->
+    <a href="#" class="text-blue-500 hover:underline">Agregar a playlist</a>
+</div>
                         </li>
                     <% } %>
                 <% } else { %>
