@@ -342,7 +342,7 @@
                 crearListaCanciones();
             }
             document.getElementById('audioSource').src = nombre;
-            document.getElementById('shuffleBtn').classList.remove('text-white'); //desactivarshuffle si esta activado
+            //document.getElementById('shuffleBtn').classList.remove('text-white'); //desactivarshuffle si esta activado
             audio.load();
             audio.play();
             //cargarInfoCancion(this.value);
@@ -470,7 +470,7 @@
 
         function playPorPause() {
             const icono = document.getElementById('playButton');
-
+            
             if (icono.classList.contains('fa-play')) {
                 icono.classList.remove("fa-play");
                 icono.classList.add("fa-pause");

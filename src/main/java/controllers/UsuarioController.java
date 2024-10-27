@@ -125,7 +125,7 @@ public class UsuarioController implements IUsuarioController {
         Usuario usr;
         String contraseñaEncriptada;
         contraseñaEncriptada = hashPassword(contraseña);
-        if (tipo == "artista") {
+        if (tipo.equals("artista")) {
             usr = new Artista(nickname, nombre, apellido, mail, FecNac, imagen, biografia, link, contraseñaEncriptada);
         } else {//si es cliente
             usr = new Cliente(nickname, nombre, apellido, mail, FecNac, imagen, contraseñaEncriptada);
