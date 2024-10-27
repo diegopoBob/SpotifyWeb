@@ -54,7 +54,7 @@ public class UsuarioController implements IUsuarioController {
     AlbumJpaController auxAlbum = new AlbumJpaController(emf);
     CancionJpaController auxCan = new CancionJpaController(emf);
     UsuarioJpaController usrController = new UsuarioJpaController(emf);
-    //ClienteJpaController auxCliente =  new ClienteJpaController(emf);
+    ClienteJpaController auxCliente =  new ClienteJpaController(emf);
 
     //  private ClienteJpaController cliente_ctr = new ClienteJpaController(emf);
     public List<String> obtenerNombresClientes() {
@@ -81,7 +81,7 @@ public class UsuarioController implements IUsuarioController {
         EntityManager em = emf.createEntityManager();
         try {
             List<Cliente> clientes = em.createQuery("SELECT c FROM Cliente c WHERE c.nick = :nick", Cliente.class).setParameter("nick", nick).getResultList();
-            Object[][] data = new Object[clientes.size()][6];
+            Object[][] data = new Object[clientes.size()][9];
 
             for (int i = 0; i < clientes.size(); i++) {
                 Cliente cliente = clientes.get(i);  // Obtener el cliente individual
@@ -92,6 +92,9 @@ public class UsuarioController implements IUsuarioController {
                 data[i][3] = cliente.getMail();
                 data[i][4] = cliente.getFecNac();
                 data[i][5] = cliente.getImagen();
+                data[i][6] = cliente.getEstado();
+                data[i][7] = cliente.getFecSub();
+                data[i][8] = cliente.getTipo();
             }
             return data;
 
@@ -475,4 +478,33 @@ public class UsuarioController implements IUsuarioController {
     }
         
     }
+     public void CambiarEstadosubscripcion(String nick, String estado, Integer tipo, LocalDate fecha) throws Exception {
+    // 1. Busca al cliente por su nick
+    Cliente cliente = (Cliente) usrController.findUsuario(nick);
+    
+    if (cliente == null) {
+        throw new Exception("Cliente no encontrado con nick: " + nick);
+    }
+
+    boolean cambios = false;
+
+    // 2. Actualiza los campos solo si hay cambios
+    if (estado != null && !estado.equals(cliente.getEstado())) {
+        cliente.setEstado(estado);
+        cambios = true;
+    }
+    if (tipo != null && !tipo.equals(cliente.getTipo())) {
+        cliente.setTipo(tipo);
+        cambios = true;
+    }
+    if (fecha != null && !fecha.equals(cliente.getFecSub())) {
+        cliente.setFecSub(fecha);
+        cambios = true;
+    }
+
+    // 3. Solo persiste si hubo cambios
+    if (cambios) {
+       usrController.edit(cliente);  // Verifica que este método use merge() correctamente.
+    }
+}
 }

@@ -32,14 +32,15 @@
     Object[][] datosCan = playController.obtenerDatosCancionesPlaylist(idPlaylist);
     Object[][] datos = playController.obtenerPlaylistLista(idPlaylist);
 
-    String titulo = "Nombre";
-    String propietario = "Apellido";
-    String tipo = "Apellido";
-
+    String titulo = "Canciones Favoritas";
+    String propietario = usuarioLogueado;
+    String tipo = "Particular";
     String imagenPlay = imagenDefault;
     String imagenClie = imagenDefault;
+    
+    
 
-    if (datos.length > 0) {
+    if (idPlaylist >= 0) {
         titulo = (String) datos[0][2];
         tipo = (String) datos[0][3];
         propietario = (String) datos[0][6];
@@ -49,6 +50,8 @@
         }
 
     } else {
+    
+        
         // Obtener los IDs de las canciones favoritas
         List<Integer> cancionesFavIds = (List<Integer>) session.getAttribute("cancionesFavoritas");
 
@@ -61,8 +64,9 @@
                 datosCan[i] = albController.obtenerDatosCompletoCancion(cancionesFavIds.get(i));
             }
         }
-
     }
+    
+    
 
     Object[][] datosCli = usrController.obtenerDatosCliente(propietario);
     if (datosCli.length > 0) {
@@ -95,13 +99,22 @@
             </div> 
             <div class="mt-5">
                 <div  name="textoLibreria" class="h-2/3 flex flex-col justify-center overflow-hidden">
-                    <h4>Playlist <%= tipo%></h4>
+                    <h4>Playlist <%= tipo%> </h4>
+                    <h4> <% 
+if ("Particular".equals(tipo) && datos.length > 0) { 
+    if ((boolean) datos[0][4]) {
+        out.println("Privada");
+    } else {
+        out.println("Pública");
+    }
+}
+%> </h4>
                     <h2 style="font-size: clamp(20px, 5vw, 110px);" class=" Class leading-none font-bold "><%= titulo%> </h2>
                 </div>
                 <div name="masInfoPlay" class="flex  pt-5 pb-5 ">
                     <%if (tipo == "Particular") {%>
                     <img src="<%= imagenClie%>" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/><a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= propietario%>");' class=" hover:underline text-white cursor-pointer pr-2 ">
-                        <p class="decoration-1"> <%= propietario%></p>
+                        <p class="decoration-1"> <%= propietario %></p>
                     </a> <% } else {%>
                     <img src="includes/logo.png" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/>
                     <p class="decoration-1"> <i class="fa-solid fa-circle-check"></i> Spotify</p>
@@ -171,13 +184,13 @@
                                             <% out.print(datosCan[i][1]);%>
                                         </p>
                                         <p class="cursor-pointer hover:underline z-50"> 
-                                            <a class="z-50" onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= datosCan[i][8]%>")' class="hover:underline w-1/6 text-white cursor-pointer pr-2"><%= datosCan[i][7]%></a>
+                                            <a class="z-50" onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp", "<%= datosCan[i][8]%>")' class="hover:underline w-1/6 text-white cursor-pointer pr-2"><%= datosCan[i][7] %> <% if(datosCan[i][10]!=null){out.println(datosCan[i][10]);}%></a>
                                         </p>
                                     </td>
 
                                     <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline" 
                                             onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>&user=<%= datosCan[i][9]%>');  event.stopPropagation();">
-                                            <p class="cursor-pointer"><%= datosCan[i][6]%></p>
+                                            <p class="cursor-pointer"><%= datosCan[i][6] %> </p>
                                         </td>
                                         <td class="whitespace-nowrap pb-8 text-xl">
 

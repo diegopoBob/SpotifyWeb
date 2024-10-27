@@ -14,23 +14,31 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import javax.servlet.http.Part;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import static java.lang.System.out;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpSession;
+import models.Album;
 
 /**
  *
  * @author dylan
  */
-@WebServlet(name = "altaPlaylist", urlPatterns = {"/altaPlaylist"})
+@WebServlet(name = "cambiarEstadoSubscripcion", urlPatterns = {"/cambiarEstadoSubscripcion"})
 @MultipartConfig
-public class altaPlaylist extends HttpServlet {
-    Fabrica fabrica = Fabrica.getInstance();
-    private IPlaylistController ICP = fabrica.getIPlaylistController();
+public class cambiarEstadoSubscripcion extends HttpServlet {
+     Fabrica fabrica = Fabrica.getInstance();
+    private IUsuarioController ICU = fabrica.getIUsuarioController();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -71,51 +79,27 @@ public class altaPlaylist extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String nombrePlay = request.getParameter("nombre");
-        Part filePart = request.getPart("foto");
-        String privadaParam = request.getParameter("privada");
-        boolean privada = "true".equalsIgnoreCase(privadaParam);
+        
+        processRequest(request, response);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
+        EntityManager em = emf.createEntityManager();
         HttpSession session = request.getSession();
+        String planSeleccionado = request.getParameter("planSub");
+        LocalDate fechaActual = LocalDate.now();
         String usuario = (String) session.getAttribute("nick");
-
-        String fileName = null; // Inicializa fileName como null
-        String uploads = getServletContext().getRealPath("") + File.separator + "playlist";
-
-// Verifica si filePart es nulo o está vacío
-        if (filePart != null && filePart.getSize() > 0) {
-            fileName = filePart.getSubmittedFileName(); // Obtiene el nombre del archivo
-
-            File uploadDir = new File(uploads);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs(); // Crea la carpeta si no existe
-            }
-
-            // Guarda el archivo en la carpeta
-            File file = new File(uploadDir, fileName);
-            try (InputStream fileContent = filePart.getInputStream(); FileOutputStream fos = new FileOutputStream(file)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = fileContent.read(buffer)) != -1) {
-                    fos.write(buffer, 0, bytesRead);
-                }
-            } catch (IOException e) {
-                e.printStackTrace(); // Manejo de excepciones
-            }
-        }
-int idPlay;
+        int tipo = Integer.valueOf(planSeleccionado);
+       
         try {
-            if (filePart != null && filePart.getSize() > 0) {
-               idPlay = ICP.crearPlaylistParticular(nombrePlay, "playlist/" + fileName, usuario, privada);
-            } else {
-               idPlay = ICP.crearPlaylistParticular(nombrePlay, fileName, usuario, privada);
-            }
-        response.setContentType("application/json");
-        response.getWriter().write("{\"success\": true, \"id\": " + idPlay + "}");   
-    } catch (Exception e) {
-        PrintWriter out = response.getWriter();
-        out.print(e);
+            ICU.CambiarEstadosubscripcion(usuario,"Pendiente",tipo,null);
+            out.println("Anduvo");
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Imprime la traza completa del error en la consola del servidor.
+            out.println("Error: " + ex.getMessage());
+        }
+
+       response.sendRedirect("index.jsp?");  
+
     }
-}
 
 
 

@@ -164,19 +164,32 @@ function scripts_consultarPlaylist() {
         document.getElementById("PlaylistAbajo").style.backgroundImage = "linear-gradient(to bottom, rgb(" + colorOscuro + ") 25%, rgb(23 23 23))";
     });
     //FUNCION TABLA SORTER
-    const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+    const getCellValue = (tr, idx) => tr.children[idx]?.innerText || tr.children[idx]?.textContent;
 
-    const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
-                v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
-            )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+// Comparador para la ordenación
+const comparer = (idx, asc) => (a, b) => {
+    const v1 = getCellValue(a, idx);
+    const v2 = getCellValue(b, idx);
 
+    // Comparar números o texto según corresponda
+    return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)
+        ? (asc ? v1 - v2 : v2 - v1) // Ordenar como números
+        : v1.toString().localeCompare(v2) * (asc ? 1 : -1); // Ordenar como texto
+};
 
-    document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
-            const table = th.closest('table');
-            Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
-                    .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-                    .forEach(tr => table.appendChild(tr));
-        })));
+document.querySelectorAll('th').forEach(th => {
+    th.addEventListener('click', function () {
+        const table = th.closest('table');
+        const tbody = table.querySelector('tbody'); // Asegúrate de seleccionar solo las filas del tbody
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        const idx = Array.from(th.parentNode.children).indexOf(th);
+        const asc = this.asc = !this.asc;
+
+        // Ordenar y volver a añadir las filas
+        rows.sort(comparer(idx, asc)).forEach(tr => tbody.appendChild(tr));
+    });
+});
 }
 
 function scripts_ConsultarAlbum() {
@@ -231,6 +244,18 @@ function agregarEliminarFavoritoCancionPlay(canId) {
                     } else {
                         icon.removeClass("fa-circle-plus text-white")
                                 .addClass("fa-circle-check text-green-500");
+                    }
+                    
+                    strcan = "#canCora" + canId.toString();
+                    const iconCora = $(strcan);
+                    if (iconCora.length > 0) {
+                        if (iconCora.hasClass("fa-solid")) {
+                            iconCora.removeClass("fa-solid text-green-500")
+                                    .addClass("fa-regular text-white");
+                        } else {
+                            iconCora.removeClass("fa-regular text-white")
+                                    .addClass("fa-solid text-green-500");
+                        }
                     }
                 }
                 return false;
@@ -331,6 +356,44 @@ function agregarEliminarFavoritoCancionPlay(canId) {
         });
     }
  }
+function AjaXAltaPlaylist() {
+    const nombre = $("#nombre").val();
+
+    // Verifica si el campo "nombre" está vacío
+    if (nombre.length > 0) {
+        // Crea un objeto FormData a partir del formulario
+        const formData = new FormData(document.getElementById('altaPlaylist'));
+
+        // Obtiene el estado del checkbox y lo agrega a FormData
+        const privada = $("#privada").is(':checked') ? 'true' : 'false'; 
+        formData.append('privada', privada); // Agrega el valor del checkbox
+
+        console.log([...formData]); // Para verificar el contenido de FormData
+
+        $.ajax({
+            type: "POST",
+            url: "altaPlaylist",
+            data: formData,
+            processData: false, // No procesa los datos como un string
+            contentType: false, // Permite el envío de multipart/form-data
+
+            success: function (data) {
+                // Aquí puedes acceder directamente a "data"
+                if (data.success) {
+                    const id = data.id; // Obtén el ID de la respuesta
+                   abrirCasoDeUso('consultarPlaylist.jsp?user=' + id);
+                } else {
+                    console.log("Hubo un problema con la solicitud");
+                }
+            },
+            error: function (error) {
+                console.error("Error al enviar datos:", error); // Manejo de errores
+            }
+        });
+    } else {
+        console.log("El nombre no puede estar vacío."); // Mensaje de error
+    }
+}
 
  function isEmptyFieldAlbum() {
      if (!$("#idAlbum").val().length) {
