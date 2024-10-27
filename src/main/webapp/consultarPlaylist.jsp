@@ -15,7 +15,7 @@
 
 
 <%
-     if (session == null || session.getAttribute("nick") == null) {
+    if (session == null || session.getAttribute("nick") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
@@ -37,8 +37,6 @@
     String tipo = "Particular";
     String imagenPlay = imagenDefault;
     String imagenClie = imagenDefault;
-    
-    
 
     if (idPlaylist >= 0) {
         titulo = (String) datos[0][2];
@@ -50,8 +48,7 @@
         }
 
     } else {
-    
-        
+
         // Obtener los IDs de las canciones favoritas
         List<Integer> cancionesFavIds = (List<Integer>) session.getAttribute("cancionesFavoritas");
 
@@ -65,8 +62,6 @@
             }
         }
     }
-    
-    
 
     Object[][] datosCli = usrController.obtenerDatosCliente(propietario);
     if (datosCli.length > 0) {
@@ -100,21 +95,21 @@
             <div class="mt-5">
                 <div  name="textoLibreria" class="h-2/3 flex flex-col justify-center overflow-hidden">
                     <h4>Playlist <%= tipo%> </h4>
-                    <h4> <% 
-if ("Particular".equals(tipo) && datos.length > 0) { 
-    if ((boolean) datos[0][4]) {
-        out.println("Privada");
-    } else {
-        out.println("Pública");
-    }
-}
-%> </h4>
+                    <h4> <%
+                        if ("Particular".equals(tipo) && datos.length > 0) {
+                            if ((boolean) datos[0][4]) {
+                                out.println("Privada");
+                            } else {
+                                out.println("Pública");
+                            }
+                        }
+                        %> </h4>
                     <h2 style="font-size: clamp(20px, 5vw, 110px);" class=" Class leading-none font-bold "><%= titulo%> </h2>
                 </div>
                 <div name="masInfoPlay" class="flex  pt-5 pb-5 ">
                     <%if (tipo == "Particular") {%>
                     <img src="<%= imagenClie%>" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/><a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= propietario%>");' class=" hover:underline text-white cursor-pointer pr-2 ">
-                        <p class="decoration-1"> <%= propietario %></p>
+                        <p class="decoration-1"> <%= propietario%></p>
                     </a> <% } else {%>
                     <img src="includes/logo.png" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/>
                     <p class="decoration-1"> <i class="fa-solid fa-circle-check"></i> Spotify</p>
@@ -127,11 +122,11 @@ if ("Particular".equals(tipo) && datos.length > 0) {
             <div class=" text-white flex flex-row min-h-20 mb-4 max-h-20 w-2/3 text-4xl  h-1/6">
                 <img id="playButtonPlaylist" src="includes/playP.png" class="rounded-full h-16 w-auto m-8 mt-5 ml-6 mr-3" alt="alt"/>
                 <i class="fa-solid  fa-shuffle   ml-4  mt-9" ></i>
-                <i  <% if (!usuarioLogueado.equals(propietario)){%>
+                <i  <% if (!usuarioLogueado.equals(propietario)) {%>
                     <form id="idguardarPlaylistFavorita" method="POST">
                         <input id ="playlistFav" type="hidden" name="playId" value="<%=datos[0][1]%>">
                         <button  onclick="event.stopPropagation(); AjaXguardarPlaylistFavorita();" type="button">
-                            <% if (playlistFav.contains((Integer)datos[0][1])) { %>
+                            <% if (playlistFav.contains((Integer) datos[0][1])) { %>
                             <i id ="iconoPlayFav"class="text-green-500 fa-solid fa-circle-check  ml-5  mt-9" ></i>
                             <%} else { %>
                             <i id ="iconoPlayFav"class="text-white fa-solid fa-circle-plus  ml-5  mt-9"></i>
@@ -139,7 +134,7 @@ if ("Particular".equals(tipo) && datos.length > 0) {
                         </button>
                     </form>
                     <% } %>
-                <i class="fa-regular fa-circle-down ml-5  mt-9"></i>
+                    <i class="fa-regular fa-circle-down ml-5  mt-9"></i>
             </div>
             <div class=" text-white flex  min-h-20 mb-4 max-h-20 w-1/3 text-4xl text-right">
                 <i class="fa-solid fa-magnifying-glass ml-5  mt-9  "></i>
@@ -168,7 +163,7 @@ if ("Particular".equals(tipo) && datos.length > 0) {
                                 <tr style="border-radius: 16px;" 
                                     class="max-h-9 flex-row hover:bg-neutral-600/50 hover:rounded-md" 
                                     data-idCancion="<%= datosCan[i][0]%>"
-                                    onclick='reproducirCancion("<%= datosCan[i][3]%>") ; cargarInfoCancion("<%= datosCan[i][0]%>")' id="<%= datosCan[i][3]%>" name="cancion">
+                                    onclick='reproducirCancion("<%= datosCan[i][3]%>"); cargarInfoCancion("<%= datosCan[i][0]%>")' id="<%= datosCan[i][3]%>" name="cancion">
 
                                     <td class="text-xl">
                                         <div class="flex flex-row items-center  gap-8 pl-6">
@@ -184,28 +179,30 @@ if ("Particular".equals(tipo) && datos.length > 0) {
                                             <% out.print(datosCan[i][1]);%>
                                         </p>
                                         <p class="cursor-pointer hover:underline z-50"> 
-                                            <a class="z-50" onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp", "<%= datosCan[i][8]%>")' class="hover:underline w-1/6 text-white cursor-pointer pr-2"><%= datosCan[i][7] %> <% if(datosCan[i][10]!=null){out.println(datosCan[i][10]);}%></a>
+                                            <a class="z-50" onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp", "<%= datosCan[i][8]%>")' class="hover:underline w-1/6 text-white cursor-pointer pr-2"><%= datosCan[i][7]%> <% if (datosCan[i][10] != null) {
+                                                    out.println(datosCan[i][10]);
+                                                }%></a>
                                         </p>
                                     </td>
 
                                     <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline" 
-                                            onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>&user=<%= datosCan[i][9]%>');  event.stopPropagation();">
-                                            <p class="cursor-pointer"><%= datosCan[i][6] %> </p>
-                                        </td>
-                                        <td class="whitespace-nowrap pb-8 text-xl">
+                                        onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>&user=<%= datosCan[i][9]%>');  event.stopPropagation();">
+                                        <p class="cursor-pointer"><%= datosCan[i][6]%> </p>
+                                    </td>
+                                    <td class="whitespace-nowrap pb-8 text-xl">
 
-                                            <form id="favoritosForm" method="POST">
-                                                <input type="hidden" id="canId" name="canId" value="<%=(Integer) datosCan[i][0]%>">
-                                                <button type="button" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) datosCan[i][0]%>);"> <!-- Cambié type="submit" a type="button" -->
-                                                    <% if (CanFav.contains((Integer) datosCan[i][0])) {%>
-                                                    <i id="can<%= (Integer) datosCan[i][0]%>" class="text-green-500 fa-solid fa-circle-check ml-5 mt-9"></i>
-                                                    <% } else {%>
-                                                    <i id="can<%= (Integer) datosCan[i][0]%>" class="text-white fa-solid fa-circle-plus ml-5 mt-9"></i>
-                                                    <% }%>
-                                                </button>
-                                            </form>
+                                        <form id="favoritosForm" method="POST">
+                                            <input type="hidden" id="canId" name="canId" value="<%=(Integer) datosCan[i][0]%>">
+                                            <button type="button" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) datosCan[i][0]%>);"> <!-- Cambié type="submit" a type="button" -->
+                                                <% if (CanFav.contains((Integer) datosCan[i][0])) {%>
+                                                <i id="can<%= (Integer) datosCan[i][0]%>" class="text-green-500 fa-solid fa-circle-check ml-5 mt-9"></i>
+                                                <% } else {%>
+                                                <i id="can<%= (Integer) datosCan[i][0]%>" class="text-white fa-solid fa-circle-plus ml-5 mt-9"></i>
+                                                <% }%>
+                                            </button>
+                                        </form>
 
-                                        </td>
+                                    </td>
                                     <td class="whitespace-nowrap px-6 py-4">
                                         <%= datosCan[i][2]%>
                                     </td>
