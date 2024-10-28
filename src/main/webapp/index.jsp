@@ -72,18 +72,7 @@
         <script src="script.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
-        <%            if (request.getAttribute("caso") == null) {
-                String caso = request.getRequestURI() + "?" + request.getQueryString();
-
-                // Captura solo la parte después de "index.jsp?"
-                String casoCapturado = caso.substring(caso.indexOf("index.jsp?caso=") + "index.jsp?caso=".length());
-        %>
-        <script>
-            abrirCasoDeUso("<%= casoCapturado%>", "");
-        </script>
-        <%
-            }
-        %>
+        
 
 
     </head>
