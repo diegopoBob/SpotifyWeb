@@ -477,6 +477,38 @@ function AjaXpublicarLista() {
         });
     
  }
+ 
+function AjaXeliminarLista(id) {
+    // Obtén el valor del campo de entrada donde se guarda el nickname
+    const user = $("#user").val();
+
+    // Construir la cadena de datos con los valores que necesitas
+    let dataString = `idEliminar=${encodeURIComponent(id)}&user=${encodeURIComponent(user)}`;
+
+    console.log(dataString); // Para depuración
+
+    $.ajax({
+        type: "POST",
+        url: "eliminarPlaylist",
+        data: dataString,
+        dataType: "json",
+
+        success: function (data) {
+            if (data.success) {
+                abrirCasoDeUso('consultarUsuario.jsp?&user=' + user);
+                actualizarTablaPlaylists();
+            } else {
+                alert('Error al eliminar la lista: ' + (data.message || ''));
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la solicitud AJAX:', status, error);
+            alert('Ocurrió un error al intentar eliminar la lista. Por favor, intenta de nuevo.');
+        }
+    });
+}
+
+
 
 
 

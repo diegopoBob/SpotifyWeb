@@ -6,7 +6,6 @@ package servlets;
 
 import controllers.Fabrica;
 import controllers.IPlaylistController;
-import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import static java.lang.System.out;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -27,8 +25,8 @@ import javax.persistence.Persistence;
  *
  * @author Machichu
  */
-@WebServlet(name = "publicarLista", urlPatterns = {"/publicarLista"})
-public class publicarLista extends HttpServlet {
+@WebServlet(name = "eliminarPlaylist", urlPatterns = {"/eliminarPlaylist"})
+public class eliminarPlaylist extends HttpServlet {
     
     Fabrica fabrica = Fabrica.getInstance();
     
@@ -45,7 +43,7 @@ public class publicarLista extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -74,17 +72,15 @@ public class publicarLista extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        
         processRequest(request, response);
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
         EntityManager em = emf.createEntityManager();
         HttpSession session = request.getSession();
-        String idAlbum = request.getParameter("idPlay");
+        String idAlbum = request.getParameter("idEliminar");
         int id = Integer.parseInt(idAlbum);
         try {
-           
-            playController.Publicar_Lista(id);
+            
+            playController.eliminarLista(id);
           
         } catch (Exception ex) {
             Logger.getLogger(seguirUsuario.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,7 +91,6 @@ public class publicarLista extends HttpServlet {
         
       response.setContentType("application/json");
       response.getWriter().write("{\"success\": true, \"message\": \"\"}");
-        
     }
 
     /**

@@ -18,12 +18,12 @@
         response.sendRedirect("login.jsp");
         return;
     }
-    boolean Visitante ;
-    String nicknameLogeado ="";
+    boolean Visitante;
+    String nicknameLogeado = "";
     if ((String) session.getAttribute("nick") != null) {
-            nicknameLogeado = (String) session.getAttribute("nick");
-            Visitante = true;
-        }
+        nicknameLogeado = (String) session.getAttribute("nick");
+        Visitante = true;
+    }
     Fabrica fabrica = Fabrica.getInstance();
     IPlaylistController IPC = fabrica.getIPlaylistController();
     IAlbumController IAC = fabrica.getIAlbumController();
@@ -32,34 +32,29 @@
     boolean Pendiente = false;
     boolean Vigente = false;
     boolean Vencida = false;
-    LocalDate fechaSub = null ;
-        if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
-                Object[][] datosCli = IUC.obtenerDatosCliente(nicknameLogeado);
-                if ("Vencida".equals((String) datosCli[0][6])) {
-                    mostrarTooltip = true;
-                    Vencida = true;
-                }
-                else if  ("Cancelado".equals((String) datosCli[0][6])) {
-                    
-                    mostrarTooltip = true;
-                }
-                else if ("Pendiente".equals((String) datosCli[0][6])) {
-                   
-                    mostrarTooltip = true;
-                    Pendiente = true;
-                }
-                else if ("Vigente".equals((String) datosCli[0][6])) {
-                    
-                    mostrarTooltip = false;
-                    Vigente = true;
-                    fechaSub = (LocalDate) datosCli[0][7];
-                    fechaSub = fechaSub.plusDays( (Integer) datosCli[0][8]);
-                    
-                    
-                   
-                }
-            }
-    
+    LocalDate fechaSub = null;
+    if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
+        Object[][] datosCli = IUC.obtenerDatosCliente(nicknameLogeado);
+        if ("Vencida".equals((String) datosCli[0][6])) {
+            mostrarTooltip = true;
+            Vencida = true;
+        } else if ("Cancelado".equals((String) datosCli[0][6])) {
+
+            mostrarTooltip = true;
+        } else if ("Pendiente".equals((String) datosCli[0][6])) {
+
+            mostrarTooltip = true;
+            Pendiente = true;
+        } else if ("Vigente".equals((String) datosCli[0][6])) {
+
+            mostrarTooltip = false;
+            Vigente = true;
+            fechaSub = (LocalDate) datosCli[0][7];
+            fechaSub = fechaSub.plusDays((Integer) datosCli[0][8]);
+
+        }
+    }
+
 %>
 <!DOCTYPE html>
 <html>
@@ -77,8 +72,7 @@
         <script src="script.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
-        <%
-            if (request.getAttribute("caso") == null) {
+        <%            if (request.getAttribute("caso") == null) {
                 String caso = request.getRequestURI() + "?" + request.getQueryString();
 
                 // Captura solo la parte después de "index.jsp?"
@@ -107,7 +101,9 @@
                         <input class="focus:outline-none w-96 h-full  bg-transparent text-white text-lg" id="searchBar" name="searchBar" type="text" />
                     </form>
                 </div>
-                    <div class=" h-auto bg-black pr-4 flex items-center text-white userDropdown"><span><%if(Vigente){out.print("<i class=' pr-3 fa-regular fa-star text-green-500 text-sm'>  Subcripcion hasta: "+ fechaSub +" </i>  ");} %> </span>
+                <div class=" h-auto bg-black pr-4 flex items-center text-white userDropdown"><span><%if (Vigente) {
+                            out.print("<i class=' pr-3 fa-regular fa-star text-green-500 text-sm'>  Subcripcion hasta: " + fechaSub + " </i>  ");
+                        }%> </span>
                     <a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= session.getAttribute("nick")%>")' class="text-white pr-2 cursor-pointer"><% out.print(session.getAttribute("nick")); %></a>
 
                     <button class=""><img src="<% out.print(session.getAttribute("imagen"));%>" class=" rounded-full h-10 w-10 bg-white " alt="alt"/></button>
@@ -153,7 +149,7 @@
                                     <p class="mb-4 text-sm">
                                         Para crear playlists y más, ¡suscríbete ahora!
                                     </p>
-                                    
+
                                 </div>
                                 <div data-popper-arrow class="fill-current text-gray-900"></div>
                             </div>
@@ -174,7 +170,7 @@
                                                 <span class="sr-only">Close modal</span>
                                             </button>
                                         </div>
-                                        
+
                                         <!-- Modal ALTA body -->
                                         <form id='altaPlaylist' enctype="multipart/form-data" action="altaPlaylist" method="POST" class="bg-neutral-800 p-4 md:p-5">
                                             <div class="bg-neutral-800 grid gap-4 mb-4 grid-cols-2">
@@ -190,11 +186,11 @@
                                                 </div>
                                                 <fieldset class="col-span-2">
                                                     <legend class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">¿Es privada?</legend>
-                                                     <input type="checkbox" id="privada" name="privada" value="true">
+                                                    <input type="checkbox" id="privada" name="privada" value="true">
                                                 </fieldset>
                                             </div>
 
-                                            <button type="button" data-modal-hide="crud-modal" onclick="event.stopPropagation(); AjaXAltaPlaylist(); this.closest('form').reset(); "  class="text-white inline-flex items-center bg-blue-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                            <button type="button" data-modal-hide="crud-modal" onclick="event.stopPropagation(); AjaXAltaPlaylist(); this.closest('form').reset();"  class="text-white inline-flex items-center bg-blue-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                                 <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                                                 </svg>
@@ -328,9 +324,9 @@
 
     <!-- COSO DE BOTTOM -->
 
-    <%    
+    <%
         if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
-                if (Vencida) {%>
+            if (Vencida) {%>
     <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
         <div class="flex mx-auto">
             <p class="flex text-left text-sm font-normal text-white">
@@ -347,8 +343,7 @@
             </button>
         </div>
     </div>
-    <% }
-            else if (Pendiente ==true) {%>
+    <% } else if (Pendiente == true) {%>
     <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
         <div class="flex mx-auto">
             <p class="flex text-left text-sm font-normal text-white">
@@ -459,261 +454,261 @@
 
 </body>
 <script>
-  
-        document.getElementById('busquedaLibreria').addEventListener('input', function () {
-            let busqueda = document.getElementById('busquedaLibreria').value.toLowerCase();
 
-            let divsPlaylists = document.getElementsByName("divsPlaylists");
-            for (let i = 0; i < divsPlaylists.length; i++) {
-                // Si hay algo en el input, se filtra; si no, se muestra todo
-                if (busqueda !== "") {
-                    if (divsPlaylists[i].id.toLowerCase().includes(busqueda) && !divsPlaylists[i].classList.contains("hidden")) {
-                        divsPlaylists[i].classList.remove("hidden");
-                    } else {
-                        divsPlaylists[i].classList.add("hidden");
-                    }
+    document.getElementById('busquedaLibreria').addEventListener('input', function () {
+        let busqueda = document.getElementById('busquedaLibreria').value.toLowerCase();
+
+        let divsPlaylists = document.getElementsByName("divsPlaylists");
+        for (let i = 0; i < divsPlaylists.length; i++) {
+            // Si hay algo en el input, se filtra; si no, se muestra todo
+            if (busqueda !== "") {
+                if (divsPlaylists[i].id.toLowerCase().includes(busqueda) && !divsPlaylists[i].classList.contains("hidden")) {
+                    divsPlaylists[i].classList.remove("hidden");
                 } else {
-                    // Mostrar los divs que no estén ocultos por otras funciones
-                    if (!divsPlaylists[i].classList.contains("hiddenPorFuncion")) {
-                        divsPlaylists[i].classList.remove("hidden");
-                    }
+                    divsPlaylists[i].classList.add("hidden");
                 }
-            }
-
-            let divsAlbums = document.getElementsByName("divsAlbums");
-            for (let i = 0; i < divsAlbums.length; i++) {
-                if (busqueda !== "") {
-                    if (divsAlbums[i].id.toLowerCase().includes(busqueda) && !divsAlbums[i].classList.contains("hidden")) {
-                        divsAlbums[i].classList.remove("hidden");
-                    } else {
-                        divsAlbums[i].classList.add("hidden");
-                    }
-                } else {
-                    if (!divsAlbums[i].classList.contains("hiddenPorFuncion")) {
-                        divsAlbums[i].classList.remove("hidden");
-                    }
-                }
-            }
-        });
-
-        function mostrarPlaylistsLibreria() {
-            document.getElementById("mostrarAlbums").classList.toggle("hidden");
-            let divsAlbums = document.getElementsByName("divsAlbums");
-            for (let i = 0; i < divsAlbums.length; i++) {
-                divsAlbums[i].classList.toggle("hidden");
-                // Marcar si está oculto por la función y no por la búsqueda
-                if (divsAlbums[i].classList.contains("hidden")) {
-                    divsAlbums[i].classList.add("hiddenPorFuncion");
-                } else {
-                    divsAlbums[i].classList.remove("hiddenPorFuncion");
+            } else {
+                // Mostrar los divs que no estén ocultos por otras funciones
+                if (!divsPlaylists[i].classList.contains("hiddenPorFuncion")) {
+                    divsPlaylists[i].classList.remove("hidden");
                 }
             }
         }
 
-        function mostrarAlbumsLibreria() {
-            document.getElementById("mostrarPlaylists").classList.toggle("hidden");
-            let divsPlaylists = document.getElementsByName("divsPlaylists");
-            for (let i = 0; i < divsPlaylists.length; i++) {
-                divsPlaylists[i].classList.toggle("hidden");
-                // Marcar si está oculto por la función y no por la búsqueda
-                if (divsPlaylists[i].classList.contains("hidden")) {
-                    divsPlaylists[i].classList.add("hiddenPorFuncion");
+        let divsAlbums = document.getElementsByName("divsAlbums");
+        for (let i = 0; i < divsAlbums.length; i++) {
+            if (busqueda !== "") {
+                if (divsAlbums[i].id.toLowerCase().includes(busqueda) && !divsAlbums[i].classList.contains("hidden")) {
+                    divsAlbums[i].classList.remove("hidden");
                 } else {
-                    divsPlaylists[i].classList.remove("hiddenPorFuncion");
+                    divsAlbums[i].classList.add("hidden");
+                }
+            } else {
+                if (!divsAlbums[i].classList.contains("hiddenPorFuncion")) {
+                    divsAlbums[i].classList.remove("hidden");
                 }
             }
         }
+    });
 
-
-
-
-        document.getElementById('searchBar').addEventListener('input', function () {
-            abrirCasoDeUso("busqueda.jsp?input=" + document.getElementById('searchBar').value);
-        });
-
-        const audio = document.getElementById('audioControl');
-        const barraVolumen = document.getElementById('barraVolumen');
-        const playButton = document.getElementById('playButton');
-        const timeRange = document.getElementById('timeRange');
-        audio.volume = 0.15;
-
-        //reproduccion de temas
-
-        let posActual;
-        function reproducirCancion(nombre, esSiguienteCancionOCancionAnterior) {
-            if (!esSiguienteCancionOCancionAnterior) {
-                crearListaCanciones();
+    function mostrarPlaylistsLibreria() {
+        document.getElementById("mostrarAlbums").classList.toggle("hidden");
+        let divsAlbums = document.getElementsByName("divsAlbums");
+        for (let i = 0; i < divsAlbums.length; i++) {
+            divsAlbums[i].classList.toggle("hidden");
+            // Marcar si está oculto por la función y no por la búsqueda
+            if (divsAlbums[i].classList.contains("hidden")) {
+                divsAlbums[i].classList.add("hiddenPorFuncion");
+            } else {
+                divsAlbums[i].classList.remove("hiddenPorFuncion");
             }
-            document.getElementById('audioSource').src = nombre;
-            document.getElementById('shuffleBtn').classList.remove('text-white'); //desactivarshuffle si esta activado
-            audio.load();
+        }
+    }
+
+    function mostrarAlbumsLibreria() {
+        document.getElementById("mostrarPlaylists").classList.toggle("hidden");
+        let divsPlaylists = document.getElementsByName("divsPlaylists");
+        for (let i = 0; i < divsPlaylists.length; i++) {
+            divsPlaylists[i].classList.toggle("hidden");
+            // Marcar si está oculto por la función y no por la búsqueda
+            if (divsPlaylists[i].classList.contains("hidden")) {
+                divsPlaylists[i].classList.add("hiddenPorFuncion");
+            } else {
+                divsPlaylists[i].classList.remove("hiddenPorFuncion");
+            }
+        }
+    }
+
+
+
+
+    document.getElementById('searchBar').addEventListener('input', function () {
+        abrirCasoDeUso("busqueda.jsp?input=" + document.getElementById('searchBar').value);
+    });
+
+    const audio = document.getElementById('audioControl');
+    const barraVolumen = document.getElementById('barraVolumen');
+    const playButton = document.getElementById('playButton');
+    const timeRange = document.getElementById('timeRange');
+    audio.volume = 0.15;
+
+    //reproduccion de temas
+
+    let posActual;
+    function reproducirCancion(nombre, esSiguienteCancionOCancionAnterior) {
+        if (!esSiguienteCancionOCancionAnterior) {
+            crearListaCanciones();
+        }
+        document.getElementById('audioSource').src = nombre;
+        document.getElementById('shuffleBtn').classList.remove('text-white'); //desactivarshuffle si esta activado
+        audio.load();
+        audio.play();
+        //cargarInfoCancion(this.value);
+        posActual = colaCanciones.indexOf(nombre);
+
+
+        let cancioneshtml = document.getElementsByName('cancion');
+        for (i = 0; i < cancioneshtml.length; i++) {
+            if (cancioneshtml[i].classList.contains('bg-neutral-400')) {
+                cancioneshtml[i].classList.remove('bg-neutral-400');
+            }
+        }
+        document.getElementById(nombre).classList.add('bg-neutral-400');
+    }
+    ;
+    function cargarInfoCancion(cu) {
+        var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
+        var url = 'InfoCancion.jsp?idCancion=' + cu;
+
+        xhr.open('GET', url, true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                document.getElementById('dataCancion').innerHTML = xhr.responseText;
+
+                var functionName = 'scripts_' + cu.split('.')[0]; // Toma el nombre antes del punto
+
+                if (typeof window[functionName] === 'function') {
+                    window[functionName](); // Llama la función si existe
+                } else {
+                    console.error("La función " + functionName + " no existe");
+                }
+            } else if (xhr.readyState === 4 && xhr.status !== 200) {
+                console.error("Error en la solicitud: " + xhr.status);
+            }
+        };
+        xhr.send(); // Enviar la solicitud
+    }
+
+
+    let colaCanciones = [];
+    let colaCancionesRespaldo = [];
+
+    function crearListaCanciones() {
+        let canciones = document.getElementsByName('cancion');
+        colaCanciones = [];  // Limpiar colaCanciones por si se crea de nuevo
+        for (let i = 0; i < canciones.length; i++) {
+            colaCanciones[i] = canciones[i].id;
+        }
+        colaCancionesRespaldo = [...colaCanciones];  // Hacer el respaldo después de crear la lista
+    }
+    function mezclarCola() {
+        document.getElementById('shuffleBtn').classList.toggle('text-white');
+        posActual = 0;
+        if (!(document.getElementById('shuffleBtn').classList.contains('text-white'))) {
+            colaCanciones = [...colaCancionesRespaldo];
+        }
+        if (document.getElementById('shuffleBtn').classList.contains('text-white')) {
+            for (let i = colaCanciones.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [colaCanciones[i], colaCanciones[j]] = [colaCanciones[j], colaCanciones[i]];
+            }
+        }
+
+    }
+    function adelantarCancion() {
+        if (posActual < colaCanciones.length - 1) {
+            posActual++;
+            reproducirCancion(colaCanciones[posActual], true);
+            cargarInfoCancion(document.getElementById(colaCanciones[posActual]).getAttribute('data-idCancion'));
+        } else {
+            alert('No hay más canciones para adelantar');
+            cargarInfoCancion();
+        }
+    }
+    function retrocederCancion() {
+        if (posActual > 0) {
+            posActual--;
+            reproducirCancion(colaCanciones[posActual], true);
+            cargarInfoCancion(document.getElementById(colaCanciones[posActual]).getAttribute('data-idCancion'));
+        } else {
+            alert('No hay más canciones para retroceder');
+            cargarInfoCancion();
+        }
+    }
+
+    //detectar que se abrio un nuevo cu
+
+
+    //event listeners del audio
+    audio.addEventListener('loadedmetadata', () => {
+        document.getElementById('minutosActuales').innerHTML = '0:00';
+        const tiempoTotal = audio.duration;
+        timeRange.max = Math.floor(tiempoTotal);
+        const minutosTiempoTotal = Math.floor(tiempoTotal / 60);
+        const segundosTiempoTotal = Math.floor(tiempoTotal % 60).toString().padStart(2, '0');
+        document.getElementById('minutosTotales').innerHTML = +minutosTiempoTotal + ':' + segundosTiempoTotal;
+    });
+
+    audio.addEventListener('timeupdate', () => {
+        const tiempoActual = audio.currentTime;
+        const minutos = Math.floor(tiempoActual / 60);
+        const segundos = Math.floor(tiempoActual % 60).toString().padStart(2, '0');
+        minutosActuales.innerHTML = minutos + ':' + segundos;
+        timeRange.value = tiempoActual;
+    });
+
+    //event listeners de los inputs
+    timeRange.addEventListener('input', function () {
+        audio.currentTime = Math.floor(timeRange.value);
+    });
+    barraVolumen.addEventListener('input', function () {
+        audio.volume = barraVolumen.value / 100;
+    });
+    playButton.addEventListener('click', function () {
+        if (playButton.classList.contains("fa-play")) {
             audio.play();
-            //cargarInfoCancion(this.value);
-            posActual = colaCanciones.indexOf(nombre);
-
-
-            let cancioneshtml = document.getElementsByName('cancion');
-            for (i = 0; i < cancioneshtml.length; i++) {
-                if (cancioneshtml[i].classList.contains('bg-neutral-400')) {
-                    cancioneshtml[i].classList.remove('bg-neutral-400');
-                }
-            }
-            document.getElementById(nombre).classList.add('bg-neutral-400');
         }
-        ;
-        function cargarInfoCancion(cu) {
-            var xhr = new XMLHttpRequest(); // Asegúrate de crear el objeto XMLHttpRequest
-            var url = 'InfoCancion.jsp?idCancion=' + cu;
-
-            xhr.open('GET', url, true);
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    document.getElementById('dataCancion').innerHTML = xhr.responseText;
-
-                    var functionName = 'scripts_' + cu.split('.')[0]; // Toma el nombre antes del punto
-
-                    if (typeof window[functionName] === 'function') {
-                        window[functionName](); // Llama la función si existe
-                    } else {
-                        console.error("La función " + functionName + " no existe");
-                    }
-                } else if (xhr.readyState === 4 && xhr.status !== 200) {
-                    console.error("Error en la solicitud: " + xhr.status);
-                }
-            };
-            xhr.send(); // Enviar la solicitud
+        if (playButton.classList.contains("fa-pause")) {
+            audio.pause();
         }
+    });
 
 
-        let colaCanciones = [];
-        let colaCancionesRespaldo = [];
 
-        function crearListaCanciones() {
-            let canciones = document.getElementsByName('cancion');
-            colaCanciones = [];  // Limpiar colaCanciones por si se crea de nuevo
-            for (let i = 0; i < canciones.length; i++) {
-                colaCanciones[i] = canciones[i].id;
-            }
-            colaCancionesRespaldo = [...colaCanciones];  // Hacer el respaldo después de crear la lista
+    function playPorPause() {
+        const icono = document.getElementById('playButton');
+
+        if (icono.classList.contains('fa-play')) {
+            icono.classList.remove("fa-play");
+            icono.classList.add("fa-pause");
+        } else {
+            icono.classList.remove("fa-pause");
+            icono.classList.add("fa-play");
         }
-        function mezclarCola() {
-            document.getElementById('shuffleBtn').classList.toggle('text-white');
-            posActual = 0;
-            if (!(document.getElementById('shuffleBtn').classList.contains('text-white'))) {
-                colaCanciones = [...colaCancionesRespaldo];
-            }
-            if (document.getElementById('shuffleBtn').classList.contains('text-white')) {
-                for (let i = colaCanciones.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [colaCanciones[i], colaCanciones[j]] = [colaCanciones[j], colaCanciones[i]];
-                }
-            }
+    }
 
+    function likePorDislike() {
+        const icono = document.getElementById('likebtnHeart');
+
+        if (icono.classList.contains('fa-regular')) {
+            icono.classList.remove("fa-regular");
+            icono.classList.add("fa-solid");
+        } else {
+            icono.classList.remove("fa-solid");
+            icono.classList.add("fa-regular");
         }
-        function adelantarCancion() {
-            if (posActual < colaCanciones.length - 1) {
-                posActual++;
-                reproducirCancion(colaCanciones[posActual], true);
-                cargarInfoCancion(document.getElementById(colaCanciones[posActual]).getAttribute('data-idCancion'));
-            } else {
-                alert('No hay más canciones para adelantar');
-                cargarInfoCancion();
-            }
-        }
-        function retrocederCancion() {
-            if (posActual > 0) {
-                posActual--;
-                reproducirCancion(colaCanciones[posActual], true);
-                cargarInfoCancion(document.getElementById(colaCanciones[posActual]).getAttribute('data-idCancion'));
-            } else {
-                alert('No hay más canciones para retroceder');
-                cargarInfoCancion();
-            }
-        }
+    }
+    function cambiarIconoSonido() {
+        const barra = document.getElementById('barraVolumen');
 
-        //detectar que se abrio un nuevo cu
-
-
-        //event listeners del audio
-        audio.addEventListener('loadedmetadata', () => {
-            document.getElementById('minutosActuales').innerHTML = '0:00';
-            const tiempoTotal = audio.duration;
-            timeRange.max = Math.floor(tiempoTotal);
-            const minutosTiempoTotal = Math.floor(tiempoTotal / 60);
-            const segundosTiempoTotal = Math.floor(tiempoTotal % 60).toString().padStart(2, '0');
-            document.getElementById('minutosTotales').innerHTML = +minutosTiempoTotal + ':' + segundosTiempoTotal;
-        });
-
-        audio.addEventListener('timeupdate', () => {
-            const tiempoActual = audio.currentTime;
-            const minutos = Math.floor(tiempoActual / 60);
-            const segundos = Math.floor(tiempoActual % 60).toString().padStart(2, '0');
-            minutosActuales.innerHTML = minutos + ':' + segundos;
-            timeRange.value = tiempoActual;
-        });
-
-        //event listeners de los inputs
-        timeRange.addEventListener('input', function () {
-            audio.currentTime = Math.floor(timeRange.value);
-        });
-        barraVolumen.addEventListener('input', function () {
-            audio.volume = barraVolumen.value / 100;
-        });
-        playButton.addEventListener('click', function () {
-            if (playButton.classList.contains("fa-play")) {
-                audio.play();
-            }
-            if (playButton.classList.contains("fa-pause")) {
-                audio.pause();
-            }
-        });
+        if (barra.value === 0)
+            iconoVolumen.className = "fa-solid fa-volume-off";
+        if (barra.value >= 1)
+            iconoVolumen.className = "fa-solid fa-volume-low";
+        if (barra.value >= 50)
+            iconoVolumen.className = "fa-solid fa-volume-high";
+    }
 
 
 
-        function playPorPause() {
-            const icono = document.getElementById('playButton');
-
-            if (icono.classList.contains('fa-play')) {
-                icono.classList.remove("fa-play");
-                icono.classList.add("fa-pause");
-            } else {
-                icono.classList.remove("fa-pause");
-                icono.classList.add("fa-play");
-            }
-        }
-
-        function likePorDislike() {
-            const icono = document.getElementById('likebtnHeart');
-
-            if (icono.classList.contains('fa-regular')) {
-                icono.classList.remove("fa-regular");
-                icono.classList.add("fa-solid");
-            } else {
-                icono.classList.remove("fa-solid");
-                icono.classList.add("fa-regular");
-            }
-        }
-        function cambiarIconoSonido() {
-            const barra = document.getElementById('barraVolumen');
-
-            if (barra.value === 0)
-                iconoVolumen.className = "fa-solid fa-volume-off";
-            if (barra.value >= 1)
-                iconoVolumen.className = "fa-solid fa-volume-low";
-            if (barra.value >= 50)
-                iconoVolumen.className = "fa-solid fa-volume-high";
-        }
+    function actualizarTablaPlaylists() {
+        const playlistAlbumesDiv = $("#PlaylistAlbumes");
+        playlistAlbumesDiv.load(location.href + " #PlaylistAlbumes > *");
+    }
 
 
 
-        function actualizarTablaPlaylists() {
-            const playlistAlbumesDiv = $("#PlaylistAlbumes");
-            playlistAlbumesDiv.load(location.href + " #PlaylistAlbumes > *");
-        }
-      
 
-
-
-    </script>    
+</script>    
 </html>
