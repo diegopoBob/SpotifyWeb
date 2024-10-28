@@ -15,7 +15,7 @@
 
 
 <%
-     if (session == null || session.getAttribute("nick") == null) {
+    if (session == null || session.getAttribute("nick") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
@@ -83,12 +83,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Spotify</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="includes/style.css" rel="stylesheet">
-        <script src="script.js"></script>
-        <!-- Importar la librería Color Thief -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+             
+      
 
     </head>
 
@@ -111,7 +107,7 @@ if ("Particular".equals(tipo) && datos.length > 0) {
 %> </h4>
                     <h2 style="font-size: clamp(20px, 5vw, 110px);" class=" Class leading-none font-bold "><%= titulo%> </h2>
                 </div>
-                <div name="masInfoPlay" class="flex  pt-5 pb-5 ">
+                <div name="masInfoPlay" class="flex">
                     <%if (tipo == "Particular") {%>
                     <img src="<%= imagenClie%>" class=" rounded-full h-7 w-7 bg-white mr-2" alt="alt"/><a onclick='abrirCasoDeUso("consultarUsuario.jsp", "<%= propietario%>");' class=" hover:underline text-white cursor-pointer pr-2 ">
                         <p class="decoration-1"> <%= propietario %></p>
@@ -124,7 +120,7 @@ if ("Particular".equals(tipo) && datos.length > 0) {
             </div>
         </div>
         <div style="margin-bottom: -230px;" id="PlaylistAbajo" class="flex flex-row min-h-80 w-full  ">
-            <div class=" text-white flex flex-row min-h-20 mb-4 max-h-20 w-2/3 text-4xl  h-1/6">
+            <div class=" text-white flex flex-row min-h-20 mb-4 max-h-20 w-full text-4xl  h-1/6">
                 <img id="playButtonPlaylist" src="includes/playP.png" class="rounded-full h-16 w-auto m-8 mt-5 ml-6 mr-3" alt="alt"/>
                 <i class="fa-solid  fa-shuffle   ml-4  mt-9" ></i>
                 <i  <% if (!usuarioLogueado.equals(propietario)){%>
@@ -141,9 +137,7 @@ if ("Particular".equals(tipo) && datos.length > 0) {
                     <% } %>
                 <i class="fa-regular fa-circle-down ml-5  mt-9"></i>
             </div>
-            <div class=" text-white flex  min-h-20 mb-4 max-h-20 w-1/3 text-4xl text-right">
-                <i class="fa-solid fa-magnifying-glass ml-5  mt-9  "></i>
-            </div>
+         
         </div>
         <div  class="flex flex-col m--10">
             <div class="">
@@ -156,7 +150,7 @@ if ("Particular".equals(tipo) && datos.length > 0) {
                                 <tr>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap flex max-w-8 mt-3 px-6 py-1">#<i class="  ml-1 fa-solid fa-sort"></i></th>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap  py-4">Titulo<i class="ml-1  fa-solid fa-sort"></i></th>
-                                    <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Album<i class="ml-1  fa-solid fa-sort"></i></th>
+                                    <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4 hidden sm:block">Album<i class="ml-1  fa-solid fa-sort"></i></th>
                                     <th></th>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Duracion<i class="ml-1  fa-solid fa-sort"></i></th>
                                 </tr>
@@ -188,7 +182,7 @@ if ("Particular".equals(tipo) && datos.length > 0) {
                                         </p>
                                     </td>
 
-                                    <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline" 
+                                    <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline hidden sm:block" 
                                             onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>&user=<%= datosCan[i][9]%>');  event.stopPropagation();">
                                             <p class="cursor-pointer"><%= datosCan[i][6] %> </p>
                                         </td>
@@ -206,7 +200,7 @@ if ("Particular".equals(tipo) && datos.length > 0) {
                                             </form>
 
                                         </td>
-                                    <td class="whitespace-nowrap px-6 py-4">
+                                    <td class="whitespace-nowrap px-0 sm:px-6 py-4 text-center">
                                         <%= datosCan[i][2]%>
                                     </td>
 

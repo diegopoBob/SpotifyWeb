@@ -148,7 +148,8 @@ function scripts_consultarUsuario() {
 
 function scripts_consultarPlaylist() {
     
-    
+        
+        
     //FUNCION COLOR
     $(window).ready(function () {
         var sourceImage = document.getElementById("imagenPLaylistPrincipal");
@@ -358,7 +359,6 @@ function agregarEliminarFavoritoCancionPlay(canId) {
  }
 function AjaXAltaPlaylist() {
     const nombre = $("#nombre").val();
-
     // Verifica si el campo "nombre" está vacío
     if (nombre.length > 0) {
         // Crea un objeto FormData a partir del formulario
@@ -381,9 +381,10 @@ function AjaXAltaPlaylist() {
                 // Aquí puedes acceder directamente a "data"
                 if (data.success) {
                     const id = data.id; // Obtén el ID de la respuesta
+                    alert(id);
                    abrirCasoDeUso('consultarPlaylist.jsp?user=' + id);
                 } else {
-                    console.log("Hubo un problema con la solicitud");
+                    alert("Hubo un problema con la solicitud");
                 }
             },
             error: function (error) {

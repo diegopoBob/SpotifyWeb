@@ -81,6 +81,13 @@
             <version>4.0.1</version>
             <type>jar</type>
         </dependency>
+
+        <dependency>
+            <groupId>com.ejemplo</groupId>
+            <artifactId>ServidorCentral-1.0-SNAPSHOT.jar</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+  
     </dependencies>
     
     <build>

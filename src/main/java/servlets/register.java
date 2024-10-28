@@ -108,7 +108,7 @@ public class register extends HttpServlet {
         }
     }
 
-    try {
+    try {       
         ICU.registroUsuario(username, nombre, apellido, email, LocalDate.parse(birthdate), "fotosDePerfil/"+fileName, biografia, link, userType, password);
         response.sendRedirect("login.jsp?");
     } catch (Exception e) {

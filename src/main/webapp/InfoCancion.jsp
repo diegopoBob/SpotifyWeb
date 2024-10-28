@@ -36,14 +36,14 @@
         <div class="h-16 w-auto">
             <img class="h-16 w-auto" src="<%= fotoCancion%>" alt="alt"/>
         </div>  
-        <div class="h-auto w-auto ml-2">
-            <p class="text text-white"><%= nombreCancion%></p>
-            <p class="text text-neutral-400 text-sm"><%= nombreArtista%></p>
+        <div class="h-auto w-auto mt-6 md:mt-1 ml-2">
+            <p class="text text-white text-sm"><%= nombreCancion%></p>
+            <p class="text text-neutral-400 text-sm hidden"><%= nombreArtista%></p>
         </div>
-            <div class="text-white pl-2">
+            <div class="text-white pl-1">
                 <form id="favoritosForm" method="POST">
                     <input type="hidden" id="canId" name="canId" value="<%=(Integer) id%>">
-                    <button type="button" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) id%>);"> <!-- Cambié type="submit" a type="button" -->
+                    <button type="button" class="hidden lg:block" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) id%>);"> <!-- Cambié type="submit" a type="button" -->
                         <% if (cancionesFavIds.contains((Integer) id)) {%>
                         <i id="canCora<%= (Integer) id%>" class="text-green-500 fa-solid fa-heart text-xl"></i>
                         <% } else {%>

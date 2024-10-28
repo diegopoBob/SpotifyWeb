@@ -3,13 +3,25 @@
     Created on : Oct 4, 2024, 1:33:48?AM
     Author     : dylan
 --%>
+<%@page import="controllers.Fabrica"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="javax.persistence.EntityManager"%>
+<%@page import="javax.persistence.Persistence"%>
+<%@page import="javax.persistence.EntityManagerFactory"%>
+<%@page import="controllers.IUsuarioController"%>
 
 <%
+    
     if (session == null || session.getAttribute("nick") == null) {        
     }else{
         response.sendRedirect("index.jsp");
         return;
     }
+   
+
 %>
 <!DOCTYPE html>
 <html>
@@ -50,12 +62,34 @@
                     reader.readAsDataURL(file);
                 }
             }
+
+        function verificarNick() {
+            const username = document.getElementById("username").value;
+            // Realizar la solicitud AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "verificarNick?nick=" + encodeURIComponent(username), true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    const nickTexto = document.getElementById("nickTexto");
+                    if (response.available) {
+                        nickTexto.textContent = "¡El nombre de usuario está disponible!";
+                        nickTexto.style.color = "green";
+                    } else {
+                        nickTexto.textContent = "El nombre de usuario ya está en uso.";
+                        nickTexto.style.color = "red";
+                    }
+                }
+            };
+            xhr.send();
+        }
+   
         </script>
     </head>
     <body>
         <div class="flex w-full">
-            <form class="bg-gray-900 w-[66%] h-dvh flex flex-col items-center py-4 gap-4" method="post" action="register" enctype="multipart/form-data" onsubmit="return validateForm()">
-                <a href="#" class="z-10 flex items-center mb-16 md:mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            <form class="bg-gray-900 w-[100%] lg:w-[66%] h-max lg:h-dvh flex flex-col items-center py-4 gap-4" method="post" action="register" enctype="multipart/form-data" onsubmit="return validateForm()">
+                <a href="index.jsp" class="z-10 flex items-center mb-16 md:mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                     <img class="w-16 h-16 mr-2" src="https://cdn.freebiesupply.com/logos/large/2x/spotify-2-logo-png-transparent.png" alt="logo">
                     Spotify
                 </a>
@@ -84,7 +118,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-full h-full flex items-center justify-center gap-16">
+                <div class="w-[dvw] h-full flex items-center justify-center gap-16 flex-col lg:flex-row">
                     <div class="flex flex-col gap-6">
                         <div>
                             <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de usuario</label>
@@ -92,10 +126,12 @@
                                 type="text" 
                                 name="username" 
                                 id="username" 
+                                onkeyup="verificarNick()"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                                 required=""
                                 pattern="[a-zA-Z0-9]{3,}" title="Solo letras y numeros"
                                 >
+                            <p id="nickTexto"></p>
                         </div>
 
                         <div>
@@ -150,7 +186,10 @@
                     <button type="submit">Registrarse</button>
                 </div>
             </form>
-            <section class="bgregister w-[34%] h-dvh"></section>
+            <section class="bgregister h-dvh hidden lg:block lg:w-[34%]"></section>
         </div>    
     </body>
+    <script>
+        
+    </script>
 </html>

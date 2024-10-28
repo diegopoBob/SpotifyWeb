@@ -56,7 +56,7 @@ List<Object[]> ObtenidosPlaylists = em.createNativeQuery("SELECT p.id ,nombre,ru
                 <img src="<%= datosAlb[0][6]%>" alt="alt" class=" aspect-square min-w-16  max-w-20  rounded-xl p-1.5"/>
                 <div style="font-size:clamp(15px, 2vw, 20px);" name="textoLibreria" class=" ml-2 flex flex-col justify-center ">
                     <p class=" whitespace-nowrap  font-semibold text-white mt-2"><%= aux[1]%></p>
-                    <p  class="hover:underline text-gray-400 cursor-pointer" onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp","<%= datosAlb[0][8]%>")'><%= datosAlb[0][3]%></p>
+                    <p  class="hover:underline text-gray-400 cursor-pointer" onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuarioVisitante.jsp","<%= datosAlb[0][8]%>")'><%= datosAlb[0][3]%></p>
                 </div>
                 <div style="" name="textoLibreria" class=" items-center flex w-full justify-end">
                     <div class="align-middle ">
@@ -87,7 +87,7 @@ for (Object[] aux : ObtenidosArtistas) {
                     imagen = aux[1].toString();
                 }
         %>
-                <div onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp","<%= aux[0]%>")' class=" hover:bg-neutral-600 rounded relative flex flex-col  ">
+                <div onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuarioVisitante.jsp","<%= aux[0]%>")' class=" hover:bg-neutral-600 rounded relative flex flex-col  ">
                     <div 
                         class="relative rounded-full shadow-lg m-3"
                         style="width: clamp(6rem, 20vw, 16rem); height: clamp(6rem, 20vw, 16rem);">
@@ -122,7 +122,7 @@ for (Object[] aux : ObtenidosArtistas) {
                                 imagen = aux[2].toString();
                             }
                 %>
-                <div onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= aux[3]%>&user=<%= aux[0]%>'); event.stopPropagation();" class="hover:bg-neutral-600 rounded relative flex flex-col  ">
+                <div onclick="abrirCasoDeUso('consultarAlbumVisitante.jsp?tipo=artista&nombre=<%= aux[3]%>&user=<%= aux[0]%>'); event.stopPropagation();" class="hover:bg-neutral-600 rounded relative flex flex-col  ">
                     <div 
                         class="relative  m-3"
                         style="width: clamp(6rem, 20vw, 16rem); height: clamp(6rem, 20vw, 16rem);">
@@ -134,7 +134,7 @@ for (Object[] aux : ObtenidosArtistas) {
                             />
                     </div>
                     <p class=" ml-3 font-semibold text-white mt-2"><%= aux[1]%></p>
-                    <p onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp","<%= aux[3]%>")' class="ml-3 mb-3 text-gray-400 hover:bg-neutral-600 cursor-pointer"><%= aux[3]%> ● <%= aux[4]%></p>
+                    <p onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuarioVisitante.jsp","<%= aux[3]%>")' class="ml-3 mb-3 text-gray-400 hover:bg-neutral-600 cursor-pointer"><%= aux[3]%> ● <%= aux[4]%></p>
                 </div>
 
         <% }}else {%>
@@ -159,7 +159,7 @@ for (Object[] aux : ObtenidosArtistas) {
                                 imagen = aux[2].toString();
                             }
                 %>
-                <div onclick='abrirCasoDeUso("consultarPlaylist.jsp", "<%=aux[0]%>")' class="hover:bg-neutral-600 rounded relative flex flex-col  ">
+                <div onclick='abrirCasoDeUso("consultarPlaylistVisitante.jsp", "<%=aux[0]%>")' class="hover:bg-neutral-600 rounded relative flex flex-col  ">
                     <div 
                         class="relative  m-3"
                         style="width: clamp(6rem, 20vw, 16rem); height: clamp(6rem, 20vw, 16rem);">
@@ -174,7 +174,7 @@ for (Object[] aux : ObtenidosArtistas) {
                     <p class=" ml-3 font-semibold text-white mt-2"><%= aux[1]%></p>
                     
                     <% if( aux[3].equals("PlaylistParticular")){ %>
-                        <p onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp","<%= aux[4]%>")' class="ml-3 mb-3 text-gray-400 hover:bg-neutral-600 cursor-pointer" class="ml-3 mb-3 text-gray-400"><%= aux[4] %>
+                        <p onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuarioVisitante.jsp","<%= aux[4]%>")' class="ml-3 mb-3 text-gray-400 hover:bg-neutral-600 cursor-pointer" class="ml-3 mb-3 text-gray-400"><%= aux[4] %>
                         <%} else{%>
                         <p class="ml-3 mb-3 text-gray-400"> <%= aux[5]%>
                         <% }%> ● 
@@ -206,7 +206,7 @@ for (Object[] aux : ObtenidosClientes) {
                     imagen = aux[1].toString();
                 }
         %>
-                <div onclick='  abrirCasoDeUso("consultarUsuario.jsp","<%= aux[0]%>")' class="hover:bg-neutral-600 rounded relative flex flex-col  ">
+                <div onclick='  abrirCasoDeUso("consultarUsuarioVisitante.jsp","<%= aux[0]%>")' class="hover:bg-neutral-600 rounded relative flex flex-col  ">
                     <div 
                         class="relative rounded-full shadow-lg m-3"
                         style="width: clamp(6rem, 20vw, 16rem); height: clamp(6rem, 20vw, 16rem);">

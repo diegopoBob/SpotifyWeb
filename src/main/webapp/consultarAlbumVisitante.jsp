@@ -1,4 +1,3 @@
-
 <%@page import="java.net.URLEncoder"%>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.util.ArrayList" %>
@@ -14,31 +13,24 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <%
-    if (session == null || session.getAttribute("nick") == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
     Fabrica fabrica = Fabrica.getInstance();
     IAlbumController alController = fabrica.getIAlbumController();
     IUsuarioController usrController = fabrica.getIUsuarioController();
     IGeneroController genController = fabrica.getIGeneroController();
 
-    
     List<String> artistas = usrController.obtenerNombresArtistas();
     List<String> generos = genController.obtenerNombresGeneros();
-    List<Integer> CanFav = (List<Integer>) session.getAttribute("cancionesFavoritas");
-    
-    String usuarioLogueado = (String) session.getAttribute("nick");
+
+ 
     String tipo = request.getParameter("tipo");
     String nombre = request.getParameter("nombre");
     String albumIdSeleccionado = request.getParameter("user");
 
-    List<Integer> favoritos = alController.obtenerIdAlbumsFavoritos(usuarioLogueado);
+   
     Object[][] albumes = new Object[0][0];
     Object[] albumActual = new Object[0];
     Object[][] canciones = new Object[0][0];
 
-    
     if (tipo != null && nombre != null) {
         if (tipo.equals("genero")) {
             albumes = alController.obtenerAlbumesPorGenero(nombre);
@@ -47,7 +39,6 @@
         }
     }
 
-    
     if (albumIdSeleccionado != null) {
         int idAlbum = Integer.parseInt(albumIdSeleccionado);
         for (Object[] album : albumes) {
@@ -56,14 +47,13 @@
                 break;
             }
         }
-        
     }
+
     if (albumActual.length == 0 && albumes.length > 0) {
         albumActual = albumes[0];
         albumIdSeleccionado = String.valueOf(albumActual[0]);
     }
 
-   
     if (albumActual.length > 0) {
         canciones = alController.obtenerDatosCancionAlbum((Integer) albumActual[0]);
     }
@@ -121,7 +111,6 @@
             <!-- Información del álbum -->
                     <div>
                         <% if (albumActual != null) {
-                            boolean esFavorito = favoritos.contains(albumActual[0]); // Comparar el ID del álbum
 %>
                         <h3 class="text-white"><%= albumActual[1]%></h3>
                         <p class="text-white">Año: <%= albumActual[2]%></p>
@@ -130,9 +119,9 @@
                         <form id="idguardarAlbumFavorito" action="guardarAlbumFavorito" method="POST">
                             <input id="idAlbum" type="hidden" name="albumId" value="<%= albumActual[0]%>">
                             <input id="artistaAlbum" type="hidden" name="artistaAlbum" value="<%= albumActual[8] %>">
-                            <input id="esFAv" type="hidden" name="action" value="<%= esFavorito ? "eliminarDeFavoritos" : "agregarAFavoritos"%>">
-                            <button id="botonGuardar" type="button" onclick="AjaXguardarAlbumFavorita()" class="<%= esFavorito ? "text-red-500" : "text-green-500"%> pt-3 font-bold hover:underline cursor-pointer text-center">
-                                <%= esFavorito ? "Eliminar de favoritos" : "Guardar en favoritos"%>
+                            <input id="esFAv" type="hidden" name="action" value="eliminarDeFavoritos">
+                            <button id="botonGuardar" type="button" onclick="reproducirCancion()" class="pt-3 font-bold hover:underline cursor-pointer text-center">
+                                
                             </button >
                         </form>
                         <% } %>
@@ -168,24 +157,15 @@
                                 <span class="text-white"><%= cancion[1] %></span>
                             </a>
                             <div class="flex items-center space-x-4">
-    <!-- Botón de Descargar -->
-    <a href="#" class="text-blue-500 hover:underline">Descargar</a>
-
-    <!-- Formulario de Favoritos -->
-    <form id="favoritosForm" method="POST">
-        <input type="hidden" id="canId" name="canId" value="<%=(Integer) cancion[0]%>">
-        <button type="button" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) cancion[0]%>);">
-            <% if (CanFav.contains((Integer) cancion[0])) { %>
-                <i id="can<%= (Integer) cancion[0] %>" class="text-green-500 fa-solid fa-circle-check"></i>
-            <% } else { %>
-                <i id="can<%= (Integer) cancion[0] %>" class="text-white fa-solid fa-circle-plus"></i>
-            <% } %>
-        </button>
-    </form>
-
-    <!-- Botón de Agregar a Playlist -->
-    <a href="#" class="text-blue-500 hover:underline">Agregar a playlist</a>
-</div>
+                                <a href="#" class="text-blue-500 hover:underline">Descargar</a>
+                                <form id="favoritosForm" method="POST">
+                                    <input type="hidden" id="canId" name="canId" value="<%=(Integer) cancion[0]%>">
+                                    <button type="button" onclick="reproducirCancion()">
+                                        <i id="can<%= (Integer) cancion[0] %>" class="text-white fa-solid fa-circle-plus" %></i>
+                                    </button>
+                                </form>
+                                <a href="#" class="text-blue-500 hover:underline">Agregar a playlist</a>
+                            </div>
                         </li>
                     <% } %>
                 <% } else { %>
