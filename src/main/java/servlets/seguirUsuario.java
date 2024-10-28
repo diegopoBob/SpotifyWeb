@@ -83,12 +83,10 @@ public class seguirUsuario extends HttpServlet {
                 ICU.dejarSeguirUsuario(usuarioLogueado, usuarioASeguir);
                 out.println("Anduvo Dejar de Seguir");
                 out.println(usuarioLogueado + " Usuario Logueado");
-        out.println(usuarioASeguir + " Usuario A Seguir");
+        
             }else{
                 ICU.seguirUsuario(usuarioLogueado, usuarioASeguir);
-                out.println("Anduvo Seguir");
-                out.println(usuarioLogueado + " Usuario Logueado");
-                out.println(usuarioASeguir + " Usuario A Seguir");
+                
             }
         } catch (Exception ex) {
             Logger.getLogger(seguirUsuario.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,7 +94,7 @@ public class seguirUsuario extends HttpServlet {
         }
         
         
-         response.setContentType("application/json");
+      response.setContentType("application/json");
       response.getWriter().write("{\"success\": true, \"message\": \"\"}");
         
     }

@@ -83,14 +83,16 @@ public class verificarInicioSesion extends HttpServlet {
             HttpSession session = request.getSession();
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
             EntityManager em = emf.createEntityManager();
-            List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + username + "'").getResultList();                    
+            //likeadas y creadas
+            List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + username + "'").getResultList(); 
+            List<Integer> playlistsCreadas = em.createNativeQuery("SELECT id FROM `playlistparticular` where propietario='"+username+"'").getResultList();                           
+            playlistFavoritas.addAll(playlistsCreadas);
             session.setAttribute("playlistFavoritas", playlistFavoritas);
             List<Integer> albumsFavoritos = em.createNativeQuery("Select id from album join cliente_albumesfavoritos where id = album_id and cliente_id='" + username + "'").getResultList();                    
             session.setAttribute("albumsFavoritos", albumsFavoritos);
             List<Integer> cancionesFavoritas = em.createNativeQuery("Select id from cancion join cliente_cancionesfavoritas where cancion_id = id and cliente_id='" + username + "'").getResultList();                    
             session.setAttribute("cancionesFavoritas", cancionesFavoritas);
-            
-            
+         
             Map<String, String> datos = ICU.getDatosUsuario(username);
             for (Map.Entry<String, String> entry : datos.entrySet()) {
                 session.setAttribute(entry.getKey(), entry.getValue());               

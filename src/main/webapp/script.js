@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
-             //PARA PONER COLOR DE FONDO PLAYLIST
+//PARA PONER COLOR DE FONDO PLAYLIST
 function abrirCasoDeUso(cu, usuario) {
 
 
@@ -13,7 +13,7 @@ function abrirCasoDeUso(cu, usuario) {
     if (usuario && usuario.trim() !== "") {
         url += '?user=' + encodeURIComponent(usuario); // Agrega el parámetro de usuario
     }
-    
+
     xhr.open('GET', url, true);
 
     xhr.onreadystatechange = function () {
@@ -111,13 +111,13 @@ function scripts_consultarUsuario() {
     // Evento de clic para mostrar la sección de seguidores
     showSeguidores.addEventListener('click', function () {
         // Alternar la visibilidad de la sección de seguidores
-        
+
         if (seguidoresSection.style.display === 'none' || seguidoresSection.style.display === '') {
             seguidoresSection.style.display = 'block'; // Mostrar
         } else {
             seguidoresSection.style.display = 'none'; // Ocultar si ya está visible
         }
-        
+
     });
 
 
@@ -147,9 +147,9 @@ function scripts_consultarUsuario() {
 }
 
 function scripts_consultarPlaylist() {
-    
-        
-        
+
+
+
     //FUNCION COLOR
     $(window).ready(function () {
         var sourceImage = document.getElementById("imagenPLaylistPrincipal");
@@ -168,30 +168,85 @@ function scripts_consultarPlaylist() {
     const getCellValue = (tr, idx) => tr.children[idx]?.innerText || tr.children[idx]?.textContent;
 
 // Comparador para la ordenación
-const comparer = (idx, asc) => (a, b) => {
-    const v1 = getCellValue(a, idx);
-    const v2 = getCellValue(b, idx);
+    const comparer = (idx, asc) => (a, b) => {
+            const v1 = getCellValue(a, idx);
+            const v2 = getCellValue(b, idx);
 
-    // Comparar números o texto según corresponda
-    return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)
-        ? (asc ? v1 - v2 : v2 - v1) // Ordenar como números
-        : v1.toString().localeCompare(v2) * (asc ? 1 : -1); // Ordenar como texto
-};
+            // Comparar números o texto según corresponda
+            return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)
+                    ? (asc ? v1 - v2 : v2 - v1) // Ordenar como números
+                    : v1.toString().localeCompare(v2) * (asc ? 1 : -1); // Ordenar como texto
+        };
 
-document.querySelectorAll('th').forEach(th => {
-    th.addEventListener('click', function () {
-        const table = th.closest('table');
-        const tbody = table.querySelector('tbody'); // Asegúrate de seleccionar solo las filas del tbody
-        const rows = Array.from(tbody.querySelectorAll('tr'));
+    document.querySelectorAll('th').forEach(th => {
+        th.addEventListener('click', function () {
+            const table = th.closest('table');
+            const tbody = table.querySelector('tbody'); // Asegúrate de seleccionar solo las filas del tbody
+            const rows = Array.from(tbody.querySelectorAll('tr'));
 
-        const idx = Array.from(th.parentNode.children).indexOf(th);
-        const asc = this.asc = !this.asc;
+            const idx = Array.from(th.parentNode.children).indexOf(th);
+            const asc = this.asc = !this.asc;
 
-        // Ordenar y volver a añadir las filas
-        rows.sort(comparer(idx, asc)).forEach(tr => tbody.appendChild(tr));
+            // Ordenar y volver a añadir las filas
+            rows.sort(comparer(idx, asc)).forEach(tr => tbody.appendChild(tr));
+        });
     });
-});
+
+
+
 }
+
+
+function scripts_consultarFavoritos() {
+
+
+    //FUNCION COLOR
+    $(window).ready(function () {
+        var sourceImage = document.getElementById("imagenPLaylistPrincipal");
+        var colorThief = new ColorThief();
+        var color = colorThief.getColor(sourceImage);
+        var colorOscuro = [
+            Math.floor(color[0] * 0.7),
+            Math.floor(color[1] * 0.7),
+            Math.floor(color[2] * 0.7)
+        ];
+        console.log("Color obtenido:", color); // Log del color obtenido
+        document.getElementById("divPLaylistPrincipal").style.backgroundColor = "rgb(" + color + ")";
+        document.getElementById("PlaylistAbajo").style.backgroundImage = "linear-gradient(to bottom, rgb(" + colorOscuro + ") 25%, rgb(23 23 23))";
+    });
+    //FUNCION TABLA SORTER
+    const getCellValue = (tr, idx) => tr.children[idx]?.innerText || tr.children[idx]?.textContent;
+
+// Comparador para la ordenación
+    const comparer = (idx, asc) => (a, b) => {
+            const v1 = getCellValue(a, idx);
+            const v2 = getCellValue(b, idx);
+
+            // Comparar números o texto según corresponda
+            return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)
+                    ? (asc ? v1 - v2 : v2 - v1) // Ordenar como números
+                    : v1.toString().localeCompare(v2) * (asc ? 1 : -1); // Ordenar como texto
+        };
+
+    document.querySelectorAll('th').forEach(th => {
+        th.addEventListener('click', function () {
+            const table = th.closest('table');
+            const tbody = table.querySelector('tbody'); // Asegúrate de seleccionar solo las filas del tbody
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            const idx = Array.from(th.parentNode.children).indexOf(th);
+            const asc = this.asc = !this.asc;
+
+            // Ordenar y volver a añadir las filas
+            rows.sort(comparer(idx, asc)).forEach(tr => tbody.appendChild(tr));
+        });
+    });
+
+
+
+}
+
+
 
 function scripts_ConsultarAlbum() {
 
@@ -214,7 +269,7 @@ function previewImage(event) {
         reader.readAsDataURL(file);
     }
 }
-function scripts_busqueda(){}
+function scripts_busqueda() {}
 
 
 
@@ -246,7 +301,7 @@ function agregarEliminarFavoritoCancionPlay(canId) {
                         icon.removeClass("fa-circle-plus text-white")
                                 .addClass("fa-circle-check text-green-500");
                     }
-                    
+
                     strcan = "#canCora" + canId.toString();
                     const iconCora = $(strcan);
                     if (iconCora.length > 0) {
@@ -263,8 +318,8 @@ function agregarEliminarFavoritoCancionPlay(canId) {
             }
         });
     }
- }
- function AJAXSeguiraUsuario() {
+}
+function AJAXSeguiraUsuario() {
     if (!isEmptyFieldSeguir()) {
         let dataString = $("#SeguiraUsuario").serialize();
 
@@ -285,18 +340,18 @@ function agregarEliminarFavoritoCancionPlay(canId) {
 
                     if (button.text() === "Seguir") {
                         button.text("Dejar de seguir"); // Cambia el texto a "Dejar de seguir"
-                    } else if (button.text() === "Dejar de seguir"){
+                    } else if (button.text() === "Dejar de seguir") {
                         button.text("Seguir"); // Cambia el texto a "Seguir"
                     }
-                     
-                     abrirCasoDeUso("consultarUsuario.jsp",nickname.toString());
+
+                    abrirCasoDeUso("consultarUsuario.jsp", nickname.toString());
                 }
                 return false;
             }
         });
     }
- }
- function AjaXguardarPlaylistFavorita() {
+}
+function AjaXguardarPlaylistFavorita() {
     if (!isEmptyFieldPlaylist()) {
         let dataString = $("#idguardarPlaylistFavorita").serialize();
 
@@ -329,8 +384,8 @@ function agregarEliminarFavoritoCancionPlay(canId) {
             }
         });
     }
- }
- function AjaXguardarAlbumFavorita() {
+}
+function AjaXguardarAlbumFavorita() {
     if (!isEmptyFieldAlbum()) {
         let dataString = $("#idguardarAlbumFavorito").serialize();
 
@@ -338,7 +393,7 @@ function agregarEliminarFavoritoCancionPlay(canId) {
         const nickname = $("#idAlbum").val(); // Asegúrate de que el ID sea correcto
         const artista = $("#artistaAlbum").val(); // Asegúrate de que el ID sea correcto
         dataString = "&albumId=" + encodeURIComponent(nickname); // 
-       
+
         console.log(dataString);
         $.ajax({
             type: "POST",
@@ -349,14 +404,14 @@ function agregarEliminarFavoritoCancionPlay(canId) {
             success: function (data) {
 
                 if (data.success) {
-                    abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre='+ artista + '&user=' + nickname);
+                    abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=' + artista + '&user=' + nickname);
                     actualizarTablaPlaylists();
                 }
                 return false;
             }
         });
     }
- }
+}
 function AjaXAltaPlaylist() {
     const nombre = $("#nombre").val();
     // Verifica si el campo "nombre" está vacío
@@ -365,7 +420,7 @@ function AjaXAltaPlaylist() {
         const formData = new FormData(document.getElementById('altaPlaylist'));
 
         // Obtiene el estado del checkbox y lo agrega a FormData
-        const privada = $("#privada").is(':checked') ? 'true' : 'false'; 
+        const privada = $("#privada").is(':checked') ? 'true' : 'false';
         formData.append('privada', privada); // Agrega el valor del checkbox
 
         console.log([...formData]); // Para verificar el contenido de FormData
@@ -381,8 +436,10 @@ function AjaXAltaPlaylist() {
                 // Aquí puedes acceder directamente a "data"
                 if (data.success) {
                     const id = data.id; // Obtén el ID de la respuesta
-                    alert(id);
-                   abrirCasoDeUso('consultarPlaylist.jsp?user=' + id);
+
+                    abrirCasoDeUso('consultarPlaylist.jsp?user=' + id);
+
+                    actualizarTablaPlaylists();
                 } else {
                     alert("Hubo un problema con la solicitud");
                 }
@@ -396,33 +453,96 @@ function AjaXAltaPlaylist() {
     }
 }
 
- function isEmptyFieldAlbum() {
-     if (!$("#idAlbum").val().length) {
-         alert("name Field is required");
-         return true;
-     }
-     return false;
- }
- function isEmptyFieldPlaylist() {
-     if (!$("#playlistFav").val().length) {
-         alert("name Field is required");
-         return true;
-     }
-     return false;
- }
-  function isEmptyFieldSeguir() {
-     if (!$("#usuarioConsulta").val().length) {
-         alert("name Field is required");
-         return true;
-     }
-     return false;
- }
- function isEmptyField() {
-     if (!$("#canId").val().length) {
-         alert("name Field is required");
-         return true;
-     }
-     return false;
- }
- 
+function AjaXpublicarLista() {
+
+    let dataString = $("#publicarForm").serialize();
+
+    // Obtén el valor del campo de entrada donde se guarda el nickname
+    const id = $("#idPlay").val(); // Asegúrate de que el ID sea correcto
+
+    dataString = "&idPlay=" + encodeURIComponent(id); // 
+
+    console.log(dataString);
+    $.ajax({
+        type: "POST",
+        url: "publicarLista",
+        data: dataString,
+        dataType: "json",
+
+        success: function (data) {
+
+            if (data.success) {
+                abrirCasoDeUso('consultarPlaylist.jsp?&user=' + id);
+                actualizarTablaPlaylists();
+            }
+            return false;
+        }
+    });
+
+}
+
+function AjaXeliminarLista(id) {
+    // Obtén el valor del campo de entrada donde se guarda el nickname
+    const user = $("#user").val();
+
+    // Construir la cadena de datos con los valores que necesitas
+    let dataString = `idEliminar=${encodeURIComponent(id)}&user=${encodeURIComponent(user)}`;
+
+    console.log(dataString); // Para depuración
+
+    $.ajax({
+        type: "POST",
+        url: "eliminarPlaylist",
+        data: dataString,
+        dataType: "json",
+
+        success: function (data) {
+            if (data.success) {
+                abrirCasoDeUso('consultarUsuario.jsp?&user=' + user);
+                actualizarTablaPlaylists();
+            } else {
+                alert('Error al eliminar la lista: ' + (data.message || ''));
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la solicitud AJAX:', status, error);
+            alert('Ocurrió un error al intentar eliminar la lista. Por favor, intenta de nuevo.');
+        }
+    });
+}
+
+
+
+
+
+
+function isEmptyFieldAlbum() {
+    if (!$("#idAlbum").val().length) {
+        alert("name Field is required");
+        return true;
+    }
+    return false;
+}
+function isEmptyFieldPlaylist() {
+    if (!$("#playlistFav").val().length) {
+        alert("name Field is required");
+        return true;
+    }
+    return false;
+}
+function isEmptyFieldSeguir() {
+    if (!$("#usuarioConsulta").val().length) {
+        alert("name Field is required");
+        return true;
+    }
+    return false;
+}
+function isEmptyField() {
+    if (!$("#canId").val().length) {
+        alert("name Field is required");
+        return true;
+    }
+    return false;
+}
+
  

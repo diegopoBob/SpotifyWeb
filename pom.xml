@@ -84,7 +84,7 @@
 
         <dependency>
             <groupId>com.ejemplo</groupId>
-            <artifactId>ServidorCentral-1.0-SNAPSHOT.jar</artifactId>
+            <artifactId>ServidorCentral</artifactId>
             <version>1.0.0</version>
         </dependency>
   

@@ -5,6 +5,8 @@
 --%>
 
 
+
+<%@page import="models.PlaylistParticular"%>
 <%@page import="models.Playlist"%>
 <%@page import="models.Album"%>
 <%@ page import="java.time.LocalDate" %>
@@ -16,7 +18,7 @@
 <%@page import="controllers.Fabrica"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-      if (session == null || session.getAttribute("nick") == null) {
+    if (session == null || session.getAttribute("nick") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
@@ -47,11 +49,30 @@
         }
     }
     List<String> seguidores = usrController.obtenerNicknamesseguidores(usuario);
-    List<String> listas = playController.obtenerNombresPlaylistParticularCliente(usuario);
+    List<String> listas = new ArrayList<>();
     List<String> listas2 = playController.obtenerNombresDePlaylistsFavoritas(usuario);
-    List<Integer> cancionesFavIds = (List<Integer>)session.getAttribute("cancionesFavoritas");
-    
-    
+
+    if (usuarioConsulta.equals(usuarioLogueado)) {
+        listas = playController.obtenerNombresPlaylistParticularCliente(usuario);
+    } else {
+        List<String> listasAux = playController.obtenerNombresPlaylistParticularCliente(usuario);
+
+        for (String lista : listasAux) {
+            String id = lista.split(" - ")[0];
+            Playlist play = playController.findPlaylist(Integer.valueOf(id));
+            if (play instanceof PlaylistParticular) {
+                PlaylistParticular playlistParticular = (PlaylistParticular) play;
+                Boolean privada = playlistParticular.getPrivada();
+
+                if (!privada) {
+                    listas.add(lista);
+                }
+            }
+        }
+    }
+
+    List<Integer> cancionesFavIds = (List<Integer>) session.getAttribute("cancionesFavoritas");
+
     String nombre = "Nombre";
     String apellido = "Apellido";
     String mail = "mail";
@@ -69,11 +90,10 @@
         imagen = (String) datos[0][5];
         if (tipoUsuario.equals("artista")) {
             biografia = (String) datos[0][6];
-            if(datos[0][7]!=null){
-            web = (String) datos[0][7];
+            if (datos[0][7] != null) {
+                web = (String) datos[0][7];
             }
-            
-            
+
         }
 
         if (imagen == null || imagen == "" || imagen == "null" || imagen.isEmpty() || "null".equals(imagen)) {
@@ -115,77 +135,80 @@
 
                 <h1 class="text-neutral-500">
                     <%
-                        out.print(tipoUsuario + " " + (fecnac != null ? fecnac.toString() : "Fecha no disponible") + " " + mail);
+                        out.print(tipoUsuario + " ");
+                        if (usuarioConsulta.equals(usuarioLogueado)) {
+                            out.print((fecnac != null ? fecnac.toString() : "Fecha no disponible") + " " + mail);
+                        }
                     %>
                 </h1>
 
                 <p class="sm:text-2xl text-white font-bold md:text-7xl font-bold p-2 block">
-                    <% 
-                        if(null!=apellido){
-                        out.print(nombre + " " + apellido);
-                        }else{
-                        out.print(nombre);
+                    <%
+                        if (null != apellido) {
+                            out.print(nombre + " " + apellido);
+                        } else {
+                            out.print(nombre);
                         }
-                        
+
                     %>
                 </p>
 
-                <%if(tipoUsuario.equals("artista")){%>
+                <%if (tipoUsuario.equals("artista")) {%>
                 <a href="<%= web.startsWith("http") ? web : "http://" + web%>" target="_blank" class="p-2 text-green-500 hover:cursor-pointer hover:text-green-700">
                     <% out.println(web); %>
                 </a>
                 <%}%>
                 <% if (!usuario.equals(usuarioLogueado)) {%>
                 <div id ="SeguidoresTodo">
-                <div class="p-2 align-right">
-                    <form id="SeguiraUsuario" method="POST">
-                        <input  id="usuarioConsulta" type="hidden" name="usuarioConsulta" value="<%= (String) usuarioConsulta%>">
-                        <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
-                            <% if (seguidores.contains(usuarioLogueado)) {
-                                    out.print("Dejar de Seguir");
-                                } else {
-                                    out.print("Seguir");
-                                } %>
-                        </button>
-                    </form>
-                </div>
-                <% } %>
-                
-                <a class="cursor-pointer text-green-600 hover:text-green-800 p-2" id="showSeguidores">
-                    <%
-                        seguidores = usrController.obtenerNicknamesseguidores(usuario);
-                        out.print("Seguidores (" + num + ")");
-                    %>
-                </a>
+                    <div class="p-2 align-right">
+                        <form id="SeguiraUsuario" method="POST">
+                            <input  id="usuarioConsulta" type="hidden" name="usuarioConsulta" value="<%= (String) usuarioConsulta%>">
+                            <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
+                                <% if (seguidores.contains(usuarioLogueado)) {
+                                        out.print("Dejar de Seguir");
+                                    } else {
+                                        out.print("Seguir");
+                                    } %>
+                            </button>
+                        </form>
+                    </div>
+                    <% } %>
 
-                <!-- Sección de Seguidores -->
-                <div id="seguidoresSection" class="hidden  p-3">
-                    
-                    <h2 class="text-lg font-semibold text-green-800">Lista de Seguidores: </h2>
-                    <div>
+                    <a class="cursor-pointer text-green-600 hover:text-green-800 p-2" id="showSeguidores">
                         <%
                             seguidores = usrController.obtenerNicknamesseguidores(usuario);
-                            int count = 0;
-                            for (String seguidor : seguidores) {
-                                if (count % 10 == 0 && count != 0) {
+                            out.print("Seguidores (" + num + ")");
+                        %>
+                    </a>
+
+                    <!-- Sección de Seguidores -->
+                    <div id="seguidoresSection" class="hidden  p-3">
+
+                        <h2 class="text-lg font-semibold text-green-800">Lista de Seguidores: </h2>
+                        <div>
+                            <%
+                                seguidores = usrController.obtenerNicknamesseguidores(usuario);
+                                int count = 0;
+                                for (String seguidor : seguidores) {
+                                    if (count % 10 == 0 && count != 0) {
+                                        out.print("</p>");
+                                    }
+                                    if (count % 10 == 0) {
+                                        out.print("<p class='text-neutral-600'>");
+                                    }
+                                    out.print(seguidor + (count < seguidores.size() - 1 ? " - " : ""));
+                                    count++;
+                                }
+                                if (count > 0) {
                                     out.print("</p>");
                                 }
-                                if (count % 10 == 0) {
-                                    out.print("<p class='text-neutral-600'>");
-                                }
-                                out.print(seguidor + (count < seguidores.size() - 1 ? " - " : ""));
-                                count++;
-                            }
-                            if (count > 0) {
-                                out.print("</p>");
-                            }
-                        %>
+                            %>
+                        </div>
                     </div>
                 </div>
             </div>
- </div>
             <!-- Columna para la biografía -->
-            <%if(tipoUsuario.equals("artista")){%>
+            <%if (tipoUsuario.equals("artista")) {%>
             <div style="font-size:clamp(8px, 2vw, 20px);" class="col-span-1 col-start-4 row-span-2 p-2 text-white p-2 mt-5 shadow-xl text-center">
                 <%
                     out.println(biografia);
@@ -210,17 +233,17 @@
 
             <!-- Sección de Listas -->
             <div id="listasSection" class="playlists  bg-transparent pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto p-2 rounded">
-               
-                
-                <%if(usuario.equals(usuarioLogueado) && !cancionesFavIds.isEmpty()){%>
-                 <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick='abrirCasoDeUso("consultarPlaylist.jsp", "-1")'>
+
+
+                <%if (usuario.equals(usuarioLogueado) && !cancionesFavIds.isEmpty()) {%>
+                <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick='abrirCasoDeUso("consultarFavoritos.jsp", "")'>
                     <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/cancionesFavoritas.png" alt="Imagen de tarjeta">
                     <div class="p-6 hover:shadow-inner">
                         <h2 class="text-lg font-semibold text-gray-800">Canciones Favoritas</h2>
                     </div>
                 </div>
                 <%}%>
-                
+
                 <%
                     // Combinar las dos listas (listas particulares y listas favoritas)
                     List<String> todasLasListas = new ArrayList<>(listas);
@@ -241,52 +264,65 @@
                     <img class="w-full h-48 object-cover hover:shadow-inner" src="<%=imagenPlay%>" alt="Imagen de tarjeta">
                     <div class="p-6 hover:shadow-inner">
                         <h2 class="text-lg font-semibold text-gray-800"><%= lista%></h2>
+                        <% if (play instanceof PlaylistParticular) {%>
+                        <form id="eliminarForm" method="POST" action="eliminarPlaylist">
+                            <input id="idEliminar" type="hidden" name="idEliminar" value="<%= id%>">
+                            <input id="user" type="hidden" name="user" value="<%= usuarioConsulta%>">
+
+                            <button class="bg-red-500 text-white px-3 py-1 mt-3 rounded hover:bg-red-600" 
+                                    type="button" 
+                                    onclick="AjaXeliminarLista('<%= id%>'); event.stopPropagation();">Eliminar</button>
+                        </form>
+                        <% } %>
                     </div>
                 </div>
                 <%
                     }
                 } else {
                 %>
-                <p class="text-white"><% if(usuarioLogueado.equals(usuarioConsulta)){}else{out.println("No hay listas disponibles");}%></p>
-                <%
-                    }
-                %>
-            </div>
+                <p class="text-white"><% if (usuarioLogueado.equals(usuarioConsulta)) {
+                    } else {
+                        out.println("No hay listas disponibles");
+                    } %></p>
+                    <%
+                        }
+                    %>
 
 
-            <!-- Sección de Albums -->
-            <div id="albumsSection" class="playlists bg-transparent pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto" style="display: none;">
-                <%
-                    // Verificamos si hay álbumes antes de mostrar la sección
-                    if (albums != null && !albums.isEmpty()) {
-                        // Iteramos sobre la lista de álbumes para generar las tarjetas dinámicamente
-                        for (String album : albums) {
-                            String[] partes = album.split(" - ", 2);
-                            String idAlbum = partes[0].trim();
 
-                            int id = Integer.valueOf(idAlbum);
-                            Album albumAux = albController.findAlbum(id);
-                            String imagenAlbum = albumAux.getDireccion_imagen();
-                            String artista = albController.obtenerArtistaAlbum(id);
-                %>
+                <!-- Sección de Albums -->
+                <div id="albumsSection" class="playlists bg-transparent pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto" style="display: none;">
+                    <%
+                        // Verificamos si hay álbumes antes de mostrar la sección
+                        if (albums != null && !albums.isEmpty()) {
+                            // Iteramos sobre la lista de álbumes para generar las tarjetas dinámicamente
+                            for (String album : albums) {
+                                String[] partes = album.split(" - ", 2);
+                                String idAlbum = partes[0].trim();
 
-                <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista.trim()%>&user=<%= idAlbum%>')">
-                    <img class="w-full h-48 object-cover hover:shadow-inner" src="<%=imagenAlbum%>" alt="Imagen de tarjeta">
-                    <div class="p-6 hover:shadow-inner">
-                        <h2 class="text-lg font-semibold text-gray-800"><%= album%></h2>
+                                int id = Integer.valueOf(idAlbum);
+                                Album albumAux = albController.findAlbum(id);
+                                String imagenAlbum = albumAux.getDireccion_imagen();
+                                String artista = albController.obtenerArtistaAlbum(id);
+                    %>
+
+                    <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista.trim()%>&user=<%= idAlbum%>')">
+                        <img class="w-full h-48 object-cover hover:shadow-inner" src="<%=imagenAlbum%>" alt="Imagen de tarjeta">
+                        <div class="p-6 hover:shadow-inner">
+                            <h2 class="text-lg font-semibold text-gray-800"><%= album%></h2>
+                        </div>
                     </div>
+                    <%
+                        }
+                    } else {
+                    %>
+                    <p class="text-white">No hay álbumes disponibles.</p>
+                    <%
+                        }
+                    %>
                 </div>
-                <%
-                    }
-                } else {
-                %>
-                <p class="text-white">No hay álbumes disponibles.</p>
-                <%
-                    }
-                %>
             </div>
-        </div>
             <script>
-    }</script>
+                }</script>
     </body>
 </html>      

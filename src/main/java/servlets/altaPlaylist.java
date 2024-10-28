@@ -1,4 +1,4 @@
- /* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+/* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package servlets;
@@ -21,6 +21,10 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import javax.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -29,8 +33,10 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet(name = "altaPlaylist", urlPatterns = {"/altaPlaylist"})
 @MultipartConfig
 public class altaPlaylist extends HttpServlet {
+
     Fabrica fabrica = Fabrica.getInstance();
     private IPlaylistController ICP = fabrica.getIPlaylistController();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,7 +48,7 @@ public class altaPlaylist extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -102,22 +108,29 @@ public class altaPlaylist extends HttpServlet {
                 e.printStackTrace(); // Manejo de excepciones
             }
         }
-int idPlay;
+        int idPlay;
         try {
             if (filePart != null && filePart.getSize() > 0) {
-               idPlay = ICP.crearPlaylistParticular(nombrePlay, "playlist/" + fileName, usuario, privada);
+                idPlay = ICP.crearPlaylistParticular(nombrePlay, "playlist/" + fileName, usuario, privada);
             } else {
-               idPlay = ICP.crearPlaylistParticular(nombrePlay, fileName, usuario, privada);
+                idPlay = ICP.crearPlaylistParticular(nombrePlay, fileName, usuario, privada);
             }
-        response.setContentType("application/json");
-        response.getWriter().write("{\"success\": true, \"id\": " + idPlay + "}");   
-    } catch (Exception e) {
-        PrintWriter out = response.getWriter();
-        out.print(e);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"success\": true, \"id\": " + idPlay + "}");
+
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
+            EntityManager em = emf.createEntityManager();
+            List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuario + "'").getResultList();
+            List<Integer> playlistsCreadas = em.createNativeQuery("SELECT id FROM `playlistparticular` where propietario='" + usuario + "'").getResultList();
+            playlistFavoritas.addAll(playlistsCreadas);
+            session.setAttribute("playlistFavoritas", playlistFavoritas);
+            
+            
+        } catch (Exception e) {
+            PrintWriter out = response.getWriter();
+            out.print(e);
+        }
     }
-}
-
-
 
     /**
      * Returns a short description of the servlet.
