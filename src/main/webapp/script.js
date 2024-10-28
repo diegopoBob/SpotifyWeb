@@ -190,7 +190,62 @@ document.querySelectorAll('th').forEach(th => {
         rows.sort(comparer(idx, asc)).forEach(tr => tbody.appendChild(tr));
     });
 });
+
+
+
 }
+
+
+function scripts_consultarFavoritos() {
+    
+    
+    //FUNCION COLOR
+    $(window).ready(function () {
+        var sourceImage = document.getElementById("imagenPLaylistPrincipal");
+        var colorThief = new ColorThief();
+        var color = colorThief.getColor(sourceImage);
+        var colorOscuro = [
+            Math.floor(color[0] * 0.7),
+            Math.floor(color[1] * 0.7),
+            Math.floor(color[2] * 0.7)
+        ];
+        console.log("Color obtenido:", color); // Log del color obtenido
+        document.getElementById("divPLaylistPrincipal").style.backgroundColor = "rgb(" + color + ")";
+        document.getElementById("PlaylistAbajo").style.backgroundImage = "linear-gradient(to bottom, rgb(" + colorOscuro + ") 25%, rgb(23 23 23))";
+    });
+    //FUNCION TABLA SORTER
+    const getCellValue = (tr, idx) => tr.children[idx]?.innerText || tr.children[idx]?.textContent;
+
+// Comparador para la ordenación
+const comparer = (idx, asc) => (a, b) => {
+    const v1 = getCellValue(a, idx);
+    const v2 = getCellValue(b, idx);
+
+    // Comparar números o texto según corresponda
+    return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)
+        ? (asc ? v1 - v2 : v2 - v1) // Ordenar como números
+        : v1.toString().localeCompare(v2) * (asc ? 1 : -1); // Ordenar como texto
+};
+
+document.querySelectorAll('th').forEach(th => {
+    th.addEventListener('click', function () {
+        const table = th.closest('table');
+        const tbody = table.querySelector('tbody'); // Asegúrate de seleccionar solo las filas del tbody
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        const idx = Array.from(th.parentNode.children).indexOf(th);
+        const asc = this.asc = !this.asc;
+
+        // Ordenar y volver a añadir las filas
+        rows.sort(comparer(idx, asc)).forEach(tr => tbody.appendChild(tr));
+    });
+});
+
+
+
+}
+
+
 
 function scripts_ConsultarAlbum() {
 
@@ -394,6 +449,37 @@ function AjaXAltaPlaylist() {
         console.log("El nombre no puede estar vacío."); // Mensaje de error
     }
 }
+
+function AjaXpublicarLista() {
+    
+        let dataString = $("#publicarForm").serialize();
+
+        // Obtén el valor del campo de entrada donde se guarda el nickname
+        const id = $("#idPlay").val(); // Asegúrate de que el ID sea correcto
+        
+        dataString = "&idPlay=" + encodeURIComponent(id); // 
+       
+        console.log(dataString);
+        $.ajax({
+            type: "POST",
+            url: "publicarLista",
+            data: dataString,
+            dataType: "json",
+
+            success: function (data) {
+
+                if (data.success) {
+                    abrirCasoDeUso('consultarPlaylist.jsp?&user=' + id);
+                    actualizarTablaPlaylists();
+                }
+                return false;
+            }
+        });
+    
+ }
+
+
+
 
  function isEmptyFieldAlbum() {
      if (!$("#idAlbum").val().length) {

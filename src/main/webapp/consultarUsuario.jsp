@@ -213,7 +213,7 @@
                
                 
                 <%if(usuario.equals(usuarioLogueado) && !cancionesFavIds.isEmpty()){%>
-                 <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick='abrirCasoDeUso("consultarPlaylist.jsp", "-1")'>
+                 <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick='abrirCasoDeUso("consultarFavoritos.jsp", "")'>
                     <img class="w-full h-48 object-cover hover:shadow-inner" src="includes/cancionesFavoritas.png" alt="Imagen de tarjeta">
                     <div class="p-6 hover:shadow-inner">
                         <h2 class="text-lg font-semibold text-gray-800">Canciones Favoritas</h2>

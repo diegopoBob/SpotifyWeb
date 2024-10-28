@@ -176,9 +176,9 @@
         <input type="hidden" id="canId" name="canId" value="<%=(Integer) cancion[0]%>">
         <button type="button" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) cancion[0]%>);">
             <% if (CanFav.contains((Integer) cancion[0])) { %>
-                <i id="can<%= (Integer) cancion[0] %>" class="text-green-500 fa-solid fa-circle-check"></i>
+                <i id="can<%= (Integer) cancion[0] %>" class="text-green-500  fa-solid fa-circle-check"> Favorita</i>
             <% } else { %>
-                <i id="can<%= (Integer) cancion[0] %>" class="text-white fa-solid fa-circle-plus"></i>
+                <i id="can<%= (Integer) cancion[0] %>" class="text-white  fa-solid fa-circle-plus"> Favorita</i>
             <% } %>
         </button>
     </form>

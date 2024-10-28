@@ -32,6 +32,7 @@ public class AlbumController implements IAlbumController {
 
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
 
+    private ICancionController canCon;
     private ArtistaJpaController art_ctr;
     private ClienteJpaController auxCliente;
     private AlbumJpaController auxAL;
@@ -45,6 +46,8 @@ public class AlbumController implements IAlbumController {
         this.auxAL = fabrica.getAlbumJpaController();
         this.auxG = fabrica.getGeneroJpaController();
         this.auxCan = fabrica.getCancionJpaController();
+        this.canCon = fabrica.getICancionController();
+        
     }
 
     public AlbumController(EntityManagerFactory emf) {
@@ -363,23 +366,11 @@ public class AlbumController implements IAlbumController {
     }
 
     // Obtener el álbum asociado a la canción.
-    List<Album> albumsAux = auxAL.findAlbumEntities();
-    Album albumAux = new Album();
+    
+   Album albumAux = auxAL.findAlbum(canCon.obtenerIdAlbum(cancion.getId()));
    
     
-    for (Album album : albumsAux) {
-        // Obtener las canciones asociadas al álbum actual
-        List<Cancion> canciones = album.getCanciones();
-        
-        // Recorrer las canciones del álbum
-        for (Cancion cancionaux : canciones) {
-            // Verificar si la canción tiene el ID que estamos buscando
-            if (cancion.getId() == idCancion) {
-                // Si la canción es encontrada, devolvemos el álbum
-                albumAux = album;
-            }
-        }
-    }
+  
     
     
     
@@ -406,6 +397,7 @@ public class AlbumController implements IAlbumController {
     datos[8] = albumAux.getArtista().getNick();
     datos[9] = albumAux.getId();
     datos[10] = albumAux.getArtista().getApellido();
+    
 
     return datos;
 }
