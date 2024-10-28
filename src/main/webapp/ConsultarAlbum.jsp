@@ -41,8 +41,10 @@
     
     if (tipo != null && nombre != null) {
         if (tipo.equals("genero")) {
+            
             albumes = alController.obtenerAlbumesPorGenero(nombre);
         } else if (tipo.equals("artista")) {
+            
             albumes = alController.obtenerAlbumArtista(nombre);
         }
     }
@@ -126,6 +128,7 @@
                         <h3 class="text-white"><%= albumActual[1]%></h3>
                         <p class="text-white">Año: <%= albumActual[2]%></p>
                         <p class="text-white">Artista: <%= albumActual[3]%>  <% if(albumActual[7]!= null){out.print(albumActual[7]);} %> </p>
+                        
                         <!-- Botón de favorito dinámico -->
                         <form id="idguardarAlbumFavorito" action="guardarAlbumFavorito" method="POST">
                             <input id="idAlbum" type="hidden" name="albumId" value="<%= albumActual[0]%>">
