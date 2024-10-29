@@ -61,12 +61,12 @@
 
             <div class="flex h-16 w-dvh items-center justify-between bg-black py-4">
                 <div class="px-4 flex hidden md:block">
-                    <img src="includes/logo.png" class="h-10 w-auto object-contain cursor-pointer" onclick='abrirCasoDeUso("principal.jsp")' alt="alt" />
+                    <img src="includes/logo.png" class="h-10 w-auto object-contain cursor-pointer" onclick='abrirCasoDeUso("principalWelcome.jsp")' alt="alt" />
                 </div>
                 <div class="bg-black flex items-center md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:text-center">
                     <i class="md:hidden fa-solid fa-angles-right text-white text-xl ml-1 fa-angles-left" id="mostrarLibreria" onclick="mostrarLibreria()"></i>
                     <div class="m-2">
-                        <a onclick='abrirCasoDeUso("principal.jsp")'>
+                        <a onclick='abrirCasoDeUso("principalWelcome.jsp")'>
                             <i class="fa-solid fa-house text-xl text-neutral-400 hover:text-white rounded-full p-2 hover:bg-neutral-600"></i>
                         </a>
                     </div>
@@ -407,6 +407,7 @@
         playlistAlbumesDiv.load(location.href + " #PlaylistAlbumes > *");
     }
 
+    abrirCasoDeUso('principalWelcome.jsp');
 
 
 

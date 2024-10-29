@@ -313,6 +313,10 @@
             <p class="flex text-left text-sm font-normal text-white">
                 <span class="text-xl p-4">Tu suscripción ha vencido. ¡Renueva ahora para continuar disfrutando de tus playlists y descargas!</span>
                 <button data-modal-target="select-modal" data-modal-toggle="select-modal" class="bg-white rounded-full p-4 shadow-md text-base font-semibold text-black">Renovar Suscripción</button>
+                <form action="cambiarEstadoSubscripcion" method="POST">
+                <input id="estado" type="hidden" name="estado" value="Cancelado">
+                <button  type="submit" class="bg-white rounded-full p-4 shadow-md text-base font-semibold text-black">Cancelar Suscripción</button>
+            </form>
             </p>
         </div>
         <div class="flex items-center">
@@ -329,7 +333,10 @@
         <div class="flex mx-auto">
             <p class="flex text-left text-sm font-normal text-white">
                 <span class="text-xl p-4">Tu suscripción está pendiente de comprobación.   ¿listo para crear playlists o descargar música?:</span>
-
+                <form action="cambiarEstadoSubscripcion" method="POST">
+                <input id="estado" type="hidden" name="estado" value="Cancelado">
+                <button  type="submit" class="bg-white rounded-full p-4 shadow-md text-base font-semibold text-black">Cancelar Suscripción</button>
+            </form>
             </p>
         </div>
         <div class="flex items-center">
@@ -348,7 +355,7 @@
         <div class="flex  mx-auto">
             <p class="flex text-left text-sm text-bold font-normal text-white ">
                 <span class="text-xl p-4">Quieres crear playlists o descargar musica? Pos Suscribete :</span><button data-modal-target="select-modal" data-modal-toggle="select-modal" class="bg-white rounded-full p-4 shadow-md text-base font-semibold text-black">Suscribirse</button>
-
+              
             </p>
         </div>
         <div class="flex items-center">
@@ -382,6 +389,7 @@
                 <div class="p-4 md:p-5">
                     <p class="text-gray-400 mb-4">Elige un plan que se adapte a tus necesidades:</p>
                     <form action="cambiarEstadoSubscripcion" method="POST">
+                        <input id="estado" type="hidden" name="estado" value="Pendiente">
                         <ul class="space-y-4 mb-4">
                             <!-- Plan de 12 meses -->
                             <li>

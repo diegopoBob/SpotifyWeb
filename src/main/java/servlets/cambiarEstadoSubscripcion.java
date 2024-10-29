@@ -63,41 +63,33 @@ public class cambiarEstadoSubscripcion extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         processRequest(request, response);
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
         EntityManager em = emf.createEntityManager();
         HttpSession session = request.getSession();
-        String planSeleccionado = request.getParameter("planSub");
+        int tipo = 0;
+        if(null != request.getParameter("planSub")){
+            String planSeleccionado = request.getParameter("planSub");
+            tipo = Integer.valueOf(planSeleccionado);
+        }
+
         LocalDate fechaActual = LocalDate.now();
         String usuario = (String) session.getAttribute("nick");
-        int tipo = Integer.valueOf(planSeleccionado);
-       
+        String estado = (String) request.getParameter("estado");
+
+
         try {
-            ICU.CambiarEstadosubscripcion(usuario,"Pendiente",tipo,null);
+            ICU.CambiarEstadosubscripcion(usuario,estado,tipo,null);
             out.println("Anduvo");
         } catch (Exception ex) {
             ex.printStackTrace(); // Imprime la traza completa del error en la consola del servidor.
             out.println("Error: " + ex.getMessage());
         }
 
-       response.sendRedirect("index.jsp?");  
+       response.sendRedirect("index.jsp?");
 
     }
 

@@ -86,8 +86,8 @@ function scripts_consultarUsuario() {
 
     // Mostrar la sección de listas y cambiar el botón a activo
     showListas.addEventListener('click', function () {
-        listasSection.style.display = 'grid';
-        albumsSection.style.display = 'none';
+        listasSection.classList.remove('hidden');
+        albumsSection.classList.add('hidden');
 
         clearActiveClass(); // Quitamos las clases activas de ambos botones
         showListas.classList.add('bg-green-800'); // Activamos el botón de Listas
@@ -95,8 +95,8 @@ function scripts_consultarUsuario() {
 
     // Mostrar la sección de álbums y cambiar el botón a activo
     showAlbums.addEventListener('click', function () {
-        albumsSection.style.display = 'grid';
-        listasSection.style.display = 'none';
+        albumsSection.classList.remove('hidden');
+        listasSection.classList.add('hidden');
 
         clearActiveClass(); // Quitamos las clases activas de ambos botones
         showAlbums.classList.add('bg-green-800'); // Activamos el botón de Álbums

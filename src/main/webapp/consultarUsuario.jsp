@@ -110,11 +110,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Spotify</title>
-        <script src="https://cdn.tailwindcss.com"></script>
         <link href="includes/style.css" rel="stylesheet">
         <script src="script.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     </head>
     <body class = "bg-green-800">
@@ -291,7 +289,7 @@
 
 
                 <!-- Sección de Albums -->
-                <div id="albumsSection" class="playlists bg-transparent pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto" style="display: none;">
+                <div id="albumsSection" class="playlists bg-transparent pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto hidden">
                     <%
                         // Verificamos si hay álbumes antes de mostrar la sección
                         if (albums != null && !albums.isEmpty()) {
@@ -321,8 +319,6 @@
                         }
                     %>
                 </div>
-            </div>
-            <script>
-                }</script>
+            </div>      
     </body>
 </html>      
