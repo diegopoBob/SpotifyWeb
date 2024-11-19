@@ -89,7 +89,7 @@ public class register extends HttpServlet {
     if(fileName.isEmpty()){ // si no se selecciono ninguna imagen
         fileName="imagenDefault.png";
     }
-    String uploads = getServletContext().getRealPath("") + File.separator + "fotosDePerfil";
+    String uploads = getServletContext().getRealPath("") + File.separator + "includes/Usuarios";
     
     // Asegúrate de que la carpeta de destino existe
     File uploadDir = new File(uploads);
@@ -109,7 +109,7 @@ public class register extends HttpServlet {
     }
 
     try {       
-        ICU.registroUsuario(username, nombre, apellido, email, LocalDate.parse(birthdate), "fotosDePerfil/"+fileName, biografia, link, userType, password);
+        ICU.registroUsuario(username, nombre, apellido, email, LocalDate.parse(birthdate), "includes/Usuarios/"+fileName, biografia, link, userType, password);
         response.sendRedirect("login.jsp?");
     } catch (Exception e) {
         //segun el tipo de exception obtenido

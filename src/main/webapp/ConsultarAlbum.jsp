@@ -75,6 +75,17 @@
     if (albumActual.length > 0) {
         canciones = alController.obtenerDatosCancionAlbum((Integer) albumActual[0]);
     }
+    
+ boolean Vigente = false;
+     if(session.getAttribute("tipo_usuario").equals("cliente")){
+      if (usrController.obtenerDatosCliente(usuarioLogueado) != null) {
+                if ("Vigente".equals(session.getAttribute("Estado"))) {
+                    Vigente = true;  
+                }
+            }
+    }
+
+out.println(Vigente);
 %>
 
 <!DOCTYPE html>
@@ -206,7 +217,7 @@
                             <input id="idAlbum" type="hidden" name="albumId" value="<%= albumActual[0]%>">
                             <input id="artistaAlbum" type="hidden" name="artistaAlbum" value="<%= albumActual[8]%>">
                             <input id="esFAv" type="hidden" name="action" value="<%= esFavorito ? "eliminarDeFavoritos" : "agregarAFavoritos"%>">
-                            <button id="botonGuardar" type="button" onclick="AjaXguardarAlbumFavorita()" class="<%= esFavorito ? "text-red-500" : "text-green-500"%> pt-3 font-bold hover:underline cursor-pointer text-center">
+                            <button  id="botonGuardar" type="button" onclick="AjaXguardarAlbumFavorita()" class="<%= esFavorito ? "text-red-500" : "text-green-500"%> pt-3 font-bold hover:underline cursor-pointer text-center <%if (session.getAttribute("tipo_usuario").equals("artista") || !Vigente) {out.print("hidden");}%>">
                                 <%= esFavorito ? "Eliminar de favoritos" : "Guardar en favoritos"%>
                             </button >
                         </form>
@@ -244,11 +255,11 @@
                             </a>
                             <div class="flex items-center space-x-4">
                                 <!-- Botón de Descargar -->
-                                <a href="<%= cancion[3]%>" download class="text-blue-500 hover:underline" onclick="event.stopPropagation();">Descargar</a>
+                                <a  href="<%= cancion[3]%>" download class="text-blue-500 hover:underline <%if (session.getAttribute("tipo_usuario").equals("artista") || !Vigente) {out.print("hidden");}%>" onclick="event.stopPropagation();">Descargar</a>
                                 <!-- Formulario de Favoritos -->
                                 <form id="favoritosForm" method="POST">
                                     <input type="hidden" id="canId" name="canId" value="<%=(Integer) cancion[0]%>">
-                                    <button type="button" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) cancion[0]%>);">
+                                    <button type="button" onclick="event.stopPropagation(); agregarEliminarFavoritoCancionPlay(<%=(Integer) cancion[0]%>);" class="<%if (session.getAttribute("tipo_usuario").equals("artista") || !Vigente) {out.print("hidden");}%>" >
                                         <% if (CanFav.contains((Integer) cancion[0])) {%>
                                         <i id="can<%= (Integer) cancion[0]%>" class="text-green-500  fa-solid fa-circle-check"> Favorita</i>
                                         <% } else {%>
@@ -258,10 +269,10 @@
                                 </form>
 
                                 <!-- Botón de Agregar a Playlist -->
-                                <div onclick="event.stopPropagation();" class="song-container">
+                                <div onclick="event.stopPropagation();" class="song-container ">
                                     <div class="song-title"></div>
                                     <div class="menu-trigger">
-                                        <i onclick="event.stopPropagation();" class="fa-solid fa-list-ul mr-5 mt-4"></i> <!-- Tres puntos verticales -->
+                                        <i onclick="event.stopPropagation();" class="fa-solid fa-list-ul mr-5 mt-4  <%if (session.getAttribute("tipo_usuario").equals("artista") || !Vigente) {out.print("hidden");}%>"></i> <!-- Tres puntos verticales -->
                                         <div class="dropdown-menu">
                                             <input 
                                                 onclick="event.stopPropagation();" 
