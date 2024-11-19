@@ -211,7 +211,7 @@ function scripts_consultarUsuario() {
 
             }
 
-    
+
     
     
 function mostrarModal() {
@@ -235,6 +235,100 @@ document.getElementById("cancelarEliminar").onclick = function() {
 };
 
 }
+
+function buscarCancionesPlaylist() {
+    // Obtener valores de los elementos del DOM
+    const inputElement = document.getElementById('input');
+    const idPlayActElement = document.getElementById('playIdAct');
+    const resultadosUl = document.getElementById('resultados');
+
+    // Verificar que los elementos existan
+    if (!inputElement || !idPlayActElement || !resultadosUl) {
+        console.error('No se encontraron uno o más elementos en el DOM.');
+        return;
+    }
+
+    const input = inputElement.value.trim();
+    const idPlayAct = idPlayActElement.value.trim();
+
+    // Mostrar en consola el ID de la playlist activa
+    console.log('Texto ingresado:', idPlayAct);
+
+    // Limpiar los resultados anteriores
+    resultadosUl.innerHTML = '';
+
+    // Si no hay texto en el input, no hacer la petición
+    if (!input) {
+        return;
+    }
+
+    // Hacer la petición al servidor
+    fetch(`busquedaCancionesPlaylist?input=${encodeURIComponent(input)}&idPlayAct=${encodeURIComponent(idPlayAct)}`)
+        .then(response => {
+            // Validar si la respuesta del servidor fue exitosa
+            if (!response.ok) {
+                console.error('Error en la respuesta del servidor:', response.status);
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Parsear la respuesta a JSON
+        })
+        .then(data => {
+            console.log('Datos recibidos desde el servidor:', data);
+
+            // Verificar que la respuesta contiene datos válidos
+            if (data.success && data.object.length > 0) {
+                data.object.forEach(cancion => {
+                    // Crear elemento <li> para cada canción
+                    const li = document.createElement('li');
+                    li.className = "p-2 hover:bg-neutral-200 cursor-pointer rounded-md flex items-center gap-4";
+
+                    // Crear la imagen
+                    const img = document.createElement('img');
+                    img.src = cancion.direccion_imagen;
+                    img.alt = `${cancion.nombre} - Imagen`;
+                    img.className = "w-12 h-12 object-cover rounded";
+
+                    // Crear el contenedor de texto
+                    const textDiv = document.createElement('div');
+
+                    // Nombre de la canción
+                    const nombre = document.createElement('p');
+                    nombre.textContent = `🎵 ${cancion.nombre}`;
+                    nombre.className = "font-semibold";
+
+                    // Propietario de la canción
+                    const propietario = document.createElement('p');
+                    propietario.textContent = `👤 Propietario: ${cancion.propietario}`;
+                    propietario.className = "text-sm text-gray-500";
+
+                    // Añadir elementos al contenedor de texto
+                    textDiv.appendChild(nombre);
+                    textDiv.appendChild(propietario);
+
+                    // Añadir la imagen y el contenedor de texto al <li>
+                    li.appendChild(img);
+                    li.appendChild(textDiv);
+
+                    // Agregar evento al hacer clic
+                    li.onclick = () => {
+                        AJAXaltaTemaLista(cancion.id, idPlayAct, idPlayAct, '0');
+                    };
+
+                    // Añadir el <li> al <ul> de resultados
+                    resultadosUl.appendChild(li);
+                });
+            } else {
+                // Mostrar mensaje si no se encontraron canciones
+                const li = document.createElement('li');
+                li.className = "p-2 text-gray-500";
+                li.textContent = 'No se encontraron canciones.';
+                resultadosUl.appendChild(li);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
 
 function scripts_consultarPlaylist() {
 
@@ -621,6 +715,38 @@ function AjaXbajaArtista() {
     });
 }
 
+function AJAXaltaTemaLista(idCan, idPlay,idPlayAct,existeRel) {
+    // Validamos que los IDs no sean nulos
+    if (!idCan || !idPlay) {
+        console.error("ID de canción o playlist faltante:", idCan, idPlay);
+        return;
+    }
+    
+    console.log("ID de canción:", idCan, "ID de playlist:", idPlay," ddsad",existeRel);
+    // Creamos la cadena de datos para enviar
+    const dataString = 
+        "&idCan=" + encodeURIComponent(idCan) + 
+        "&existeRel=" + encodeURIComponent(existeRel) + 
+        "&idPlay=" + encodeURIComponent(idPlay);
+
+    $.ajax({
+        type: "POST",
+        url: "altaTemaLista", // La URL del servlet
+        data: dataString,
+        dataType: "json",
+
+        success: function (data) {
+            if (data.success) {
+                abrirCasoDeUso("consultarPlaylist.jsp", idPlayAct); // Cambia a idAct si es necesario
+            } else {
+                console.error("Error del servidor:", data.message || "Sin mensaje.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(`Error AJAX: ${status} - ${error}`);
+        }
+    });
+}
 
 
 
