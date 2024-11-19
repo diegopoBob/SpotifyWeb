@@ -30,6 +30,7 @@
         nicknameLogeado = (String) session.getAttribute("nick");
         Visitante = true;
     }
+    
     Fabrica fabrica = Fabrica.getInstance();
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
     EntityManager em = emf.createEntityManager();
@@ -43,6 +44,7 @@
     LocalDate fechaSub = null;
     if (!(em.find(Usuario.class, session.getAttribute("nick")) instanceof Artista)) {
         Object[][] datosCli = IUC.obtenerDatosCliente(nicknameLogeado);
+        session.setAttribute("Estado", datosCli[0][6]);
         if ("Vencida".equals((String) datosCli[0][6])) {
             mostrarTooltip = true;
             Vencida = true;
@@ -71,7 +73,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
         <title>Spotify</title>
-        
+
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -83,19 +85,51 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="finisher-header.es5.min.js" type="text/javascript"></script>
         
+        <script>
+            function AJAXaltaTemaPlayAlbum(idCan, idPlay,idPlayAct,existeRel) {
+    // Validamos que los IDs no sean nulos
+    if (!idCan || !idPlay) {
+        console.error("ID de canción o playlist faltante:", idCan, idPlay);
+        return;
+    }
+    const nickname = $("#idAlbum").val(); // Asegúrate de que el ID sea correcto
+    const artista = $("#artistaAlbum").val();
+    console.log("ID de canción:", idCan, "ID de playlist:", idPlay," ddsad",existeRel);
+    // Creamos la cadena de datos para enviar
+    const dataString = 
+        "&idCan=" + encodeURIComponent(idCan) + 
+        "&existeRel=" + encodeURIComponent(existeRel) + 
+        "&idPlay=" + encodeURIComponent(idPlay);
 
+    $.ajax({
+        type: "POST",
+        url: "altaTemaLista", // La URL del servlet
+        data: dataString,
+        dataType: "json",
+
+        success: function (data) {
+            if (data.success) {
+                abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre='+ artista + '&user=' + nickname);
+            } else {
+                console.error("Error del servidor:", data.message || "Sin mensaje.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(`Error AJAX: ${status} - ${error}`);
+        }
+    });
+}
+        </script>
 
     </head>
     <body class="max-h-[100dvh] overflow-y-hidden">
-        <div class="flex flex-col h-[100dvh] max-h-[100vh] overflow-hidden ">
+        <div class="flex flex-col h-[100dvh] max-h-[100vh] overflow-hidden">
 
-            <div class=" flex min-h-16 w-dvh items-center justify-between bg-black "> 
-                <div class="px-4 flex  md:block">
+            <div class="flex min-h-16 w-dvh items-center justify-between bg-black "> 
+                <div class="px-4 flex hidden md:block">
                     <img src="includes/logo.png" class="h-10 w-auto object-contain cursor-pointer" onclick='abrirCasoDeUso("principal.jsp", "<%= session.getAttribute("nick")%>")' alt="alt"/>
                 </div>
-                 
-                
-                <div class="bg-black flex items-center md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:text-center"> 
+                 <div class="bg-black flex items-center md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:text-center"> 
                       <i class="fa-brands fa-gitkraken text-xl text-neutral-400 hover:text-white rounded-full  p-2 hover:bg-neutral-600" onclick='abrirCasoDeUso("rankingUsuarios.jsp")'></i> 
                     <i class=" md:hidden fa-solid fa-angles-right text-white text-xl ml-1 fa-angles-left" id="mostrarLibreria" onclick="mostrarLibreria()"></i>
                     <div class="m-2"><a onclick='abrirCasoDeUso("principal.jsp", "<%= session.getAttribute("nick")%>")'><i class="fa-solid fa-house text-xl text-neutral-400 hover:text-white rounded-full  p-2 hover:bg-neutral-600"></i></a></div>                   
@@ -129,7 +163,14 @@
                         </div>
                         <div>
 
-                            <!-- Botón ALTA-->
+                          <%if(session.getAttribute("tipo_usuario").toString().equals("artista")){%>
+                            <button
+                                type="button"
+                                onclick="abrirCasoDeUso('AltaAlbum.jsp')"
+                                <i style="font-size: clamp(15px, 3vw, 20px);" 
+                                   class="hover:text-gray-400 fa-solid fa-plus""></i>
+                            </button>
+                            <%}else{%>
                             <button 
                                 type="button"
                                 <%= mostrarTooltip ? "data-popover-target='popover-user-profile'" : "data-modal-target='crud-modal'"%>"
@@ -137,6 +178,25 @@
                                 <i style="font-size: clamp(15px, 3vw, 20px);" 
                                    class="hover:text-gray-400 fa-solid fa-plus""></i>
                             </button>
+                              <%}%>
+                              <!-- POPOVER PLAYLIST SIn SUB CREAR Modal -->
+                            <div data-popover id="popover-user-profile" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm transition-opacity duration-300 bg-gray-900 border border-green-500 rounded-lg shadow-lg opacity-0">
+                                <div class="p-3 text-white">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div>
+                                            <button type="button" data-modal-target="select-modal" data-modal-toggle="select-modal" class="text-black bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5">
+                                                Suscribirse
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p class="mb-4 text-sm">
+                                        Para crear playlists y más, ¡suscríbete ahora!
+                                    </p>
+
+                                </div>
+                                <div data-popper-arrow class="fill-current text-gray-900"></div>
+                            </div>
+                              
                                  <!-- Main ALTA PLAY modal -->
                             <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden  overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="text-white relative p-4 w-full max-w-md max-h-full">
@@ -285,7 +345,7 @@
 
                     <div class="w-96 flex flex-col gap-2 items-center justify-center mb-2">
                         <input class="rounded-lg overflow-hidden appearance-none bg-neutral-800 h-2 w-full absolute top-[-1dvh] md:relative" type="range" min="1" step="1" value="0" id="timeRange"/>
-                        <div class="text-white text-xs flex gap-2 hidden">
+                        <div class="text-white text-xs  gap-2 hidden md:flex">
                             <div id="minutosActuales"></div>
                             
                             <div id="minutosTotales"></div>
@@ -332,7 +392,7 @@
             </button>
         </div>
     </div>
-    <% } else if (Pendiente == true) {%>
+    <% } else if (Pendiente) {%>
     <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
         <div class="flex mx-auto">
             <p class="flex text-left text-sm font-normal text-white">
@@ -353,7 +413,7 @@
         </div>
     </div>
 
-
+    <%} else if(session.getAttribute("tipo_usuario").equals("artista")){%>
     <% } else if (mostrarTooltip) {%>
     <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-purple-800 via-pink-500 to-blue-800 rounded-xl absolute bottom-0 left-0 z-50 flex  w-full p-4  ">
         <div class="flex  mx-auto">
@@ -441,23 +501,7 @@
                     </form>
                 </div>
                      
-                             <!-- POPOVER PLAYLIST SIn SUB CREAR Modal -->
-                            <div data-popover id="popover-user-profile" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm transition-opacity duration-300 bg-gray-900 border border-green-500 rounded-lg shadow-lg opacity-0">
-                                <div class="p-3 text-white">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <div>
-                                            <button type="button" data-modal-target="select-modal" data-modal-toggle="select-modal" class="text-black bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5">
-                                                Suscribirse
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <p class="mb-4 text-sm">
-                                        Para crear playlists y más, ¡suscríbete ahora!
-                                    </p>
-
-                                </div>
-                                <div data-popper-arrow class="fill-current text-gray-900"></div>
-                            </div>
+                             
             </div>
         </div>    
     </div>
@@ -649,7 +693,12 @@
         
 
     }
+    function convertirSegundos(segundos) {
+    const minutos = Math.floor(segundos / 60); // Calcula los minutos
+    const segundosRestantes = segundos % 60;   // Calcula los segundos restantes
 
+    return `${minutos} minutos y ${segundosRestantes} segundos`;
+}
     //event listeners del audio
     audio.addEventListener('loadedmetadata', () => {
         document.getElementById('minutosActuales').innerHTML = '0:00';
@@ -759,5 +808,4 @@ function mostrarModal() {
 }
 
 </script>    
- 
 </html>

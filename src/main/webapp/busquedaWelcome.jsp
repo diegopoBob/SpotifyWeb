@@ -60,7 +60,7 @@ List<Object[]> ObtenidosPlaylists = em.createNativeQuery("SELECT p.id ,nombre,ru
                 </div>
                 <div style="" name="textoLibreria" class=" items-center flex w-full justify-end">
                     <div class="align-middle ">
-                        <p> <%=aux[2]%> <i class=" text-s ml mr-5 fa-regular fa-clock"></i></p>
+                        <p> <%= String.format("%d:%02d", ((Integer) aux[2] / 60), ((Integer)aux[2] % 60)) %> <i class=" text-s ml mr-5 fa-regular fa-clock"></i></p>
                     </div>
                 </div>
     </div>

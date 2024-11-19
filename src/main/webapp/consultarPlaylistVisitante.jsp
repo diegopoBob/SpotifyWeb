@@ -58,7 +58,7 @@
     </head>
 
     <body>
-        <div name="divPlay" id="divPLaylistPrincipal" class="text-white w-full rounded flex">
+        <div name="divPlay" id="divPLaylistPrincipal" class="text-white w-full rounded flex bg-gradient-to-b from-neutral-900 via-green-600 to-neutral-900">
             <div class="image-container flex min-h-32 min-w-32 max-h-64 max-w-64 m-6 w-1/3 h-1/3">
                 <img name="imagenPLaylistPrincipal" id="imagenPLaylistPrincipal" crossorigin="anonymous" style="-webkit-box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); -moz-box-shadow: 0px 0px 32px -11px rgba(0font-bold text-white,0,0,1); box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); border-radius: 0.5rem;" src="<%= imagenPlay %>" alt="alt" class="min-h-32 min-w-32 max-h-64 max-w-64 size-full aspect-square shadow shadow-black"/>
             </div> 
@@ -94,8 +94,7 @@
         <div style="margin-bottom: -230px;" id="PlaylistAbajo" class="flex flex-row min-h-80 w-full">
             <div class="text-white flex flex-row min-h-20 mb-4 max-h-20 w-full text-4xl h-1/6">
                 <img id="playButtonPlaylist" src="includes/playP.png" class="rounded-full h-16 w-auto m-8 mt-5 ml-6 mr-3" alt="alt"/>
-                <i class="fa-solid fa-shuffle ml-4 mt-9"></i>
-                <i class="fa-regular fa-circle-down ml-5 mt-9"></i>
+             
             </div>
         </div>
         
@@ -109,7 +108,7 @@
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap flex max-w-8 mt-3 px-6 py-1">#<i class="ml-1 fa-solid fa-sort"></i></th>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap py-4">Titulo<i class="ml-1 fa-solid fa-sort"></i></th>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4 hidden sm:block">Album<i class="ml-1 fa-solid fa-sort"></i></th>
-                                    <th></th>
+                                    
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Duracion<i class="ml-1 fa-solid fa-sort"></i></th>
                                 </tr>
                             </thead>
@@ -131,12 +130,10 @@
                                     <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline hidden sm:block" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8] %>&user=<%= datosCan[i][9] %>'); event.stopPropagation();">
                                         <p class="cursor-pointer"><%= datosCan[i][6] %></p>
                                     </td>
-                                    <td class="whitespace-nowrap pb-8 text-xl">
-                                        <i id="can<%= (Integer) datosCan[i][0] %>" class="text-white fa-solid
-
- fa-heart mt-1 fa-lg"></i>
-                                    </td>
-                                    <td class="whitespace-nowrap px-6 py-4"><%= datosCan[i][5] %></td>
+                                
+                                    <td class="whitespace-nowrap px-6 py-4">
+                                        <%= String.format("%d:%02d", ((Integer) datosCan[i][2] / 60), ((Integer)datosCan[i][2] % 60)) %> 
+                                   </td>
                                 </tr>
                                 <% } %>
                             </tbody>

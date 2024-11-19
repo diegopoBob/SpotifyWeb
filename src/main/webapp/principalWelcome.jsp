@@ -81,7 +81,7 @@
                                     imagen = aux[2].toString();
                                 }
                     %>
-                    <div onclick="abrirCasoDeUso('ConsultarAlbumVisitante.jsp?tipo=artista&nombre=<%= aux[3]%>&user=<%= aux[0]%>'); event.stopPropagation();" class="hover:bg-neutral-600 rounded relative flex flex-col">
+                    <div onclick="abrirCasoDeUso('consultarAlbumVisitante.jsp?tipo=artista&nombre=<%= aux[3]%>&user=<%= aux[0]%>'); event.stopPropagation();" class="hover:bg-neutral-600 rounded relative flex flex-col">
                         <div class="relative m-3" style="width: clamp(6rem, 20vw, 16rem); height: clamp(6rem, 20vw, 16rem);">
                             <img src="<%= imagen%>" alt="" class="w-full h-full object-cover" style="-webkit-box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); -moz-box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); border-radius: 0.5rem;"/>
                         </div>

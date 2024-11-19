@@ -33,6 +33,15 @@
 
     String usuario = (usuarioConsulta != null && !usuarioConsulta.isEmpty()) ? usuarioConsulta : usuarioLogueado;
     String tipoUsuario = usrController.tipoUsuario(usuario);
+      boolean Vigente = false;
+     if(session.getAttribute("tipo_usuario").equals("cliente")){
+      if (usrController.obtenerDatosCliente(usuarioLogueado) != null) {
+                Object[][] datosCli = usrController.obtenerDatosCliente(usuarioLogueado);
+                if ("Vigente".equals((String) datosCli[0][6])) {
+                    Vigente = true;  
+                }
+            }
+    }
     Object[][] datos;
     List<String> albums = new ArrayList<>();
 
@@ -150,8 +159,8 @@
 
                     %>
                 </p>
-
-                <% if (tipoUsuario.equals("artista") && usuarioConsulta.equals(usuarioLogueado)) { %>
+                
+                     <% if (tipoUsuario.equals("artista") && usuarioConsulta.equals(usuarioLogueado)) { %>
     <!-- Botón visible que solo abrirá el modal -->
     <button
         id="botonEliminarPerfil"
@@ -177,22 +186,20 @@
         </div>
     </div>
 </div>
-
                 
-
-
+                
 
                 <%if (tipoUsuario.equals("artista")) {%>
                 <a href="<%= web.startsWith("http") ? web : "http://" + web%>" target="_blank" class="p-2 text-green-500 hover:cursor-pointer hover:text-green-700">
                     <% out.println(web); %>
                 </a>
                 <%}%>
-                <% if (!usuario.equals(usuarioLogueado)) {%>
+                <% if (!usuario.equals(usuarioLogueado) && Vigente) {%>
                 <div id ="SeguidoresTodo">
                     <div class="p-2 align-right">
                         <form id="SeguiraUsuario" method="POST">
                             <input  id="usuarioConsulta" type="hidden" name="usuarioConsulta" value="<%= (String) usuarioConsulta%>">
-                            <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
+                            <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg <%if(session.getAttribute("tipo_usuario").equals("artista")){out.print("hidden");}%>" type="button">
                                 <% if (seguidores.contains(usuarioLogueado)) {
                                         out.print("Dejar de Seguir");
                                     } else {
@@ -318,7 +325,7 @@
                     %>
 
 
-
+                </div>
                 <!-- Sección de Albums -->
                 <div id="albumsSection" class="playlists bg-transparent pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto hidden">
                     <%

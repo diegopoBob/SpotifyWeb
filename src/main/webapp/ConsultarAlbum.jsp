@@ -1,4 +1,10 @@
 
+<%@page import="javax.persistence.EntityManager"%>
+<%@page import="javax.persistence.EntityManager"%>
+<%@page import="javax.persistence.Persistence"%>
+<%@page import="javax.persistence.Persistence"%>
+<%@page import="javax.persistence.EntityManagerFactory"%>
+<%@page import="javax.persistence.EntityManagerFactory"%>
 <%@page import="java.net.URLEncoder"%>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.util.ArrayList" %>
@@ -22,12 +28,16 @@
     IAlbumController alController = fabrica.getIAlbumController();
     IUsuarioController usrController = fabrica.getIUsuarioController();
     IGeneroController genController = fabrica.getIGeneroController();
+    IPlaylistController playController = fabrica.getIPlaylistController();
 
     List<String> artistas = usrController.obtenerNombresArtistas();
     List<String> generos = genController.obtenerNombresGeneros();
     List<Integer> CanFav = (List<Integer>) session.getAttribute("cancionesFavoritas");
 
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
+    EntityManager em = emf.createEntityManager();
     String usuarioLogueado = (String) session.getAttribute("nick");
+    Object[][] playlistCliente = playController.obtenerDatosPlaylistCliente(usuarioLogueado);
     String tipo = request.getParameter("tipo");
     String nombre = request.getParameter("nombre");
     String albumIdSeleccionado = request.getParameter("user");
@@ -39,10 +49,10 @@
 
     if (tipo != null && nombre != null) {
         if (tipo.equals("genero")) {
-            
+
             albumes = alController.obtenerAlbumesPorGenero(nombre);
         } else if (tipo.equals("artista")) {
-            
+
             albumes = alController.obtenerAlbumArtista(nombre);
         }
     }
@@ -74,8 +84,72 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Spotify</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src="script.js"></script>
+
         <link href="includes/style.css" rel="stylesheet">
+        <style>
+            /* Reset de márgenes y paddings */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            /* Contenedor de la canción */
+            .song-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+
+                color: white;
+            }
+
+            .song-title {
+                font-size: 18px;
+            }
+
+            /* Estilo de los tres puntos */
+            .menu-trigger {
+                cursor: pointer;
+                font-size: 24px;
+                position: relative;
+                border: none; /* Asegura que no tenga bordes */
+                background: none; /* Elimina fondo no deseado */
+            }
+
+            /* Menú desplegable oculto */
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 100%; /* Alinea debajo del trigger */
+                right: 0;
+                background-color: #282828;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                z-index: 1;
+            }
+
+            .dropdown-menu a {
+                display: block;
+                padding: 10px 20px;
+                color: white;
+                text-decoration: none;
+                white-space: nowrap;
+            }
+
+            .dropdown-menu a:hover {
+                background-color: #444;
+            }
+
+            /* Mostrar el menú al pasar el mouse sobre los tres puntos */
+            .menu-trigger:hover .dropdown-menu {
+                display: block;
+            }
+        </style>
     </head>
+
     <body>
         <div class="min-h-screen bg-transparent p-6">
 
@@ -120,7 +194,7 @@
                     <div>
                         <% if (albumActual != null) {
                                 boolean esFavorito = favoritos.contains(albumActual[0]); // Comparar el ID del álbum
-                        %>
+%>
                         <h3 class="text-white"><%= albumActual[1]%></h3>
                         <p class="text-white">Año: <%= albumActual[2]%></p>
                         <p class="text-white">Artista: <%= albumActual[3]%>  <% if (albumActual[7] != null) {
@@ -170,8 +244,7 @@
                             </a>
                             <div class="flex items-center space-x-4">
                                 <!-- Botón de Descargar -->
-                                <a href="#" class="text-blue-500 hover:underline">Descargar</a>
-
+                                <a href="<%= cancion[3]%>" download class="text-blue-500 hover:underline" onclick="event.stopPropagation();">Descargar</a>
                                 <!-- Formulario de Favoritos -->
                                 <form id="favoritosForm" method="POST">
                                     <input type="hidden" id="canId" name="canId" value="<%=(Integer) cancion[0]%>">
@@ -180,12 +253,57 @@
                                         <i id="can<%= (Integer) cancion[0]%>" class="text-green-500  fa-solid fa-circle-check"> Favorita</i>
                                         <% } else {%>
                                         <i id="can<%= (Integer) cancion[0]%>" class="text-white  fa-solid fa-circle-plus"> Favorita</i>
-                                        <% } %>
+                                        <% }%>
                                     </button>
                                 </form>
 
                                 <!-- Botón de Agregar a Playlist -->
-                                <a href="#" class="text-blue-500 hover:underline">Agregar a playlist</a>
+                                <div onclick="event.stopPropagation();" class="song-container">
+                                    <div class="song-title"></div>
+                                    <div class="menu-trigger">
+                                        <i onclick="event.stopPropagation();" class="fa-solid fa-list-ul mr-5 mt-4"></i> <!-- Tres puntos verticales -->
+                                        <div class="dropdown-menu">
+                                            <input 
+                                                onclick="event.stopPropagation();" 
+                                                type="text" 
+                                                placeholder="Busca una playlist"
+                                                class="w-full px-3 py-2 text-white bg-gray-700 rounded-md focus:ring-2 focus:ring-blue-500" 
+                                                oninput="filterPlaylists(this.value, '<%= cancion[0]%>')" 
+                                                />
+                                            <!-- Botón para crear una nueva playlist -->
+                                            <a type="button"
+                                               onclick="abrirModalCrearPlaylist(); event.stopPropagation();" 
+                                               class="w-full text-left px-4 py-2 text-white hover:bg-neutral-700">
+                                                + Crear Nueva Playlist
+                                            </a>
+                                            <hr onclick="event.stopPropagation();" class="border-neutral-600">
+                                            <div id="playlistContainer<%= cancion[0]%>" class="flex flex-col">
+                                                <% for (int a = 0; a < playlistCliente.length; a++) {
+
+                                                        Object existeRelacion = em.createNativeQuery(
+                                                                "SELECT COUNT(*) FROM playlist_cancion WHERE canciones_id = ? AND playlist_id = ?")
+                                                                .setParameter(1, (Integer) cancion[0]) // Primer parámetro
+                                                                .setParameter(2, (Integer) playlistCliente[a][1]) // Segundo parámetro
+                                                                .getSingleResult();
+                                                        long existeRelacionLong = (existeRelacion != null) ? ((Number) existeRelacion).longValue() : 0; // Manejo de nulo
+                                                %>
+                                                <form id="AgregarFavForm<%= cancion[0]%>_<%= playlistCliente[a][1]%>" method="POST">
+                                                    <input id="idAlbum" type="hidden" name="albumId" value="<%= albumActual[0]%>">
+                                                    <input id="artistaAlbum" type="hidden" name="artistaAlbum" value="<%= albumActual[8]%>">
+                                                    <a 
+                                                        type="button"
+                                                        onclick="AJAXaltaTemaPlayAlbum('<%= cancion[0]%>', '<%= playlistCliente[a][1]%>', '<%= albumActual[0]%>', '<%=existeRelacionLong%>'); event.stopPropagation();" 
+                                                        class="playlist-item w-full text-left px-4 py-2 text-white hover:bg-neutral-700">
+                                                        <%= playlistCliente[a][2]%> <%if (existeRelacionLong > 0) {
+                                    out.println("<i class='fa-solid fa-trash text-red-600'></i>");
+                                } %>
+                                                    </a>
+                                                </form>
+                                                <% } %> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </li>
                         <% } %>

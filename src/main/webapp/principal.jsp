@@ -51,7 +51,7 @@
                                 Integer albumId = cancionController.obtenerIdAlbum((Integer) aux[0]);
                                 Object[][] datosAlb = albumController.obtenerDatosAlbum(albumId);
                     %>
-                    <div onclick="reproducirCancion('<%= aux[3]%>'); cargarInfoCancion('<%= aux[0]%>')" class="w-full hover:bg-neutral-600 rounded flex">
+                    <div onclick="cargarInfoCancion('<%= aux[0]%>') ; reproducirCancion('<%= aux[3]%>')" class="w-full hover:bg-neutral-600 rounded flex">
                         <img src="<%= datosAlb[0][6]%>" alt="alt" class="aspect-square min-w-16 max-w-20 rounded-xl p-1.5"/>
                         <div style="font-size:clamp(15px, 2vw, 20px);" name="textoLibreria" class="ml-2 flex flex-col justify-center">
                             <p class="whitespace-nowrap font-semibold text-white mt-2"><%= aux[1]%></p>
@@ -59,7 +59,7 @@
                         </div>
                         <div name="textoLibreria" class="items-center flex w-full justify-end">
                             <div class="align-middle">
-                                <p><%= aux[2]%> <i class="text-s ml mr-5 fa-regular fa-clock"></i></p>
+                                <p><%= String.format("%d:%02d", ((Integer) aux[2] / 60), ((Integer)aux[2] % 60)) %> <i class="text-s ml mr-5 fa-regular fa-clock"></i></p>
                             </div>
                         </div>
                     </div>
