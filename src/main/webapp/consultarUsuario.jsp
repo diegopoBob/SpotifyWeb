@@ -293,7 +293,7 @@
                     <img class="w-full h-48 object-cover hover:shadow-inner" src="<%=imagenPlay%>" alt="Imagen de tarjeta">
                     <div class="p-6 hover:shadow-inner">
                         <h2 class="text-lg font-semibold text-gray-800"><%= lista%></h2>
-                        <% if (play instanceof PlaylistParticular) {%>
+                        <% if (play instanceof PlaylistParticular && usuarioConsulta.equals(usuarioLogueado)) {%>
                         <form id="eliminarForm" method="POST" action="eliminarPlaylist">
                             <input id="idEliminar" type="hidden" name="idEliminar" value="<%= id%>">
                             <input id="user" type="hidden" name="user" value="<%= usuarioConsulta%>">

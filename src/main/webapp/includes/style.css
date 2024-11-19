@@ -24,7 +24,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     left: 0;
     right: 0;
     bottom: 0;
-    height: 100dvh;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(7px);
     z-index: 1; 
@@ -64,7 +64,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
             height: 10px;
             cursor: ew-resize;
             background: #FFF;
-            box-shadow: -405px 0 0 400px transparent;
+            box-shadow: -405px 0 0 400px #605E5C;
             border-radius: 50%;         
         }
         

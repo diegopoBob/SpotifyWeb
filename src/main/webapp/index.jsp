@@ -41,8 +41,6 @@
     boolean Vigente = false;
     boolean Vencida = false;
     LocalDate fechaSub = null;
-   
-    
     if (!(em.find(Usuario.class, session.getAttribute("nick")) instanceof Artista)) {
         Object[][] datosCli = IUC.obtenerDatosCliente(nicknameLogeado);
         if ("Vencida".equals((String) datosCli[0][6])) {
@@ -73,7 +71,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
         <title>Spotify</title>
-
+        
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -83,18 +81,22 @@
         <script src="script.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src="finisher-header.es5.min.js" type="text/javascript"></script>
         
 
 
     </head>
     <body class="max-h-[100dvh] overflow-y-hidden">
-        <div class="flex flex-col h-[100dvh] max-h-[100vh] overflow-hidden">
+        <div class="flex flex-col h-[100dvh] max-h-[100vh] overflow-hidden ">
 
-            <div class="flex min-h-16 w-dvh items-center justify-between bg-black "> 
-                <div class="px-4 flex hidden md:block">
+            <div class=" flex min-h-16 w-dvh items-center justify-between bg-black "> 
+                <div class="px-4 flex  md:block">
                     <img src="includes/logo.png" class="h-10 w-auto object-contain cursor-pointer" onclick='abrirCasoDeUso("principal.jsp", "<%= session.getAttribute("nick")%>")' alt="alt"/>
                 </div>
+                 
+                
                 <div class="bg-black flex items-center md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:text-center"> 
+                      <i class="fa-brands fa-gitkraken text-xl text-neutral-400 hover:text-white rounded-full  p-2 hover:bg-neutral-600" onclick='abrirCasoDeUso("rankingUsuarios.jsp")'></i> 
                     <i class=" md:hidden fa-solid fa-angles-right text-white text-xl ml-1 fa-angles-left" id="mostrarLibreria" onclick="mostrarLibreria()"></i>
                     <div class="m-2"><a onclick='abrirCasoDeUso("principal.jsp", "<%= session.getAttribute("nick")%>")'><i class="fa-solid fa-house text-xl text-neutral-400 hover:text-white rounded-full  p-2 hover:bg-neutral-600"></i></a></div>                   
                     <form class="flex w-[13rem] md:w-[40dvw] h-12 bg-neutral-800 rounded-[20px] hover:bg-neutral-600  focus-within:border">
@@ -308,7 +310,7 @@
     <!-- COSO DE BOTTOM -->
 
     <%
-        if (IUC.obtenerDatosCliente(nicknameLogeado) != null && IUC.esCliente(nicknameLogeado) == true) {
+        if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
             if (Vencida) {%>
     <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
         <div class="flex mx-auto">
@@ -756,7 +758,6 @@ function mostrarModal() {
     }
 }
 
-
-
 </script>    
+ 
 </html>
