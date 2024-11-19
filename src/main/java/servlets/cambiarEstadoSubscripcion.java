@@ -4,31 +4,23 @@
 package servlets;
 
 import controllers.Fabrica;
-import controllers.IPlaylistController;
 import controllers.IUsuarioController;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import static java.lang.System.out;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpSession;
-import models.Album;
+import java.util.Properties;
 
 /**
  *
@@ -65,32 +57,64 @@ public class cambiarEstadoSubscripcion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         processRequest(request, response);
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
-        EntityManager em = emf.createEntityManager();
+
+        String host = "smtp.gmail.com";
+        final String user = "spotifycure2024@gmail.com"; // Tu correo de Gmail
+        final String password = "qifzqwldaxbnqlmw"; // Contraseña de aplicación de Gmail
+
         HttpSession session = request.getSession();
         int tipo = 0;
-        if(null != request.getParameter("planSub")){
+
+        
+        if (request.getParameter("planSub") != null) {
             String planSeleccionado = request.getParameter("planSub");
-            tipo = Integer.valueOf(planSeleccionado);
+            tipo = Integer.parseInt(planSeleccionado);
         }
 
         LocalDate fechaActual = LocalDate.now();
         String usuario = (String) session.getAttribute("nick");
-        String estado = (String) request.getParameter("estado");
-
+        String estado = request.getParameter("estado");
+        Object[][] usr = ICU.obtenerDatosCliente(usuario);
+        String destinatario = (String) usr[0][3]; // Correo del usuario
 
         try {
-            ICU.CambiarEstadosubscripcion(usuario,estado,tipo,null);
-            out.println("Anduvo");
+            ICU.CambiarEstadosubscripcion(usuario, estado, tipo, fechaActual);
+
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", "587");
+
+            Session mailSession = Session.getInstance(props, new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(user, password);
+                }
+            });
+  
+            String asunto = "Actualización de Suscripción en Spotify Cure";
+            String mensaje = "Hola " + usuario + ",\n\n"
+                    + "Tu suscripción ha sido actualizada exitosamente.\n"
+                    + "Estado: " + estado + "\n"
+                    + "Fecha de actualización: " + fechaActual + "\n\n"
+                    + "Gracias por usar Spotify Cure.";
+
+            MimeMessage message = new MimeMessage(mailSession);
+            message.setFrom(new InternetAddress(user));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
+            message.setSubject(asunto);
+            message.setText(mensaje);
+   
+            Transport.send(message);
+
+            response.getWriter().println("Suscripción actualizada y correo enviado exitosamente.");
         } catch (Exception ex) {
-            ex.printStackTrace(); // Imprime la traza completa del error en la consola del servidor.
-            out.println("Error: " + ex.getMessage());
+            ex.printStackTrace();
+            response.getWriter().println("Error: " + ex.getMessage());
+        } finally {
+            response.sendRedirect("index.jsp");
         }
-
-       response.sendRedirect("index.jsp?");
-
     }
 
 
