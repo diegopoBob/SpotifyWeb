@@ -100,11 +100,16 @@ public class guardarPlaylistFavorita extends HttpServlet {
             }
 
         }
+        
+        
         response.setContentType("application/json");
       response.getWriter().write("{\"success\": true, \"message\": \"Canción eliminada de favoritos\"}");
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
         EntityManager em = emf.createEntityManager();
-        List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuario + "'").getResultList();
+        String usuarioLogueado = (String) session.getAttribute("nick");
+        List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuarioLogueado + "'").getResultList();
+        List<Integer> playlistsCreadas = em.createNativeQuery("SELECT id FROM playlistparticular where propietario='" + usuarioLogueado + "'").getResultList();
+        playlistFavoritas.addAll(playlistsCreadas);
         session.setAttribute("playlistFavoritas", playlistFavoritas);
         
         

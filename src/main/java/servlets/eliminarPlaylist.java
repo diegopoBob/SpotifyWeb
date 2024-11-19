@@ -91,7 +91,11 @@ public class eliminarPlaylist extends HttpServlet {
         }
         
         
-        
+      String usuarioLogueado = (String) session.getAttribute("nick");
+        List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuarioLogueado + "'").getResultList();
+        List<Integer> playlistsCreadas = em.createNativeQuery("SELECT id FROM playlistparticular where propietario='" + usuarioLogueado + "'").getResultList();
+        playlistFavoritas.addAll(playlistsCreadas);
+        session.setAttribute("playlistFavoritas", playlistFavoritas);  
       response.setContentType("application/json");
       response.getWriter().write("{\"success\": true, \"message\": \"\"}");
     }
