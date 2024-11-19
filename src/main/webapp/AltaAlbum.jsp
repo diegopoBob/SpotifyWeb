@@ -116,7 +116,7 @@
         </script>
     </head>
     <body class="p-10">
-        <div class="bg-gradient-to-b from-neutral-900 via-green-600 to-neutral-900 h-full w-full container mx-auto p-6 rounded-lg shadow-lg">
+        <div class="bg-gradient-to-b from-neutral-900 via-green-600 to-neutral-900  mx-auto p-6 rounded-lg shadow-lg">
             <h1 class="text-2xl font-bold text-white mb-4">Alta de Nuevo Álbum</h1>
             <form action="registrarAlbum" method="post" enctype="multipart/form-data">
                 <div class="mb-4">
