@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import static java.lang.System.out;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -76,9 +77,11 @@ public class eliminarPlaylist extends HttpServlet {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
         EntityManager em = emf.createEntityManager();
         HttpSession session = request.getSession();
+        String nick = (String) session.getAttribute("nick");
         String idAlbum = request.getParameter("idEliminar");
         int id = Integer.parseInt(idAlbum);
         try {
+            
             
             playController.eliminarLista(id);
           

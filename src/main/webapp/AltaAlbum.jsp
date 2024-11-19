@@ -44,8 +44,74 @@
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script>
 
+            function agregarCancion() {
+                let dataCancion = "";
+                let nombreCancion = document.getElementById('nombreCancion').value;
+                dataCancion += nombreCancion;
+                dataCancion += ",";
+                const archivos = document.getElementById(nombreCancion).files;
+                if (archivos) {
+                    const audio = new Audio();
+                    audio.src = URL.createObjectURL(archivos[0]);
 
-           
+                    // Esperamos a que se carguen los metadatos
+                    audio.addEventListener("loadedmetadata", function () {
+
+                        const duracion = Math.floor(audio.duration); // DuraciÃ³n en segundos
+                        dataCancion += duracion;
+
+                        alert(dataCancion);
+                        const li = document.createElement('li');
+                        li.classList.add('text-white', 'mb-2');
+                        li.textContent = nombreCancion + " (" + duracion + " seg) " + archivos[0].name;
+                        document.getElementById('listaCanciones').appendChild(li);
+
+                        const inputTextdocument = document.createElement('input');
+                        inputTextdocument.type = "text";
+                        inputTextdocument.value = dataCancion;
+
+                        inputTextdocument.classList.add('hidden');
+
+                        if (archivos.length > 0) {
+                            for (let i = 0; i < archivos.length; i++) {
+                                inputTextdocument.name = archivos[i].name;
+                            }
+                        } else {
+                            alert("No se han seleccionado archivos");
+                        }
+                        document.getElementById("contenedor").appendChild(inputTextdocument);
+                        // Liberamos la URL para evitar fugas de memoria
+                        URL.revokeObjectURL(audio.src);
+                    });
+
+                }
+            }
+
+            function crearInputFile() {
+
+
+                const elementos = document.getElementsByName('audio');
+
+                // Convertir la HTMLCollection a un array y usar forEach
+                Array.from(elementos).forEach((elemento) => {
+                    console.log(elemento.value); // Aquí puedes hacer lo que necesites con cada elemento
+                    elemento.classList.add('hidden');
+                });
+
+
+                const inputFile = document.createElement('input');
+                const inputFileReferencia = document.getElementById('inputfileReferencia');
+                inputFile.type = inputFileReferencia.type;
+                inputFile.class = inputFileReferencia.class;
+                inputFile.accept = inputFileReferencia.accept;
+                inputFile.name = inputFileReferencia.name;
+                inputFile.required = true;
+
+                inputFile.id = document.getElementById('nombreCancion').value;
+                document.getElementById("contenedorinputFiles").appendChild(inputFile);
+
+            }
+
 
         </script>
     </head>
@@ -62,12 +128,12 @@
 
                 <div class="mb-4">
                     <label for="nombreAlbum" class="block text-white">Nombre del Álbum</label>
-                    <input required type="text" id="nombreAlbum" name="nombreAlbum" class="w-full px-3 py-2 border border-gray-300 rounded-lg" required>
+                    <input  type="text" id="nombreAlbum" name="nombreAlbum" class="w-full px-3 py-2 border border-gray-300 rounded-lg" >
                 </div>
 
                 <div class="mb-4">
                     <label for="anioCreacion" class="block text-white">Año de Creación</label>
-                    <input required type="number" id="anioCreacion" name="anioCreacion" class="w-full px-3 py-2 border border-gray-300 rounded-lg" required>
+                    <input  type="number" id="anioCreacion" name="anioCreacion" class="w-full px-3 py-2 border border-gray-300 rounded-lg" >
                 </div>
 
                 <div class="mb-4">
@@ -75,7 +141,7 @@
                     <div class="flex flex-wrap">
                         <% for (String genero : generos) {%>
                         <div class="mr-4 mb-2">
-                            <input required type="checkbox" id="genero_<%= genero%>" name="generos" value="<%= genero%>" class="mr-2">
+                            <input  type="checkbox" id="genero_<%= genero%>" name="generos" value="<%= genero%>" class="mr-2">
                             <label for="genero_<%= genero%>" class="text-white"><%= genero%></label>
                         </div>
                         <% }%>
@@ -84,7 +150,7 @@
 
                 <div class="mb-4">
                     <label for="imagen" class="block text-white">Imagen del Álbum</label>
-                    <input required type="file" id="imagen" name="imagen" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-lg" onchange="previewImage(event)">
+                    <input  type="file" id="imagen" name="imagen" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-lg" onchange="previewImage(event)">
                 </div>
 
                 <div class="mb-4">
@@ -93,11 +159,11 @@
 
                 <h2 class="text-xl font-bold text-white mb-2">Agregar Canciones</h2>
                 <div class="mb-4">
-                    <input required type="text" id="nombreCancion" placeholder="Nombre de la canción" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    <input  type="text" id="nombreCancion" placeholder="Nombre de la canción" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
                 </div>
 
                 <div class="mb-4 text-white">
-                    <input required type="file" id="inputfileReferencia" name="audio" accept="audio/mpeg" class="w-full px-3 py-2 border border-gray-300 rounded-lg hidden text-white">
+                    <input  type="file" id="inputfileReferencia" name="audio" accept="audio/mpeg" class="w-full px-3 py-2 border border-gray-300 rounded-lg hidden text-white">
                     <div id="contenedorinputFiles"></div>
                     <button type="button" onclick="crearInputFile()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Confirmar nombre</button>
                 </div>
