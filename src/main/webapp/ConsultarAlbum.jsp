@@ -85,7 +85,7 @@
             }
     }
 
-out.println(Vigente);
+
 %>
 
 <!DOCTYPE html>
