@@ -82,11 +82,7 @@
             <type>jar</type>
         </dependency>
 
-        <dependency>
-            <groupId>com.ejemplo</groupId>
-            <artifactId>ServidorCentral</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+        
   
     </dependencies>
     

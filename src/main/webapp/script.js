@@ -142,7 +142,26 @@ function scripts_consultarUsuario() {
         document.getElementById("titulolistas").style.backgroundImage = "linear-gradient(to bottom, rgb(" + colorOscuro + ") 25%, rgb(23 23 23))";
 
     });
+    
+function mostrarModal() {
+    document.getElementById("modalConfirmacion").classList.remove("hidden");
+}
 
+function ocultarModal() {
+    document.getElementById("modalConfirmacion").classList.add("hidden");
+}
+
+// Función para eliminar el perfil cuando se confirme
+document.getElementById("confirmarEliminar").onclick = function() {
+    // Aquí envías el formulario para hacer la eliminación
+    document.getElementById("eliminarPerfil").submit(); // Esto enviará el formulario tradicional
+    ocultarModal(); // Cierra el modal
+};
+
+// Función para cancelar la eliminación
+document.getElementById("cancelarEliminar").onclick = function() {
+    ocultarModal(); // Solo cierra el modal si el usuario cancela
+};
 
 }
 
@@ -511,7 +530,25 @@ function AjaXeliminarLista(id) {
     });
 }
 
+function AjaXbajaArtista() {
+    var dataString = "usuario=" + encodeURIComponent(usuarioLogueado); // Aquí puedes agregar los datos necesarios
 
+    $.ajax({
+        type: "POST",
+        url: "bajaArtista",
+        data: dataString,
+        dataType: "json",
+
+        success: function (data) {
+            if (data.success) {
+                // Cerrar sesión y redirigir al login
+                window.location.href = "login.jsp";  // Mejor redirigir en lugar de session.invalidate()
+            } else {
+                alert('Error al eliminar el perfil: ' + (data.message || ''));
+            }
+        }
+    });
+}
 
 
 
@@ -545,4 +582,46 @@ function isEmptyField() {
     return false;
 }
 
- 
+function scripts_rankingUsuarios() {
+   
+     console.log("2");
+    $(document).ready(function () {
+        new FinisherHeader({
+            "count": 10,
+            "size": {
+                "min": 1290,
+                "max": 1500,
+                "pulse": 0
+            },
+            "speed": {
+                "x": {
+                    "min": 0.1,
+                    "max": 0.6
+                },
+                "y": {
+                    "min": 0.1,
+                    "max": 0.6
+                }
+            },
+            "colors": {
+                "background": "#000000",
+                "particles": [
+                    "#00ffaa",
+                    "#00ff2c",
+                    "#c3ff79",
+                    "#00ffaa",
+                    "#004fff"
+                ]
+            },
+            "blending": "overlay",
+            "opacity": {
+                "center": 0.5,
+                "edge": 0.05
+            },
+            "skew": 0,
+            "shapes": ["c"]
+        });
+    });
+}
+
+

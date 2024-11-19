@@ -41,6 +41,8 @@
     boolean Vigente = false;
     boolean Vencida = false;
     LocalDate fechaSub = null;
+   
+    
     if (!(em.find(Usuario.class, session.getAttribute("nick")) instanceof Artista)) {
         Object[][] datosCli = IUC.obtenerDatosCliente(nicknameLogeado);
         if ("Vencida".equals((String) datosCli[0][6])) {
@@ -306,7 +308,7 @@
     <!-- COSO DE BOTTOM -->
 
     <%
-        if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
+        if (IUC.obtenerDatosCliente(nicknameLogeado) != null && IUC.esCliente(nicknameLogeado) == true) {
             if (Vencida) {%>
     <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
         <div class="flex mx-auto">
@@ -722,6 +724,38 @@
     }
 
 abrirCasoDeUso('principal.jsp');
+
+function ocultarModal() {
+    const modal = document.getElementById("modalConfirmacion");
+    if (modal) {
+        modal.classList.add("hidden");
+    } else {
+        console.log("Error: no se pudo encontrar el modal.");
+    }
+}
+
+function mostrarModal() {
+    const modal = document.getElementById("modalConfirmacion");
+    const confirmarEliminar = document.getElementById("confirmarEliminar");
+    const cancelarEliminar = document.getElementById("cancelarEliminar");
+
+    if (modal && confirmarEliminar && cancelarEliminar) {
+        modal.classList.remove("hidden");
+
+        // Asignar eventos al botón de confirmar y cancelar
+        confirmarEliminar.onclick = function() {
+            document.getElementById("eliminarPerfil").submit(); // Envia el formulario
+            ocultarModal(); // Cierra el modal
+        };
+
+        cancelarEliminar.onclick = function() {
+            ocultarModal(); // Solo cierra el modal si el usuario cancela
+        };
+    } else {
+        console.log("Error: no se pudieron encontrar los elementos.");
+    }
+}
+
 
 
 </script>    

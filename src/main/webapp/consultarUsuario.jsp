@@ -151,6 +151,37 @@
                     %>
                 </p>
 
+                <% if (tipoUsuario.equals("artista") && usuarioConsulta.equals(usuarioLogueado)) { %>
+    <!-- Botón visible que solo abrirá el modal -->
+    <button
+        id="botonEliminarPerfil"
+        class="col-start-1 row-start-2 text-red-500 mx-auto p-2 border-black"
+        onclick="event.stopPropagation(); mostrarModal();">
+        Eliminar Perfil
+    </button>
+    
+    <!-- El formulario está oculto inicialmente -->
+    <form id="eliminarPerfil" method="POST" action="bajaArtista" style="display: none;">
+        <input type="hidden" name="usuario" value="<%= usuarioLogueado %>">
+    </form>
+<% } %>
+
+
+<!-- Modal de confirmación -->
+<div id="modalConfirmacion" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-md w-1/3">
+        <h2 class="text-lg">¿Estás seguro de que quieres eliminar tu perfil?</h2>
+        <div class="flex justify-between mt-4">
+            <button id="confirmarEliminar" class="bg-red-500 text-white p-2 rounded-md">Eliminar</button>
+            <button id="cancelarEliminar" class="bg-gray-300 text-black p-2 rounded-md">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+                
+
+
+
                 <%if (tipoUsuario.equals("artista")) {%>
                 <a href="<%= web.startsWith("http") ? web : "http://" + web%>" target="_blank" class="p-2 text-green-500 hover:cursor-pointer hover:text-green-700">
                     <% out.println(web); %>
