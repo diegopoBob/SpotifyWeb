@@ -4,9 +4,12 @@
  */
 package controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import static java.lang.System.out;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -23,14 +26,9 @@ import javax.persistence.Query;
 import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 import models.Album;
-import models.Album;
-import models.Artista;
 import models.Artista;
 import models.Cancion;
-import models.Cancion;
 import models.Cliente;
-import models.Cliente;
-import models.Playlist;
 import models.Playlist;
 import models.Usuario;
 import org.mindrot.jbcrypt.BCrypt;
@@ -526,75 +524,155 @@ public class UsuarioController implements IUsuarioController {
 
     }
 
-  public void eliminarUsuario(String nick) throws NonexistentEntityException {
-    EntityManager em = emf.createEntityManager();
-    Artista art = (Artista) usrController.findUsuario(nick);
-    
-   
-    try {
-        em.getTransaction().begin();
+    public boolean autenticarUsuario(String nick, LocalDateTime fechaHoraActual, String ip, String url, String navegador, String sistemaOperativo) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Usuario usuario = em.find(Usuario.class, nick);
+            if (usuario != null) {
 
-        // Paso 1: Eliminar las relaciones en album_canciones
-        em.createNativeQuery(
-                "DELETE FROM album_canciones WHERE album_id IN (SELECT id FROM album WHERE artista = ?)"
-        ).setParameter(1, nick).executeUpdate();
-
-        // Paso 2: Eliminar las relaciones en album_genero
-        em.createNativeQuery(
-                "DELETE FROM album_genero WHERE album_id IN (SELECT id FROM album WHERE artista = ?)"
-        ).setParameter(1, nick).executeUpdate();
-
-        // Paso 3: Eliminar las canciones favoritas del cliente (si las hay)
-        em.createNativeQuery(
-                "DELETE FROM cliente_cancionesfavoritas WHERE cliente_id = ?"
-        ).setParameter(1, nick).executeUpdate();
-
-        // Paso 4: Eliminar los álbumes favoritos del cliente (si los hay)
-        em.createNativeQuery(
-                "DELETE FROM cliente_albumesfavoritos WHERE album_id IN (SELECT id FROM album WHERE artista = ?)"
-        ).setParameter(1, nick).executeUpdate();
-
-        // Paso 5: Eliminar las playlists favoritas del cliente (si las hay)
-        em.createNativeQuery(
-                "DELETE FROM cliente_playlistfavoritas WHERE playlist_particular_id IN (SELECT id FROM playlist WHERE id = ?)"
-        ).setParameter(1, nick).executeUpdate();
-
-        // Paso 6: Eliminar las relaciones de usuarios seguidos (si las hay)
-        em.createNativeQuery(
-                "DELETE FROM cliente_usuariosseguidos WHERE cliente_id = ?"
-        ).setParameter(1, nick).executeUpdate();
-
-        em.createNativeQuery(
-                "DELETE FROM cliente_usuariosseguidos WHERE usuario_id = ?"
-        ).setParameter(1, nick).executeUpdate();
-
-        // Paso 7: Eliminar las filas en la tabla artista que referencian al usuario
-        em.createNativeQuery(
-                "DELETE FROM artista WHERE nick = ?"
-        ).setParameter(1, nick).executeUpdate();
-
-        // Paso 8: Eliminar los álbumes asociados a ese artista
-        em.createNativeQuery(
-                "DELETE FROM album WHERE artista = ?"
-        ).setParameter(1, nick).executeUpdate();
-
-        // Paso 9: Eliminar el registro del usuario
-        em.createNativeQuery(
-                "DELETE FROM usuario WHERE nick = ?"
-        ).setParameter(1, nick).executeUpdate();
-
-        em.getTransaction().commit();
-    } catch (Exception e) {
-        em.getTransaction().rollback();
-        throw new RuntimeException("Error al eliminar el usuario: " + nick, e);
-    } finally {
-        em.close();
+                Map<String, String> acceso = (Map<String, String>) usuario.getRegistrosAcceso();
+                acceso.put("fecha_hora", "2024-11-20T10:00:00");
+                acceso.put("ip", "192.168.1.1");
+                acceso.put("url", "http://example.com");
+                acceso.put("browser", "Chrome");
+                acceso.put("sistema_operativo", "Windows");
+                usrController.edit(usuario);
+                return true;
+            }
+            return false; // Usuario no encontrado
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            em.close();
+        }
+        return false;
     }
-}
 
+    public String obtenerUrlActual(HttpServletRequest request) {
+        StringBuffer url = request.getRequestURL();
+        String queryString = request.getQueryString();
+        return queryString == null ? url.toString() : url.append("?").append(queryString).toString();
+    }
 
+    public String obtenerIpActual() {
+        try {
+            return java.net.InetAddress.getLocalHost().getHostAddress();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "IP desconocida";
+        }
+    }
 
+    public String obtenerNavegadorActual(HttpServletRequest request) {
+        String userAgent = request.getHeader("User-Agent");
+        if (userAgent == null) {
+            return "Navegador desconocido";
+        }
 
+        if (userAgent.contains("Chrome")) {
+            return "Google Chrome";
+        } else if (userAgent.contains("Firefox")) {
+            return "Mozilla Firefox";
+        } else if (userAgent.contains("Safari") && !userAgent.contains("Chrome")) {
+            return "Apple Safari";
+        } else if (userAgent.contains("Edg")) {
+            return "Microsoft Edge";
+        } else if (userAgent.contains("Trident") || userAgent.contains("MSIE")) {
+            return "Internet Explorer";
+        } else {
+            return "Otro navegador";
+        }
+    }
 
+    public String obtenerSistemaOperativoActual(HttpServletRequest request) {
+        String userAgent = request.getHeader("User-Agent");
+        if (userAgent == null) {
+            return "Sistema operativo desconocido";
+        }
+
+        if (userAgent.contains("Windows")) {
+            return "Windows";
+        } else if (userAgent.contains("Mac OS")) {
+            return "Mac OS";
+        } else if (userAgent.contains("X11") || userAgent.contains("Linux")) {
+            return "Linux";
+        } else if (userAgent.contains("Android")) {
+            return "Android";
+        } else if (userAgent.contains("iPhone") || userAgent.contains("iPad")) {
+            return "iOS";
+        } else {
+            return "Otro sistema operativo";
+        }
+    }
+
+    public void eliminarUsuario(String nick) throws NonexistentEntityException {
+        EntityManager em = emf.createEntityManager();
+        Artista art = (Artista) usrController.findUsuario(nick);
+
+        try {
+            em.getTransaction().begin();
+
+            // Paso 1: Eliminar las relaciones en album_canciones
+            em.createNativeQuery(
+                    "DELETE FROM album_canciones WHERE album_id IN (SELECT id FROM album WHERE artista = ?)"
+            ).setParameter(1, nick).executeUpdate();
+
+            // Paso 2: Eliminar las relaciones en album_genero
+            em.createNativeQuery(
+                    "DELETE FROM album_genero WHERE album_id IN (SELECT id FROM album WHERE artista = ?)"
+            ).setParameter(1, nick).executeUpdate();
+
+            // Paso 3: Eliminar las canciones favoritas del cliente (si las hay)
+            em.createNativeQuery(
+                    "DELETE FROM cliente_cancionesfavoritas WHERE cliente_id = ?"
+            ).setParameter(1, nick).executeUpdate();
+
+            // Paso 4: Eliminar los álbumes favoritos del cliente (si los hay)
+            em.createNativeQuery(
+                    "DELETE FROM cliente_albumesfavoritos WHERE album_id IN (SELECT id FROM album WHERE artista = ?)"
+            ).setParameter(1, nick).executeUpdate();
+
+            // Paso 5: Eliminar las playlists favoritas del cliente (si las hay)
+            em.createNativeQuery(
+                    "DELETE FROM cliente_playlistfavoritas WHERE playlist_particular_id IN (SELECT id FROM playlist WHERE id = ?)"
+            ).setParameter(1, nick).executeUpdate();
+
+            // Paso 6: Eliminar las relaciones de usuarios seguidos (si las hay)
+            em.createNativeQuery(
+                    "DELETE FROM cliente_usuariosseguidos WHERE cliente_id = ?"
+            ).setParameter(1, nick).executeUpdate();
+
+            em.createNativeQuery(
+                    "DELETE FROM cliente_usuariosseguidos WHERE usuario_id = ?"
+            ).setParameter(1, nick).executeUpdate();
+
+            // Paso 7: Eliminar las filas en la tabla artista que referencian al usuario
+            em.createNativeQuery(
+                    "DELETE FROM artista WHERE nick = ?"
+            ).setParameter(1, nick).executeUpdate();
+
+            // Paso 8: Eliminar los álbumes asociados a ese artista
+            em.createNativeQuery(
+                    "DELETE FROM album WHERE artista = ?"
+            ).setParameter(1, nick).executeUpdate();
+
+            // Paso 9: Eliminar el registro del usuario
+            em.createNativeQuery(
+                    "DELETE FROM usuario WHERE nick = ?"
+            ).setParameter(1, nick).executeUpdate();
+
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new RuntimeException("Error al eliminar el usuario: " + nick, e);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Object[][] obtenerRegistrosAcceso() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 }

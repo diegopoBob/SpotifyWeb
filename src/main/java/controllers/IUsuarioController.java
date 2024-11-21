@@ -4,7 +4,9 @@
  */
 package controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import persistence.exceptions.NonexistentEntityException;
@@ -47,5 +49,12 @@ public interface IUsuarioController {
     public abstract Map<String, String> getDatosUsuario(String nick);
     public abstract String artistaNombre(String nick);    
     public abstract void CambiarEstadosubscripcion(String nick ,String estado,Integer tipo,LocalDate fecha) throws Exception;
+    public abstract Object[][] obtenerRegistrosAcceso();
+    public abstract boolean autenticarUsuario(String nick, LocalDateTime fechaHoraActual, String ip, String url, String navegador, String sistemaOperativo);
+    public abstract String obtenerUrlActual(HttpServletRequest request);
+    public  abstract String obtenerIpActual();
+    public abstract  String obtenerNavegadorActual(HttpServletRequest request);
+    public abstract String obtenerSistemaOperativoActual(HttpServletRequest request);
     public abstract void eliminarUsuario(String nick) throws NonexistentEntityException;
+
 }
