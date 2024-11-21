@@ -35,10 +35,7 @@ public class Usuario implements Serializable {
     @Column(name = "password", nullable = false)
     protected String contraseñaHash;
 
-    @ElementCollection
-@CollectionTable(name = "registro_acceso", joinColumns = @JoinColumn(name = "usuario_nick"))
-@MapKeyColumn(name = "registro_id")
-private List<Map<String, String>> registrosAcceso;
+  
 
 
     // Getters y Setters
@@ -98,13 +95,7 @@ private List<Map<String, String>> registrosAcceso;
         this.contraseñaHash = contraseña;
     }
 
-    public void setRegistrosAcceso(List<Map<String, String>> registrosAcceso) {
-        this.registrosAcceso = registrosAcceso;
-    }
-
-    public List<Map<String, String>> getRegistrosAcceso() {
-        return registrosAcceso;
-    }
+    
 
 
 

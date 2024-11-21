@@ -11,6 +11,7 @@ import persistence.ArtistaJpaController;
 import persistence.CancionJpaController;
 import persistence.ClienteJpaController;
 import persistence.GeneroJpaController;
+import persistence.LogSesionJpaController;
 import persistence.PlaylistJpaController;
 import persistence.UsuarioJpaController;
 
@@ -89,5 +90,9 @@ public class Fabrica {
         return  this.emf;
     }
     
+    
+    LogSesionJpaController getLogSesionJpaController(){
+        return new LogSesionJpaController(emf);
+    }
     
 }

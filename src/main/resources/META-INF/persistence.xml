@@ -11,6 +11,7 @@
     <class>models.PlaylistParticular</class>
     <class>models.PlaylistPorDefecto</class>
     <class>models.Usuario</class>
+    <class>models.LogSesion</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/spotify?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

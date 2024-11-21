@@ -29,6 +29,7 @@ import models.Album;
 import models.Artista;
 import models.Cancion;
 import models.Cliente;
+import models.LogSesion;
 import models.Playlist;
 import models.Usuario;
 import org.mindrot.jbcrypt.BCrypt;
@@ -36,6 +37,7 @@ import persistence.AlbumJpaController;
 import persistence.ArtistaJpaController;
 import persistence.CancionJpaController;
 import persistence.ClienteJpaController;
+import persistence.LogSesionJpaController;
 import persistence.PlaylistJpaController;
 import persistence.UsuarioJpaController;
 import persistence.exceptions.NonexistentEntityException;
@@ -58,6 +60,7 @@ public class UsuarioController implements IUsuarioController {
     CancionJpaController auxCan = new CancionJpaController(emf);
     UsuarioJpaController usrController = new UsuarioJpaController(emf);
     ClienteJpaController auxCliente = new ClienteJpaController(emf);
+    LogSesionJpaController logController = new LogSesionJpaController(emf);
 
     //  private ClienteJpaController cliente_ctr = new ClienteJpaController(emf);
     public List<String> obtenerNombresClientes() {
@@ -526,26 +529,12 @@ public class UsuarioController implements IUsuarioController {
 
     public boolean autenticarUsuario(String nick, LocalDateTime fechaHoraActual, String ip, String url, String navegador, String sistemaOperativo) {
         EntityManager em = emf.createEntityManager();
-        try {
-            Usuario usuario = em.find(Usuario.class, nick);
-            if (usuario != null) {
-
-                Map<String, String> acceso = (Map<String, String>) usuario.getRegistrosAcceso();
-                acceso.put("fecha_hora", "2024-11-20T10:00:00");
-                acceso.put("ip", "192.168.1.1");
-                acceso.put("url", "http://example.com");
-                acceso.put("browser", "Chrome");
-                acceso.put("sistema_operativo", "Windows");
-                usrController.edit(usuario);
-                return true;
-            }
-            return false; // Usuario no encontrado
-        } catch (Exception ex) {
-            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            em.close();
-        }
-        return false;
+        LogSesion log = new LogSesion(nick, ip, url, navegador, sistemaOperativo, fechaHoraActual);
+        
+        
+        logController.create(log);
+        return true;
+       
     }
 
     public String obtenerUrlActual(HttpServletRequest request) {
