@@ -160,6 +160,8 @@
                     %>
                 </p>
                 
+                <!PARTE NUEVA DE ELIMINAR PERFIL ARTISTA ->
+                
                      <% if (tipoUsuario.equals("artista") && usuarioConsulta.equals(usuarioLogueado)) { %>
     <!-- Botón visible que solo abrirá el modal -->
     <button
@@ -187,7 +189,7 @@
     </div>
 </div>
                 
-                
+                <!PARTE NUEVA DE ELIMINAR PERFIL ARTISTA HASTA ACA ->
 
                 <%if (tipoUsuario.equals("artista")) {%>
                 <a href="<%= web.startsWith("http") ? web : "http://" + web%>" target="_blank" class="p-2 text-green-500 hover:cursor-pointer hover:text-green-700">
