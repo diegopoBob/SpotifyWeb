@@ -108,7 +108,8 @@
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap flex max-w-8 mt-3 px-6 py-1">#<i class="ml-1 fa-solid fa-sort"></i></th>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap py-4">Titulo<i class="ml-1 fa-solid fa-sort"></i></th>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4 hidden sm:block">Album<i class="ml-1 fa-solid fa-sort"></i></th>
-                                    
+                                    <th></th>
+                                    <th></th>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Duracion<i class="ml-1 fa-solid fa-sort"></i></th>
                                 </tr>
                             </thead>
@@ -127,11 +128,17 @@
                                             <a class="z-50" onclick='event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp", "<%= datosCan[i][8] %>")' class="hover:underline w-1/6 text-white cursor-pointer pr-2"><%= datosCan[i][7] %> <% if(datosCan[i][10]!=null){out.println(datosCan[i][10]);}%></a>
                                         </p>
                                     </td>
+                                    <td class=" whitespace-nowrap px-6 py-4  hidden sm:block" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8] %>&user=<%= datosCan[i][9] %>'); event.stopPropagation();">
+                                        <p >Descargas: <%= datosCan[i][11] %></p>
+                                    </td>
+                                    <td class=" whitespace-nowrap px-6 py-4  hidden sm:block" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8] %>&user=<%= datosCan[i][9] %>'); event.stopPropagation();">
+                                        <p >Reproducciones: <%= datosCan[i][12] %></p>
+                                    </td>
                                     <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline hidden sm:block" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8] %>&user=<%= datosCan[i][9] %>'); event.stopPropagation();">
                                         <p class="cursor-pointer"><%= datosCan[i][6] %></p>
                                     </td>
                                 
-                                    <td class="whitespace-nowrap px-6 py-4">
+                                    <td class=" whitespace-nowrap px-6 py-4">
                                         <%= String.format("%d:%02d", ((Integer) datosCan[i][2] / 60), ((Integer)datosCan[i][2] % 60)) %> 
                                    </td>
                                 </tr>

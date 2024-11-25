@@ -370,7 +370,7 @@
     <!-- COSO DE BOTTOM -->
 
     <%
-        if (IUC.obtenerDatosCliente(nicknameLogeado) != null) {
+        if (IUC.obtenerDatosCliente(nicknameLogeado) != null && IUC.esCliente(nicknameLogeado) == false) {
             if (Vencida) {%>
     <div id="bottom-banner" tabindex="-1" class="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-xl absolute bottom-0 left-0 z-50 flex w-full p-4">
         <div class="flex mx-auto">
@@ -876,7 +876,25 @@
 
     }
 
+function AjaXaumentoDescargas(id) {
 
+    let dataString = $("#descargarForm").serialize();
+
+    
+
+    dataString += "&idCan=" + encodeURIComponent(id);
+    
+    console.log(id);
+    console.log(dataString);
+    $.ajax({
+        type: "POST",
+        url: "aumentoDescargas",
+        data: dataString,
+        dataType: "json"
+
+    });
+
+}
     
 </script>    
 </html>

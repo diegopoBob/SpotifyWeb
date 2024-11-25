@@ -288,7 +288,14 @@
 
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4">
-                                        <%if(Vigente){ %><a href="<%=datosCan[i][3]%>" download class="text-blue-500 hover:underline" onclick="event.stopPropagation();"><i class="fa-regular fa-circle-down "></i></a> <% }%>
+                                        <%if(Vigente){ %>
+                                        
+                                        <form id="descargarForm" method="POST" >
+                                            <!-- <input type="hidden" id="canIdDescarga" name="canId" value="<%=(Integer) datosCan[i][0]%>"> -->
+                                             
+                                            <a href="<%=datosCan[i][3]%>" download class="text-blue-500 hover:underline" type="button" onclick="event.stopPropagation(); AjaXaumentoDescargas(<%=(Integer) datosCan[i][0]%>);"><i class="fa-regular fa-circle-down "></i></a> 
+                                        </form>
+                                        <% }%>
                                 </td>
                                     <td class="whitespace-nowrap px-0 sm:px-6 py-4 text-center">
                                         <%= String.format("%d:%02d", ((Integer) datosCan[i][2] / 60), ((Integer)datosCan[i][2] % 60)) %> 

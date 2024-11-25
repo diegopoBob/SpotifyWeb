@@ -19,4 +19,8 @@ public interface ICancionController {
     public abstract String obtenerFoto(int id);
     public abstract int obtenerIdAlbum(int id);
     public Object[][] obtenerDatosCancionSwing(int id);
+    public abstract void aumentoContador(int id);
+    public abstract void aumentoDescarga(int id);
+
+
 }

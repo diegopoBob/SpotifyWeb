@@ -748,6 +748,45 @@ function AJAXaltaTemaLista(idCan, idPlay,idPlayAct,existeRel) {
     });
 }
 
+function AjaXaumentoDescargas() {
+
+    let dataString = $("#descargarForm").serialize();
+
+     const id = $("#idCanDescarga").val();
+
+    dataString = "&idCan=" + encodeURIComponent(id); // 
+
+    console.log(dataString);
+    $.ajax({
+        type: "POST",
+        url: "aumentarDescargas",
+        data: dataString,
+        dataType: "json"
+
+    });
+
+}
+
+function AjaXaumentoContador(id) {
+
+    let dataString = $("#publicarForm").serialize();
+
+    
+    
+
+    dataString = "&idCan=" + encodeURIComponent(id); // 
+
+    console.log(dataString);
+    $.ajax({
+        type: "POST",
+        url: "aumentarContador",
+        data: dataString,
+        dataType: "json"
+
+    });
+
+}
+
 
 
 function isEmptyFieldAlbum() {

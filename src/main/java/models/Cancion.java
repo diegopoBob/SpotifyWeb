@@ -34,7 +34,10 @@ public class Cancion implements Serializable {
     private int duracion;
     @Column(name = "direccion_archivo_de_audio")
     private String direccion_archivo_de_audio;
-    
+    @Column(name = "descargas")
+    private int descargas = 0;
+    @Column(name = "reproducciones")
+    private int reprodrucciones = 0;
 
     @ManyToOne
     @JoinColumn(name = "genero")
@@ -48,6 +51,22 @@ public class Cancion implements Serializable {
         
     }
 
+    public void setDescargas(int descargas) {
+        this.descargas = descargas;
+    }
+
+    public void setReprodrucciones(int reprodrucciones) {
+        this.reprodrucciones = reprodrucciones;
+    }
+
+    public int getDescargas() {
+        return descargas;
+    }
+
+    public int getReprodrucciones() {
+        return reprodrucciones;
+    }
+
     public Cancion() {
         
     }
@@ -59,6 +78,8 @@ public class Cancion implements Serializable {
     public void setGenero(Genero genero) {
         this.genero = genero;
     }
+    
+    
     
     public int getId() {
         return id;

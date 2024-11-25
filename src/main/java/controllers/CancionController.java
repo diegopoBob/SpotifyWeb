@@ -6,6 +6,8 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
@@ -158,7 +160,28 @@ public class CancionController implements ICancionController  {
         return em.createQuery("SELECT a.id FROM Album a JOIN a.canciones c WHERE c.id = :cancionId",int.class).setParameter("cancionId", id).getSingleResult();
     }
     
+public void aumentoDescarga(int id){
+    Cancion can = cancionJpaController.findCancion(id);
+    int num = can.getDescargas();
+   
     
+    can.setDescargas(num+1);
+        try {
+            cancionJpaController.edit(can);
+        } catch (Exception ex) {
+            Logger.getLogger(CancionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
     
+public void aumentoContador(int id){
+    Cancion can = cancionJpaController.findCancion(id);
+    int num = can.getReprodrucciones();
+    can.setReprodrucciones(num+1);
     
+    try {
+            cancionJpaController.edit(can);
+        } catch (Exception ex) {
+            Logger.getLogger(CancionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
 }
