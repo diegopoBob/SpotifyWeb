@@ -5,26 +5,44 @@
 --%>
 
 
-<%@page import="models.Cliente"%>
-<%@page import="controllers.ICancionController"%>
+
+<%@page import="webServices.AnyTypeArray"%>
+<%@page import="webServices.PlaylistController"%>
+<%@page import="webServices.AlbumController"%>
+<%@page import="webServices.PlaylistControllerService"%>
+<%@page import="webServices.CancionControllerService"%>
+<%@page import="webServices.AlbumControllerService"%>
+<%@page import="webServices.UsuarioController"%>
+<%@page import="webServices.UsuarioControllerService"%>
+<%@page import="Utilidades.controlIngresos"%>
+<%@page import="Utilidades.controlIngresos"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="controllers.IPlaylistController"%>
-<%@page import="controllers.IAlbumController" %>
+
 <%@page import="java.util.List"%>
-<%@page import="controllers.IUsuarioController"%>
-<%@page import="controllers.Fabrica"%>
+
 
 
 <%
+   controlIngresos controlIngresos = new controlIngresos();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    UsuarioController usrController = IUCservicio.getUsuarioControllerPort(); 
+    usrController.autenticarUsuario(controlIngresos.obtenerIpActual(), 
+    controlIngresos.obtenerUrlActual(request), controlIngresos.obtenerNavegadorActual(request), controlIngresos.obtenerSistemaOperativoActual(request));
+    
     if (session == null || session.getAttribute("nick") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
-    Fabrica fabrica = Fabrica.getInstance();
-    IUsuarioController usrController = fabrica.getIUsuarioController();
-    IPlaylistController playController = fabrica.getIPlaylistController();
-    IAlbumController albController = fabrica.getIAlbumController();
+       //llamo websvc
+    AlbumControllerService IACservicio = new AlbumControllerService();
+    CancionControllerService ICCservicio = new CancionControllerService();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
+    //intancio controllers
+    AlbumController albController = IACservicio.getAlbumControllerPort();
+    PlaylistController playController = IPCservicio.getPlaylistControllerPort();
+    
+    
    List<Integer> CanFav = (List<Integer>) session.getAttribute("cancionesFavoritas");
     
     String imagenDefault = "includes/defaultPlaylist.png";
@@ -40,7 +58,6 @@
     String imagenPlay = "includes/defaultPlaylist.png";
     String imagenClie = imagenDefault;
 
-    
 
         // Obtener los IDs de las canciones favoritas
         List<Integer> cancionesFavIds = (List<Integer>) session.getAttribute("cancionesFavoritas");
@@ -51,15 +68,18 @@
 
             // Llenar datosCan con los datos de cada canción favorita
             for (int i = 0; i < cancionesFavIds.size(); i++) {
-                datosCan[i] = albController.obtenerDatosCompletoCancion(cancionesFavIds.get(i));
+                datosCan[i] = albController.obtenerDatosCompletoCancion(cancionesFavIds.get(i)).toArray();
                 
             }
         
     
 
-    Object[][] datosCli = usrController.obtenerDatosCliente(propietario);
-    if (datosCli.length > 0) {
-        imagenClie = (String) datosCli[0][5];
+    List auxDatoscli =  usrController.obtenerDatosCliente(propietario);
+    AnyTypeArray auxCli = (AnyTypeArray) auxDatoscli.get(0);
+    List<Object> datosCli = auxCli.getItem();
+    
+        if (datosCli.size() > 0) {
+        imagenClie = (String) datosCli.get(5);
         if (imagenClie == null || imagenClie == "" || imagenClie == "null" || imagenClie.isEmpty() || "null".equals(imagenClie)) {
             imagenClie = imagenClie;
         }
@@ -121,7 +141,7 @@
                                 <tr>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap flex max-w-8 mt-3 px-6 py-1">#<i class="  ml-1 fa-solid fa-sort"></i></th>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap  py-4">Titulo<i class="ml-1  fa-solid fa-sort"></i></th>
-                                    <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Album<i class="ml-1  fa-solid fa-sort"></i></th>
+                                    <th scope="col" class="hover:text-gray-400 whitespace-nowrap  px-6 py-4 hidden sm:block">Album<i class="ml-1  fa-solid fa-sort"></i></th>
                                     <th></th>
                                     <th scope="col" class="hover:text-gray-400 whitespace-nowrap px-6 py-4">Duracion<i class="ml-1  fa-solid fa-sort"></i></th>
                                 </tr>
@@ -156,7 +176,7 @@
                                         </p>
                                     </td>
 
-                                    <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline" 
+                                    <td class="cursor-pointer whitespace-nowrap px-6 py-4 hover:underline hidden sm:block" 
                                         onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= datosCan[i][8]%>&user=<%= datosCan[i][9]%>');  event.stopPropagation();">
                                         <p class="cursor-pointer"><%= datosCan[i][6]%> </p>
                                     </td>

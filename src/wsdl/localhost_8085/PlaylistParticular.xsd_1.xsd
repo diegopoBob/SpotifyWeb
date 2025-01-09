@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (https://github.com/eclipse-ee4j/metro-jax-ws). RI's version is JAX-WS RI 2.3.3 git-revision#b4c5bb6. --><xs:schema xmlns:tns="http://models/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://models/">
+
+<xs:element name="getCanciones" type="tns:getCanciones"/>
+
+<xs:element name="getCancionesResponse" type="tns:getCancionesResponse"/>
+
+<xs:element name="getId" type="tns:getId"/>
+
+<xs:element name="getIdResponse" type="tns:getIdResponse"/>
+
+<xs:element name="getNombre" type="tns:getNombre"/>
+
+<xs:element name="getNombreResponse" type="tns:getNombreResponse"/>
+
+<xs:element name="getPrivada" type="tns:getPrivada"/>
+
+<xs:element name="getPrivadaResponse" type="tns:getPrivadaResponse"/>
+
+<xs:element name="getPropietario" type="tns:getPropietario"/>
+
+<xs:element name="getPropietarioResponse" type="tns:getPropietarioResponse"/>
+
+<xs:element name="getRutaImagen" type="tns:getRutaImagen"/>
+
+<xs:element name="getRutaImagenResponse" type="tns:getRutaImagenResponse"/>
+
+<xs:element name="setCanciones" type="tns:setCanciones"/>
+
+<xs:element name="setCancionesParticular" type="tns:setCancionesParticular"/>
+
+<xs:element name="setCancionesParticularResponse" type="tns:setCancionesParticularResponse"/>
+
+<xs:element name="setCancionesResponse" type="tns:setCancionesResponse"/>
+
+<xs:element name="setId" type="tns:setId"/>
+
+<xs:element name="setIdResponse" type="tns:setIdResponse"/>
+
+<xs:element name="setNombre" type="tns:setNombre"/>
+
+<xs:element name="setNombreResponse" type="tns:setNombreResponse"/>
+
+<xs:element name="setPrivada" type="tns:setPrivada"/>
+
+<xs:element name="setPrivadaResponse" type="tns:setPrivadaResponse"/>
+
+<xs:element name="setRutaImagen" type="tns:setRutaImagen"/>
+
+<xs:element name="setRutaImagenResponse" type="tns:setRutaImagenResponse"/>
+
+<xs:complexType name="getId">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getIdResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setNombre">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setNombreResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="setCancionesParticular">
+<xs:sequence>
+<xs:element name="arg0" type="tns:cancion" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cancion">
+<xs:sequence>
+<xs:element name="direccion_archivo_de_audio" type="xs:string" minOccurs="0"/>
+<xs:element name="duracion" type="xs:int"/>
+<xs:element name="genero" type="tns:genero" minOccurs="0"/>
+<xs:element name="id" type="xs:int"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="genero">
+<xs:sequence>
+<xs:element name="generoCollection" type="tns:genero" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="padreNombre" type="tns:genero" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setCancionesParticularResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="setId">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setIdResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getRutaImagen">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getRutaImagenResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setCanciones">
+<xs:sequence>
+<xs:element name="arg0" type="tns:cancion" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setCancionesResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getCanciones">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getCancionesResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:cancion" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setPrivada">
+<xs:sequence>
+<xs:element name="arg0" type="xs:boolean" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setPrivadaResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="setRutaImagen">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setRutaImagenResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getPropietario">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getPropietarioResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:cliente" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cliente">
+<xs:complexContent>
+<xs:extension base="tns:usuario">
+<xs:sequence>
+<xs:element name="albumesFavoritos" type="tns:album" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="cancionesFavoritas" type="tns:cancion" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="fecNac" type="tns:localDate" minOccurs="0"/>
+<xs:element name="playlistFavoritos" type="tns:playlist" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="tipo" type="xs:int"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="usuario">
+<xs:sequence>
+<xs:element name="fecNac" type="xs:string" minOccurs="0"/>
+<xs:element name="apellido" type="xs:string" minOccurs="0"/>
+<xs:element name="contraseña" type="xs:string" minOccurs="0"/>
+<xs:element name="contraseñaHash" type="xs:string" minOccurs="0"/>
+<xs:element name="imagen" type="xs:string" minOccurs="0"/>
+<xs:element name="mail" type="xs:string" minOccurs="0"/>
+<xs:element name="nick" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="album">
+<xs:sequence>
+<xs:element name="anioo" type="xs:int"/>
+<xs:element name="generos" type="tns:genero" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="localDate" final="extension restriction">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="playlist">
+<xs:sequence>
+<xs:element name="canciones" type="tns:cancion" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="id" type="xs:int"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="rutaImagen" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getPrivada">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getPrivadaResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getNombre">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getNombreResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

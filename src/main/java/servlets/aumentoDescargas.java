@@ -4,17 +4,16 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.ICancionController;
-import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import static java.lang.System.out;
+import webServices.CancionController;
+import webServices.CancionControllerService;
 
 /**
  *
@@ -22,8 +21,8 @@ import static java.lang.System.out;
  */
 @WebServlet(name = "aumentoDescargas", urlPatterns = {"/aumentoDescargas"})
 public class aumentoDescargas extends HttpServlet {
-    Fabrica fabrica = Fabrica.getInstance();
-    private ICancionController canController = fabrica.getICancionController();
+    CancionControllerService ICCservicio = new CancionControllerService();
+    CancionController canController = ICCservicio.getCancionControllerPort(); 
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (https://github.com/eclipse-ee4j/metro-jax-ws). RI's version is JAX-WS RI 2.3.3 git-revision#b4c5bb6. --><xs:schema xmlns:tns="http://models/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://models/">
+
+<xs:element name="equals" type="tns:equals"/>
+
+<xs:element name="equalsResponse" type="tns:equalsResponse"/>
+
+<xs:element name="getAnioo" type="tns:getAnioo"/>
+
+<xs:element name="getAniooResponse" type="tns:getAniooResponse"/>
+
+<xs:element name="getArtista" type="tns:getArtista"/>
+
+<xs:element name="getArtistaResponse" type="tns:getArtistaResponse"/>
+
+<xs:element name="getCanciones" type="tns:getCanciones"/>
+
+<xs:element name="getCancionesResponse" type="tns:getCancionesResponse"/>
+
+<xs:element name="getDireccion_imagen" type="tns:getDireccion_imagen"/>
+
+<xs:element name="getDireccion_imagenResponse" type="tns:getDireccion_imagenResponse"/>
+
+<xs:element name="getGeneros" type="tns:getGeneros"/>
+
+<xs:element name="getGenerosResponse" type="tns:getGenerosResponse"/>
+
+<xs:element name="getId" type="tns:getId"/>
+
+<xs:element name="getIdResponse" type="tns:getIdResponse"/>
+
+<xs:element name="getNombre" type="tns:getNombre"/>
+
+<xs:element name="getNombreResponse" type="tns:getNombreResponse"/>
+
+<xs:element name="hashCode" type="tns:hashCode"/>
+
+<xs:element name="hashCodeResponse" type="tns:hashCodeResponse"/>
+
+<xs:element name="setAnioo" type="tns:setAnioo"/>
+
+<xs:element name="setAniooResponse" type="tns:setAniooResponse"/>
+
+<xs:element name="setGeneros" type="tns:setGeneros"/>
+
+<xs:element name="setGenerosResponse" type="tns:setGenerosResponse"/>
+
+<xs:element name="setNombre" type="tns:setNombre"/>
+
+<xs:element name="setNombreResponse" type="tns:setNombreResponse"/>
+
+<xs:element name="toString" type="tns:toString"/>
+
+<xs:element name="toStringResponse" type="tns:toStringResponse"/>
+
+<xs:complexType name="getNombre">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getNombreResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getCanciones">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getCancionesResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:cancion" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cancion">
+<xs:sequence>
+<xs:element name="direccion_archivo_de_audio" type="xs:string" minOccurs="0"/>
+<xs:element name="duracion" type="xs:int"/>
+<xs:element name="genero" type="tns:genero" minOccurs="0"/>
+<xs:element name="id" type="xs:int"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="genero">
+<xs:sequence>
+<xs:element name="generoCollection" type="tns:genero" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="padreNombre" type="tns:genero" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getArtista">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getArtistaResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:artista" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="artista">
+<xs:complexContent>
+<xs:extension base="tns:usuario">
+<xs:sequence>
+<xs:element name="biografia" type="xs:string" minOccurs="0"/>
+<xs:element name="direccionWeb" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="usuario">
+<xs:sequence>
+<xs:element name="fecNacimiento" type="xs:string" minOccurs="0"/>
+<xs:element name="apellido" type="xs:string" minOccurs="0"/>
+<xs:element name="contraseña" type="xs:string" minOccurs="0"/>
+<xs:element name="contraseñaHash" type="xs:string" minOccurs="0"/>
+<xs:element name="imagen" type="xs:string" minOccurs="0"/>
+<xs:element name="mail" type="xs:string" minOccurs="0"/>
+<xs:element name="nick" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getAnioo">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getAniooResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setAnioo">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setAniooResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getGeneros">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getGenerosResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:genero" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getId">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getIdResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setGeneros">
+<xs:sequence>
+<xs:element name="arg0" type="tns:genero" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setGenerosResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="hashCode">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="hashCodeResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="equals">
+<xs:sequence>
+<xs:element name="arg0" type="xs:anyType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="equalsResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="toString">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="toStringResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDireccion_imagen">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getDireccion_imagenResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setNombre">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setNombreResponse">
+<xs:sequence/>
+</xs:complexType>
+</xs:schema>

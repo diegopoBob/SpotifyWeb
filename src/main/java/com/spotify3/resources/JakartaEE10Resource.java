@@ -1,14 +1,14 @@
 package com.spotify3.resources;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.core.Response;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
 /**
  *
  * @author 
  */
-@Path("jakartaee10")
+@Path("javaee8")
 public class JakartaEE10Resource {
     
     @GET

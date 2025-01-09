@@ -9,6 +9,7 @@ Without this configuration present, some functionality in the IDE may be limited
     <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
         <word>dvi</word>
     </spellchecker-wordlist>
+    <libraries xmlns="http://www.netbeans.org/ns/cdnjs-libraries/1"/>
     <properties xmlns="http://www.netbeans.org/ns/maven-properties-data/1">
         <!--
 Properties that influence various parts of the IDE, especially code formatting and the like. 
@@ -16,8 +17,53 @@ You can copy and paste the single properties, into the pom.xml file and the IDE 
 That way multiple projects can share the same settings (useful for formatting rules for example).
 Any value defined here will override the pom.xml file value but is only applicable to the current project.
 -->
-        <org-netbeans-modules-maven-j2ee.netbeans_2e_hint_2e_j2eeVersion>10-web</org-netbeans-modules-maven-j2ee.netbeans_2e_hint_2e_j2eeVersion>
-        <org-netbeans-modules-maven-j2ee.netbeans_2e_hint_2e_deploy_2e_server>Tomcat</org-netbeans-modules-maven-j2ee.netbeans_2e_hint_2e_deploy_2e_server>
+        <org-netbeans-modules-maven-j2ee.netbeans_2e_hint_2e_j2eeVersion>1.8-web</org-netbeans-modules-maven-j2ee.netbeans_2e_hint_2e_j2eeVersion>
         <org-netbeans-modules-maven-jaxws.rest_2e_config_2e_type>ide</org-netbeans-modules-maven-jaxws.rest_2e_config_2e_type>
+        <netbeans.hint.jdkPlatform>Oracle_OpenJDK_8.0.342_7</netbeans.hint.jdkPlatform>
+        <org-netbeans-modules-css-prep.less_2e_mappings>/less:/css</org-netbeans-modules-css-prep.less_2e_mappings>
+        <org-netbeans-modules-css-prep.less_2e_enabled>false</org-netbeans-modules-css-prep.less_2e_enabled>
+        <org-netbeans-modules-css-prep.sass_2e_enabled>false</org-netbeans-modules-css-prep.sass_2e_enabled>
+        <org-netbeans-modules-css-prep.sass_2e_compiler_2e_options/>
+        <org-netbeans-modules-css-prep.less_2e_compiler_2e_options/>
+        <org-netbeans-modules-css-prep.sass_2e_mappings>/scss:/css</org-netbeans-modules-css-prep.sass_2e_mappings>
+        <org-netbeans-modules-web-clientproject-api.js_2e_libs_2e_folder>js/libs</org-netbeans-modules-web-clientproject-api.js_2e_libs_2e_folder>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_GeneroController>http://localhost:8085/GeneroController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_GeneroController>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_GeneroController_5f_1>http://localhost:8085/GeneroController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_GeneroController_5f_1>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController>http://localhost:8085/AlbumController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_CancionController>http://localhost:8085/CancionController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_CancionController>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistController>http://localhost:8085/PlaylistController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistController>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController>http://localhost:8085/UsuarioController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_GeneroController_5f_2>http://localhost:8085/GeneroController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_GeneroController_5f_2>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_1>http://localhost:8085/AlbumController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_1>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_2>http://localhost:8085/AlbumController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_2>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_CancionController_5f_1>http://localhost:8085/CancionController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_CancionController_5f_1>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistController_5f_1>http://localhost:8085/PlaylistController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistController_5f_1>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_1>http://localhost:8085/UsuarioController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_1>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_Album>http://localhost:8085/Album?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_Album>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_2>http://localhost:8085/UsuarioController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_2>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistPorDefecto>http://localhost:8085/PlaylistPorDefecto?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistPorDefecto>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistParticular>http://localhost:8085/PlaylistParticular?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistParticular>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistParticular_5f_1>http://localhost:8085/PlaylistParticular?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistParticular_5f_1>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistParticular_5f_2>http://localhost:8085/PlaylistParticular?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistParticular_5f_2>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_Album_5f_1>http://localhost:8085/Album?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_Album_5f_1>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_3>http://localhost:8085/AlbumController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_3>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_Album_5f_2>http://localhost:8085/Album?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_Album_5f_2>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_Album_5f_3>http://localhost:8085/Album?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_Album_5f_3>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_3>http://localhost:8085/UsuarioController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_3>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_4>http://localhost:8085/UsuarioController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_4>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_5>http://localhost:8085/UsuarioController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_5>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_6>http://localhost:8085/UsuarioController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_UsuarioController_5f_6>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistController_5f_2>http://localhost:8085/PlaylistController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistController_5f_2>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistController_5f_3>http://localhost:8085/PlaylistController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistController_5f_3>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistController_5f_4>http://localhost:8085/PlaylistController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_PlaylistController_5f_4>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_4>http://localhost:8085/AlbumController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_4>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_Album_5f_4>http://localhost:8085/Album?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_Album_5f_4>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_5>http://localhost:8085/AlbumController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_5>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_Album_5f_5>http://localhost:8085/Album?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_Album_5f_5>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_6>http://localhost:8085/AlbumController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_6>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_7>http://localhost:8085/AlbumController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_7>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_8>http://localhost:8085/AlbumController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_8>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_9>http://localhost:8085/AlbumController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AlbumController_5f_9>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_CancionController_5f_2>http://localhost:8085/CancionController?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_CancionController_5f_2>
     </properties>
 </project-shared-configuration>

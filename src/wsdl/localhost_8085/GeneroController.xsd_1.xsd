@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (https://github.com/eclipse-ee4j/metro-jax-ws). RI's version is JAX-WS RI 2.3.3 git-revision#b4c5bb6. --><xs:schema xmlns:tns="http://controllers/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://controllers/">
+
+<xs:element name="findGenero" type="tns:findGenero"/>
+
+<xs:element name="findGeneroResponse" type="tns:findGeneroResponse"/>
+
+<xs:element name="obtenerNombresGeneros" type="tns:obtenerNombresGeneros"/>
+
+<xs:element name="obtenerNombresGenerosResponse" type="tns:obtenerNombresGenerosResponse"/>
+
+<xs:element name="registrarGenero" type="tns:registrarGenero"/>
+
+<xs:element name="registrarGenero2" type="tns:registrarGenero2"/>
+
+<xs:element name="registrarGenero2Response" type="tns:registrarGenero2Response"/>
+
+<xs:element name="registrarGeneroResponse" type="tns:registrarGeneroResponse"/>
+
+<xs:complexType name="obtenerNombresGeneros">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresGenerosResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarGenero">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="tns:genero" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="genero">
+<xs:sequence>
+<xs:element name="generoCollection" type="tns:genero" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="padreNombre" type="tns:genero" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarGeneroResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="findGenero">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="findGeneroResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:genero" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarGenero2">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarGenero2Response">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

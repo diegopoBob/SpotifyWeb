@@ -4,7 +4,17 @@
     Author     : dylan
 --%>
 
+<%@page import="webServices.UsuarioController"%>
+<%@page import="webServices.UsuarioControllerService"%>
+<%@page import="Utilidades.controlIngresos"%>
 <%
+    controlIngresos controlIngresos = new controlIngresos();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    UsuarioController usrController = IUCservicio.getUsuarioControllerPort(); 
+    usrController.autenticarUsuario(controlIngresos.obtenerIpActual(), 
+    controlIngresos.obtenerUrlActual(request), controlIngresos.obtenerNavegadorActual(request), controlIngresos.obtenerSistemaOperativoActual(request));
+    
+    
     if (session == null || session.getAttribute("nick") == null) {        
     }else{
         response.sendRedirect("index.jsp");

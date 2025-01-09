@@ -4,17 +4,15 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.IPlaylistController;
-import controllers.IUsuarioController;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import static java.lang.System.out;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,6 +20,8 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import webServices.PlaylistController;
+import webServices.PlaylistControllerService;
 
 /**
  *
@@ -30,9 +30,9 @@ import javax.persistence.Persistence;
 @WebServlet(name = "publicarLista", urlPatterns = {"/publicarLista"})
 public class publicarLista extends HttpServlet {
     
-    Fabrica fabrica = Fabrica.getInstance();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
     
-    private IPlaylistController playController = fabrica.getIPlaylistController();
+    private PlaylistController playController = IPCservicio.getPlaylistControllerPort();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -83,9 +83,7 @@ public class publicarLista extends HttpServlet {
         String idAlbum = request.getParameter("idPlay");
         int id = Integer.parseInt(idAlbum);
         try {
-           
-            playController.Publicar_Lista(id);
-          
+            playController.publicarLista(id);         
         } catch (Exception ex) {
             Logger.getLogger(seguirUsuario.class.getName()).log(Level.SEVERE, null, ex);
             out.println("No Anduvo");

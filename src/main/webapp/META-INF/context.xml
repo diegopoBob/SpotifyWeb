@@ -1,4 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/SpotifyWeb">
-  <Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="spotify" password="tecnologo" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/spotify?zeroDateTimeBehavior=CONVERT_TO_NULL" username="tecnologo"/>
-</Context>
+<Context path="/SpotifyWeb"/>

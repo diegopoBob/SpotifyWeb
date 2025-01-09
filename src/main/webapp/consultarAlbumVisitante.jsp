@@ -1,22 +1,31 @@
+<%@page import="Utilidades.controlIngresos"%>
+<%@page import="webServices.AlbumController"%>
+<%@page import="webServices.UsuarioController"%>
+<%@page import="webServices.GeneroController"%>
+<%@page import="webServices.AlbumControllerService"%>
+<%@page import="webServices.UsuarioControllerService"%>
+<%@page import="webServices.GeneroControllerService"%>
 <%@page import="java.net.URLEncoder"%>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="controllers.IPlaylistController" %>
-<%@ page import="controllers.IAlbumController" %>
-<%@ page import="controllers.ICancionController" %>
 <%@ page import="java.util.List" %>
-<%@ page import="controllers.IUsuarioController" %>
-<%@ page import="controllers.Fabrica" %>
-<%@ page import="controllers.IGeneroController" %>
-<%@ page import="models.Album" %>
-<%@ page import="models.Cancion" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <%
-    Fabrica fabrica = Fabrica.getInstance();
-    IAlbumController alController = fabrica.getIAlbumController();
-    IUsuarioController usrController = fabrica.getIUsuarioController();
-    IGeneroController genController = fabrica.getIGeneroController();
+    
+    
+        controlIngresos controlIngresos = new controlIngresos();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    UsuarioController usrController = IUCservicio.getUsuarioControllerPort(); 
+    usrController.autenticarUsuario(controlIngresos.obtenerIpActual(), 
+    controlIngresos.obtenerUrlActual(request), controlIngresos.obtenerNavegadorActual(request), controlIngresos.obtenerSistemaOperativoActual(request));
+    
+      //llamo services
+    GeneroControllerService IGCservicio = new GeneroControllerService();
+    AlbumControllerService IACservicio = new AlbumControllerService();
+    //intancio controllers
+    GeneroController genController = IGCservicio.getGeneroControllerPort();
+    AlbumController alController = IACservicio.getAlbumControllerPort();
 
     List<String> artistas = usrController.obtenerNombresArtistas();
     List<String> generos = genController.obtenerNombresGeneros();

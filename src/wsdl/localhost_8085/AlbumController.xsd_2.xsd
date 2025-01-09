@@ -1,0 +1,327 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (https://github.com/eclipse-ee4j/metro-jax-ws). RI's version is JAX-WS RI 2.3.3 git-revision#b4c5bb6. --><xs:schema xmlns:tns="http://controllers/" xmlns:ns1="http://jaxb.dev.java.net/array" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://controllers/">
+
+<xs:import namespace="http://jaxb.dev.java.net/array" schemaLocation="http://localhost:8085/AlbumController?xsd=1"/>
+
+<xs:element name="BuscarAlbumGenero" type="tns:BuscarAlbumGenero"/>
+
+<xs:element name="BuscarAlbumGeneroResponse" type="tns:BuscarAlbumGeneroResponse"/>
+
+<xs:element name="CrearAlbum" type="tns:CrearAlbum"/>
+
+<xs:element name="CrearAlbumResponse" type="tns:CrearAlbumResponse"/>
+
+<xs:element name="buscarAlbum" type="tns:buscarAlbum"/>
+
+<xs:element name="buscarAlbumResponse" type="tns:buscarAlbumResponse"/>
+
+<xs:element name="buscarArtista" type="tns:buscarArtista"/>
+
+<xs:element name="buscarArtistaResponse" type="tns:buscarArtistaResponse"/>
+
+<xs:element name="findAlbum" type="tns:findAlbum"/>
+
+<xs:element name="findAlbumResponse" type="tns:findAlbumResponse"/>
+
+<xs:element name="obtenerAlbumArtista" type="tns:obtenerAlbumArtista"/>
+
+<xs:element name="obtenerAlbumArtistaNombres" type="tns:obtenerAlbumArtistaNombres"/>
+
+<xs:element name="obtenerAlbumArtistaNombresResponse" type="tns:obtenerAlbumArtistaNombresResponse"/>
+
+<xs:element name="obtenerAlbumArtistaObj" type="tns:obtenerAlbumArtistaObj"/>
+
+<xs:element name="obtenerAlbumArtistaObjResponse" type="tns:obtenerAlbumArtistaObjResponse"/>
+
+<xs:element name="obtenerAlbumArtistaResponse" type="tns:obtenerAlbumArtistaResponse"/>
+
+<xs:element name="obtenerAlbumesPorGenero" type="tns:obtenerAlbumesPorGenero"/>
+
+<xs:element name="obtenerAlbumesPorGeneroObj" type="tns:obtenerAlbumesPorGeneroObj"/>
+
+<xs:element name="obtenerAlbumesPorGeneroObjResponse" type="tns:obtenerAlbumesPorGeneroObjResponse"/>
+
+<xs:element name="obtenerAlbumesPorGeneroResponse" type="tns:obtenerAlbumesPorGeneroResponse"/>
+
+<xs:element name="obtenerArtistaAlbum" type="tns:obtenerArtistaAlbum"/>
+
+<xs:element name="obtenerArtistaAlbumResponse" type="tns:obtenerArtistaAlbumResponse"/>
+
+<xs:element name="obtenerArtistaPorAlbum" type="tns:obtenerArtistaPorAlbum"/>
+
+<xs:element name="obtenerArtistaPorAlbumResponse" type="tns:obtenerArtistaPorAlbumResponse"/>
+
+<xs:element name="obtenerDatosAlbum" type="tns:obtenerDatosAlbum"/>
+
+<xs:element name="obtenerDatosAlbumResponse" type="tns:obtenerDatosAlbumResponse"/>
+
+<xs:element name="obtenerDatosCancionAlbum" type="tns:obtenerDatosCancionAlbum"/>
+
+<xs:element name="obtenerDatosCancionAlbumResponse" type="tns:obtenerDatosCancionAlbumResponse"/>
+
+<xs:element name="obtenerDatosCompletoCancion" type="tns:obtenerDatosCompletoCancion"/>
+
+<xs:element name="obtenerDatosCompletoCancionResponse" type="tns:obtenerDatosCompletoCancionResponse"/>
+
+<xs:element name="obtenerIdAlbumsFavoritos" type="tns:obtenerIdAlbumsFavoritos"/>
+
+<xs:element name="obtenerIdAlbumsFavoritosResponse" type="tns:obtenerIdAlbumsFavoritosResponse"/>
+
+<xs:element name="obtenerNombresAlbums" type="tns:obtenerNombresAlbums"/>
+
+<xs:element name="obtenerNombresAlbumsFavoritos" type="tns:obtenerNombresAlbumsFavoritos"/>
+
+<xs:element name="obtenerNombresAlbumsFavoritosResponse" type="tns:obtenerNombresAlbumsFavoritosResponse"/>
+
+<xs:element name="obtenerNombresAlbumsResponse" type="tns:obtenerNombresAlbumsResponse"/>
+
+<xs:element name="registrarAlbum" type="tns:registrarAlbum"/>
+
+<xs:element name="registrarAlbumResponse" type="tns:registrarAlbumResponse"/>
+
+<xs:complexType name="obtenerAlbumArtistaNombres">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerAlbumArtistaNombresResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosAlbum">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosAlbumResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosCancionAlbum">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosCancionAlbumResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CrearAlbum">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:int"/>
+<xs:element name="arg2" type="xs:string" minOccurs="0"/>
+<xs:element name="arg3" type="xs:string" minOccurs="0"/>
+<xs:element name="arg4" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="arg5" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CrearAlbumResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerArtistaAlbum">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerArtistaAlbumResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosCompletoCancion">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosCompletoCancionResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:anyType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerIdAlbumsFavoritos">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerIdAlbumsFavoritosResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerAlbumArtistaObj">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerAlbumArtistaObjResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerArtistaPorAlbum">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerArtistaPorAlbumResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="BuscarAlbumGenero">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="BuscarAlbumGeneroResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:album" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="album">
+<xs:sequence>
+<xs:element name="anioo" type="xs:int"/>
+<xs:element name="generos" type="tns:genero" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="genero">
+<xs:sequence>
+<xs:element name="generoCollection" type="tns:genero" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="padreNombre" type="tns:genero" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresAlbums">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresAlbumsResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerAlbumArtista">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerAlbumArtistaResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="findAlbum">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="findAlbumResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:album" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarAlbum">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:int"/>
+<xs:element name="arg2" type="tns:genero" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarAlbumResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerAlbumesPorGeneroObj">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerAlbumesPorGeneroObjResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarAlbum">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarAlbumResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarArtista">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarArtistaResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresAlbumsFavoritos">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresAlbumsFavoritosResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerAlbumesPorGenero">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerAlbumesPorGeneroResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

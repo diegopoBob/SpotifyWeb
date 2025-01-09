@@ -4,21 +4,22 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.IAlbumController;
-import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import static java.lang.System.out;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import webServices.AlbumController;
+import webServices.AlbumControllerService;
+import webServices.UsuarioController;
+import webServices.UsuarioControllerService;
 
 /**
  *
@@ -27,10 +28,13 @@ import java.util.logging.Logger;
 @WebServlet(name = "seguirUsuario", urlPatterns = {"/seguirUsuario"})
 public class seguirUsuario extends HttpServlet {
     
-    Fabrica fabrica = Fabrica.getInstance();
-    private IUsuarioController ICU = fabrica.getIUsuarioController();
-    private IAlbumController albController = fabrica.getIAlbumController();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+        AlbumControllerService IACservicio = new AlbumControllerService();
 
+    private UsuarioController ICU = IUCservicio.getUsuarioControllerPort(); 
+    private AlbumController albController = IACservicio.getAlbumControllerPort();
+
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

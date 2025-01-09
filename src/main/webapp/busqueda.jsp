@@ -4,6 +4,15 @@
     Author     : dylan
 --%>
 
+<%@page import="webServices.AnyTypeArray"%>
+<%@page import="webServices.CancionController"%>
+<%@page import="webServices.PlaylistController"%>
+<%@page import="webServices.PlaylistControllerService"%>
+<%@page import="webServices.CancionControllerService"%>
+<%@page import="webServices.AlbumControllerService"%>
+<%@page import="webServices.UsuarioControllerService"%>
+<%@page import="webServices.AlbumController"%>
+<%@page import="webServices.UsuarioController"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -11,21 +20,21 @@
 <%@page import="javax.persistence.EntityManager"%>
 <%@page import="javax.persistence.Persistence"%>
 <%@page import="javax.persistence.EntityManagerFactory"%>
-<%@page import="controllers.ICancionController"%>
-<%@page import="controllers.IUsuarioController"%>
-<%@page import="controllers.IAlbumController"%>
-<%@page import="controllers.IPlaylistController"%>
-<%@page import="controllers.Fabrica"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%  
   
 String input = request.getParameter("input"); 
-Fabrica fabrica = Fabrica.getInstance();
-ICancionController cancionController = fabrica.getICancionController();
-IUsuarioController usrController = fabrica.getIUsuarioController();
-IAlbumController albumController = fabrica.getIAlbumController();
-IPlaylistController playlistController = fabrica.getIPlaylistController();
+    //llamo websvc
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    AlbumControllerService IACservicio = new AlbumControllerService();
+    CancionControllerService ICCservicio = new CancionControllerService();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
+    //intancio controllers
+    UsuarioController usrController = IUCservicio.getUsuarioControllerPort(); 
+    AlbumController albumController = IACservicio.getAlbumControllerPort();
+    CancionController cancionController = ICCservicio.getCancionControllerPort();
+    PlaylistController playlistController = IPCservicio.getPlaylistControllerPort();
 
 EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
 EntityManager em = emf.createEntityManager();
@@ -48,19 +57,21 @@ List<Object[]> ObtenidosPlaylists = em.createNativeQuery("SELECT p.id ,nombre,ru
         <%if (ObtenidosCanciones.size() > 0) {
             for (Object[] aux : ObtenidosCanciones) {
                 Integer albumId = cancionController.obtenerIdAlbum((Integer) aux[0]);
-                Object[][] datosAlb = albumController.obtenerDatosAlbum(albumId); // Método hipotético
+                List auxAlbum = albumController.obtenerDatosAlbum(albumId);
+                AnyTypeArray albums =(AnyTypeArray) auxAlbum.get(0);
+                List<Object> datosAlb = albums.getItem();
 
         %>
          
-    <div onclick="cargarInfoCancion('<%= aux[0]%>'); reproducirCancion('<%= aux[3]%>')" class="w-full hover:bg-neutral-600 rounded flex ">
-                <img src="<%= datosAlb[0][6]%>" alt="alt" class=" aspect-square min-w-16  max-w-20  rounded-xl p-1.5"/>
+    <div onclick="cargarInfoCancion('<%= aux[0]%>'); reproducirCancion('<%= aux[3]%>', null , <%= aux[0]%>)" class="w-full hover:bg-neutral-600 rounded flex ">
+                <img src="<%= datosAlb.get(6)%>" alt="alt" class=" aspect-square min-w-16  max-w-20  rounded-xl p-1.5"/>
                 <div style="font-size:clamp(15px, 2vw, 20px);" name="textoLibreria" class=" ml-2 flex flex-col justify-center ">
-                    <p class=" whitespace-nowrap  font-semibold text-white mt-2"><%= aux[1]%></p>
-                    <p  class="hover:underline text-gray-400 cursor-pointer" onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp","<%= datosAlb[0][8]%>")'><%= datosAlb[0][3]%></p>
+                    <p class=" whitespace-nowrap  font-semibold text-white mt-2 truncate" ><%= aux[1]%></p>
+                    <p  class="hover:underline text-gray-400 cursor-pointer" onclick=' event.stopPropagation(); abrirCasoDeUso("consultarUsuario.jsp","<%= datosAlb.get(8)%>")'><%= datosAlb.get(3)%></p>
                 </div>
                 <div style="" name="textoLibreria" class=" items-center flex w-full justify-end">
                     <div class="align-middle ">
-                        <p> <%= String.format("%d:%02d", ((Integer) aux[2] / 60), ((Integer)aux[2] % 60)) %> <i class=" text-s ml mr-5 fa-regular fa-clock"></i></p>
+<p><%= String.format("%d:%02d", ((Integer) aux[2] / 60), ((Integer)aux[2] % 60)) %> <i class="text-s ml mr-5 fa-regular fa-clock"></i></p>
                     </div>
                 </div>
     </div>
@@ -178,7 +189,7 @@ for (Object[] aux : ObtenidosArtistas) {
                         <%} else{%>
                         <p class="ml-3 mb-3 text-gray-400"> <%= aux[5]%>
                         <% }%> ● 
-                        <%= playlistController.obtenerDatosCancionesPlaylist((Integer)aux[0]).length%> Canciones 
+                        <%= playlistController.obtenerDatosCancionesPlaylist((Integer)aux[0]).size() %> Canciones 
                         </p>
                         
                     </div>

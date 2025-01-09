@@ -4,26 +4,27 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.IAlbumController;
-import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import static java.lang.System.console;
 import static java.lang.System.out;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import models.Album;
+import webServices.Album;
+import webServices.AlbumController;
+import webServices.AlbumControllerService;
+import webServices.UsuarioController;
+import webServices.UsuarioControllerService;
 
 /**
  *
@@ -32,9 +33,11 @@ import models.Album;
 @WebServlet(name = "guardarAlbumFavorito", urlPatterns = {"/guardarAlbumFavorito"})
 public class guardarAlbumFavorito extends HttpServlet {
 
-    Fabrica fabrica = Fabrica.getInstance();
-    private IUsuarioController ICU = fabrica.getIUsuarioController();
-    private IAlbumController albController = fabrica.getIAlbumController();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    AlbumControllerService IACservicio = new AlbumControllerService();
+
+    UsuarioController ICU = IUCservicio.getUsuarioControllerPort(); 
+    AlbumController albController = IACservicio.getAlbumControllerPort();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -86,7 +89,11 @@ public class guardarAlbumFavorito extends HttpServlet {
         String usuario = (String) session.getAttribute("nick");
         int id = Integer.valueOf(idAlbum);
         Album album = albController.findAlbum(id);
-        String nombreArtista = album.getArtista().getNick();
+        
+        //String nombreArtista = album.getArtista().getNick();
+       
+        String nombreArtista = "jorge";
+
         List<Integer> favoritos = albController.obtenerIdAlbumsFavoritos(usuario);
         
         if(favoritos.contains(id)){
@@ -107,7 +114,7 @@ public class guardarAlbumFavorito extends HttpServlet {
         }
         response.setContentType("application/json");
         response.getWriter().write("{\"success\": true, \"message\": \"Canción eliminada de favoritos\"}");
-        List<Integer> albumsFavoritos = em.createNativeQuery("Select id from album join cliente_albumesfavoritos where id = album_id and cliente_id='" + usuario + "'").getResultList();                    
+        List<Integer> albumsFavoritos = em.createNativeQuery("Select id from album join cliente_albumesFavoritos where id = album_id and cliente_id='" + usuario + "'").getResultList();                    
         session.setAttribute("albumsFavoritos", albumsFavoritos);
         
 

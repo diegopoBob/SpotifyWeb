@@ -6,26 +6,43 @@
 
 
 
-<%@page import="models.PlaylistParticular"%>
-<%@page import="models.Playlist"%>
-<%@page import="models.Album"%>
+<%@page import="Utilidades.controlIngresos"%>
+<%@page import="webServices.Album"%>
+<%@page import="webServices.PlaylistParticular"%>
+<%@page import="webServices.PlaylistParticular"%>
+<%@page import="webServices.Playlist"%>
+<%@page import="webServices.AnyTypeArray"%>
+<%@page import="webServices.PlaylistController"%>
+<%@page import="webServices.AlbumController"%>
+<%@page import="webServices.UsuarioController"%>
+<%@page import="webServices.PlaylistControllerService"%>
+<%@page import="webServices.AlbumControllerService"%>
+<%@page import="webServices.UsuarioControllerService"%>
 <%@ page import="java.time.LocalDate" %>
 <%@page import="java.util.ArrayList"%>
-<%@page import="controllers.IPlaylistController"%>
-<%@page import="controllers.IAlbumController" %>
 <%@page import="java.util.List"%>
-<%@page import="controllers.IUsuarioController"%>
-<%@page import="controllers.Fabrica"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    
+    
+        controlIngresos controlIngresos = new controlIngresos();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    UsuarioController usrController = IUCservicio.getUsuarioControllerPort(); 
+    usrController.autenticarUsuario(controlIngresos.obtenerIpActual(), 
+    controlIngresos.obtenerUrlActual(request), controlIngresos.obtenerNavegadorActual(request), controlIngresos.obtenerSistemaOperativoActual(request));
+    
     if (session == null || session.getAttribute("nick") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
-    Fabrica fabrica = Fabrica.getInstance();
-    IUsuarioController usrController = fabrica.getIUsuarioController();
-    IPlaylistController playController = fabrica.getIPlaylistController();
-    IAlbumController albController = fabrica.getIAlbumController();
+ 
+    //llamo websvc
+    AlbumControllerService IACservicio = new AlbumControllerService();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
+    //intancio controllers
+    AlbumController albController = IACservicio.getAlbumControllerPort();
+    PlaylistController playController = IPCservicio.getPlaylistControllerPort();
+    
 
     String imagenDefault = "includes/imagenDefault.png";
     String usuarioLogueado = session.getAttribute("nick").toString();
@@ -33,27 +50,22 @@
 
     String usuario = (usuarioConsulta != null && !usuarioConsulta.isEmpty()) ? usuarioConsulta : usuarioLogueado;
     String tipoUsuario = usrController.tipoUsuario(usuario);
-      boolean Vigente = false;
-     if(session.getAttribute("tipo_usuario").equals("cliente")){
-      if (usrController.obtenerDatosCliente(usuarioLogueado) != null) {
-                Object[][] datosCli = usrController.obtenerDatosCliente(usuarioLogueado);
-                if ("Vigente".equals((String) datosCli[0][6])) {
-                    Vigente = true;  
-                }
-            }
-    }
-    Object[][] datos;
+    List<Object> datos;
     List<String> albums = new ArrayList<>();
 
     if (tipoUsuario.equals("cliente")) {
-        datos = usrController.obtenerDatosCliente(usuario);
+        datos = usrController.obtenerDatosCliente(usuario).get(0).getItem();
         albums = albController.obtenerNombresAlbumsFavoritos(usuario);
+        for(String aux : albums){
+            System.out.println(aux);
+        }
     } else {
-        datos = usrController.obtenerDatosArtista(usuario);
-        Object[][] albumsDatos = albController.obtenerAlbumArtistaNombres(usuario);
-
-        for (Object[] fila : albumsDatos) {
-            String nombreAlbum = fila[0].toString() + " - " + fila[1].toString();
+        datos = usrController.obtenerDatosArtista(usuario).get(0).getItem();
+        List<AnyTypeArray> albumsDatos = albController.obtenerAlbumArtistaNombres(usuario);
+        
+        for (AnyTypeArray fila : albumsDatos) {
+        
+            String nombreAlbum = fila.getItem().get(0) + " - " + fila.getItem().get(1);
             albums.add(nombreAlbum);
         }
     }
@@ -65,7 +77,7 @@
         listas = playController.obtenerNombresPlaylistParticularCliente(usuario);
     } else {
         List<String> listasAux = playController.obtenerNombresPlaylistParticularCliente(usuario);
-
+        PlaylistParticular asd;
         for (String lista : listasAux) {
             String id = lista.split(" - ")[0];
             Playlist play = playController.findPlaylist(Integer.valueOf(id));
@@ -85,22 +97,22 @@
     String nombre = "Nombre";
     String apellido = "Apellido";
     String mail = "mail";
-    LocalDate fecnac = LocalDate.now();
+    Object fecnac = "";
     String imagen = imagenDefault;
     String web = "";
     String biografia = "bio";
     int num = seguidores.size();
 
-    if (datos.length > 0) {
-        nombre = (String) datos[0][1];
-        apellido = (String) datos[0][2];
-        mail = (String) datos[0][3];
-        fecnac = (LocalDate) datos[0][4];
-        imagen = (String) datos[0][5];
+    if (datos.size() > 0) {
+        nombre = (String) datos.get(1);
+        apellido = (String) datos.get(2);
+        mail = (String) datos.get(3);
+        fecnac = datos.get(4);
+        imagen = (String) datos.get(5);
         if (tipoUsuario.equals("artista")) {
-            biografia = (String) datos[0][6];
-            if (datos[0][7] != null) {
-                web = (String) datos[0][7];
+            biografia = (String) datos.get(6);
+            if (datos.get(7) != null) {
+                web = (String) datos.get(7);
             }
 
         }
@@ -142,9 +154,9 @@
 
                 <h1 class="text-neutral-500">
                     <%
-                        out.print(tipoUsuario + " ");
+                        out.print(tipoUsuario + " - ");
                         if (usuarioConsulta.equals(usuarioLogueado)) {
-                            out.print((fecnac != null ? fecnac.toString() : "Fecha no disponible") + " " + mail);
+                            out.print((fecnac != null ? fecnac : "Fecha no disponible") + " - " + mail);
                         }
                     %>
                 </h1>
@@ -152,17 +164,14 @@
                 <p class="sm:text-2xl text-white font-bold md:text-7xl font-bold p-2 block">
                     <%
                         if (null != apellido) {
-                            out.print(nombre + " " + apellido);
+                            out.print(nombre + " " + apellido+"-");
                         } else {
-                            out.print(nombre);
+                            out.print(nombre+"-");
                         }
-
+                        
                     %>
                 </p>
-                
-                <!PARTE NUEVA DE ELIMINAR PERFIL ARTISTA ->
-                
-                     <% if (tipoUsuario.equals("artista") && usuarioConsulta.equals(usuarioLogueado)) { %>
+                <% if (tipoUsuario.equals("artista") && usuarioConsulta.equals(usuarioLogueado)) { %>
     <!-- Botón visible que solo abrirá el modal -->
     <button
         id="botonEliminarPerfil"
@@ -170,7 +179,7 @@
         onclick="event.stopPropagation(); mostrarModal();">
         Eliminar Perfil
     </button>
-    
+
     <!-- El formulario está oculto inicialmente -->
     <form id="eliminarPerfil" method="POST" action="bajaArtista" style="display: none;">
         <input type="hidden" name="usuario" value="<%= usuarioLogueado %>">
@@ -188,20 +197,17 @@
         </div>
     </div>
 </div>
-                
-                <!PARTE NUEVA DE ELIMINAR PERFIL ARTISTA HASTA ACA ->
-
                 <%if (tipoUsuario.equals("artista")) {%>
                 <a href="<%= web.startsWith("http") ? web : "http://" + web%>" target="_blank" class="p-2 text-green-500 hover:cursor-pointer hover:text-green-700">
                     <% out.println(web); %>
                 </a>
                 <%}%>
-                <% if (!usuario.equals(usuarioLogueado) && Vigente) {%>
+                <% if (!usuario.equals(usuarioLogueado)) {%>
                 <div id ="SeguidoresTodo">
                     <div class="p-2 align-right">
                         <form id="SeguiraUsuario" method="POST">
                             <input  id="usuarioConsulta" type="hidden" name="usuarioConsulta" value="<%= (String) usuarioConsulta%>">
-                            <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg <%if(session.getAttribute("tipo_usuario").equals("artista")){out.print("hidden");}%>" type="button">
+                            <button id="botonSeguir" onclick="event.stopPropagation(); AJAXSeguiraUsuario(usuarioConsulta);"  class="border border-2 border-green-500 p-2 text-white bg-green-700 font-bold hover:bg-green-500 hover:text-black hover:border-black rounded-lg" type="button">
                                 <% if (seguidores.contains(usuarioLogueado)) {
                                         out.print("Dejar de Seguir");
                                     } else {
@@ -302,7 +308,8 @@
                     <img class="w-full h-48 object-cover hover:shadow-inner" src="<%=imagenPlay%>" alt="Imagen de tarjeta">
                     <div class="p-6 hover:shadow-inner">
                         <h2 class="text-lg font-semibold text-gray-800"><%= lista%></h2>
-                        <% if (play instanceof PlaylistParticular && usuarioConsulta.equals(usuarioLogueado)) {%>
+                        <% if ((playController.esParticular(Integer.parseInt(id))==true) && usuarioConsulta.equals(usuarioLogueado) ) {
+                            if( playController.getPropietario(id, "").equals(usuarioLogueado) ){%>
                         <form id="eliminarForm" method="POST" action="eliminarPlaylist">
                             <input id="idEliminar" type="hidden" name="idEliminar" value="<%= id%>">
                             <input id="user" type="hidden" name="user" value="<%= usuarioConsulta%>">
@@ -311,7 +318,8 @@
                                     type="button" 
                                     onclick="AjaXeliminarLista('<%= id%>'); event.stopPropagation();">Eliminar</button>
                         </form>
-                        <% } %>
+                        <% } 
+                    }%>
                     </div>
                 </div>
                 <%
@@ -326,8 +334,8 @@
                         }
                     %>
 
+   </div>
 
-                </div>
                 <!-- Sección de Albums -->
                 <div id="albumsSection" class="playlists bg-transparent pl-5 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 auto-rows-auto md:grid-cols-2 lg:grid-cols-4 mx-auto hidden">
                     <%
@@ -339,13 +347,19 @@
                                 String idAlbum = partes[0].trim();
 
                                 int id = Integer.valueOf(idAlbum);
-                                Album albumAux = albController.findAlbum(id);
-                                String imagenAlbum = albumAux.getDireccion_imagen();
+                                
+                                
+                                //Album albumAux = albController.findAlbum(id);
+                                //String imagenAlbum = albumAux.getDireccionImagen();
+                                String imagenAlbum = (String) albController.obtenerDatosAlbum(id).get(0).getItem().get(6) ;
+                                System.out.println(imagenAlbum);
                                 String artista = albController.obtenerArtistaAlbum(id);
+                                
+
                     %>
 
                     <div class="bg-neutral-500 mt-5 shadow-lg rounded-lg overflow-hidden max-w-xs cursor-pointer" onclick="abrirCasoDeUso('ConsultarAlbum.jsp?tipo=artista&nombre=<%= artista.trim()%>&user=<%= idAlbum%>')">
-                        <img class="w-full h-48 object-cover hover:shadow-inner" src="<%=imagenAlbum%>" alt="Imagen de tarjeta">
+                        <img class="w-full h-48 object-cover hover:shadow-inner" src="<%= imagenAlbum%>" alt="Imagen de tarjeta">
                         <div class="p-6 hover:shadow-inner">
                             <h2 class="text-lg font-semibold text-gray-800"><%= album%></h2>
                         </div>

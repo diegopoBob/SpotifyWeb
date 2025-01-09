@@ -4,17 +4,16 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.IAlbumController;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -23,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import models.Cancion;
+import webServices.AlbumController;
+import webServices.AlbumControllerService;
+import webServices.AnyTypeArray;
 
 /**
  *
@@ -33,8 +35,10 @@ import models.Cancion;
 @WebServlet(name = "registrarAlbum", urlPatterns = {"/registrarAlbum"})
 public class registrarAlbum extends HttpServlet {
 
-    Fabrica fabrica = Fabrica.getInstance();
-    private IAlbumController IAC = fabrica.getIAlbumController();
+  
+    AlbumControllerService IACservicio = new AlbumControllerService();
+
+    AlbumController IAC = IACservicio.getAlbumControllerPort();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -74,7 +78,7 @@ public class registrarAlbum extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Configurar la respuesta
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -143,21 +147,19 @@ public class registrarAlbum extends HttpServlet {
             }
             request.getParts(); // Para recibir todas las partes       
 
-            Object[][] canciones = new Object[partesAudio.size()][5];
+            List<AnyTypeArray> canciones = new ArrayList<>();
             int i = 0;
             for (Part parte : partesAudio) {
                 String nombreArchivo = parte.getSubmittedFileName(); // Obtener el nombre del archivo            
-                out.println("Archivo recibido: " + nombreArchivo);
+                //out.println("Archivo recibido: " + nombreArchivo);
                 String dataCancion = request.getParameter(nombreArchivo);
-                out.println(dataCancion);
-                canciones[i][1] = dataCancion.split(",")[0];
-                canciones[i][2] = Integer.parseInt(dataCancion.split(",")[1]);
-                canciones[i][3] = "includes/musica/" + nombreArchivo;
-                canciones[i][4] = "";
-
-      
-                
-                
+                //out.println(dataCancion);  
+                AnyTypeArray aux = new AnyTypeArray();
+                aux.getItem().add(dataCancion.split(",")[0]);
+                aux.getItem().add(dataCancion.split(",")[1]);
+                aux.getItem().add("includes/musica/" + nombreArchivo);
+                aux.getItem().add("");                      
+                canciones.add(aux);  
                     // Obteniendo la imagen del álbum
 
 
@@ -180,9 +182,16 @@ public class registrarAlbum extends HttpServlet {
             }
                           i++;
             }
-
+            
+            
+            
+            
+            
+            
+            
             try {
-                IAC.CrearAlbum(nombreAlbum, Integer.parseInt(anioCreacion), artista, "includes/albumes/" + nombreImagen, canciones, generos);
+                
+                IAC.crearAlbum(nombreAlbum, Integer.parseInt(anioCreacion), artista, "includes/albumes/" + nombreImagen, canciones, generos);
                 response.sendRedirect("index.jsp?");           
 
             } catch (Exception e) {

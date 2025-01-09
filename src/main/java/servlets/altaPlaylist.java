@@ -3,28 +3,28 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.IPlaylistController;
-import controllers.IUsuarioController;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
 import javax.servlet.RequestDispatcher;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import webServices.PlaylistController;
+import webServices.PlaylistControllerService;
 
 /**
  *
@@ -34,8 +34,9 @@ import javax.persistence.Persistence;
 @MultipartConfig
 public class altaPlaylist extends HttpServlet {
 
-    Fabrica fabrica = Fabrica.getInstance();
-    private IPlaylistController ICP = fabrica.getIPlaylistController();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
+    private PlaylistController ICP = IPCservicio.getPlaylistControllerPort();
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -120,7 +121,7 @@ public class altaPlaylist extends HttpServlet {
 
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
             EntityManager em = emf.createEntityManager();
-            List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuario + "'").getResultList();
+            List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistFavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuario + "'").getResultList();
             List<Integer> playlistsCreadas = em.createNativeQuery("SELECT id FROM `playlistparticular` where propietario='" + usuario + "'").getResultList();
             playlistFavoritas.addAll(playlistsCreadas);
             session.setAttribute("playlistFavoritas", playlistFavoritas);

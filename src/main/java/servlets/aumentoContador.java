@@ -4,15 +4,19 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.ICancionController;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import webServices.AlbumController;
+import webServices.AlbumControllerService;
+import webServices.CancionController;
+import webServices.CancionControllerService;
+import webServices.UsuarioController;
 
 /**
  *
@@ -20,8 +24,10 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "aumentoContador", urlPatterns = {"/aumentoContador"})
 public class aumentoContador extends HttpServlet {
-    Fabrica fabrica = Fabrica.getInstance();
-    private ICancionController canController = fabrica.getICancionController();
+
+    CancionControllerService ICCservicio = new CancionControllerService();
+    CancionController canController = ICCservicio.getCancionControllerPort(); 
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -63,7 +69,15 @@ public class aumentoContador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int  id =  Integer.valueOf(request.getParameter("canId"));
+        System.out.println(request.getParameter("idCan"));
+        int  id =  Integer.valueOf(request.getParameter("idCan"));
+        System.out.println("servlets.aumentoContador.doPost()"+id);
+        System.out.println("servlets.aumentoContador.doPost()"+id);
+        System.out.println("servlets.aumentoContador.doPost()"+id);
+        System.out.println("servlets.aumentoContador.doPost()"+id);
+        System.out.println("servlets.aumentoContador.doPost()"+id);
+        System.out.println("servlets.aumentoContador.doPost()"+id);
+        System.out.println("servlets.aumentoContador.doPost()"+id);
         canController.aumentoContador(id);
        
     }

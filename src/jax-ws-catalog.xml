@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8085/UsuarioController?wsdl" uri="wsdl/localhost_8085/UsuarioController.wsdl"/>
+    <system systemId="http://localhost:8085/UsuarioController?xsd=1" uri="wsdl/localhost_8085/UsuarioController.xsd_1.xsd"/>
+    <system systemId="http://localhost:8085/UsuarioController?xsd=2" uri="wsdl/localhost_8085/UsuarioController.xsd_2.xsd"/>
+    <system systemId="http://localhost:8085/PlaylistController?wsdl" uri="wsdl/localhost_8085/PlaylistController.wsdl"/>
+    <system systemId="http://localhost:8085/PlaylistController?xsd=1" uri="wsdl/localhost_8085/PlaylistController.xsd_1.xsd"/>
+    <system systemId="http://localhost:8085/PlaylistController?xsd=2" uri="wsdl/localhost_8085/PlaylistController.xsd_2.xsd"/>
+    <system systemId="http://localhost:8085/Album?wsdl" uri="wsdl/localhost_8085/Album.wsdl"/>
+    <system systemId="http://localhost:8085/Album?xsd=1" uri="wsdl/localhost_8085/Album.xsd_1.xsd"/>
+    <system systemId="http://localhost:8085/AlbumController?wsdl" uri="wsdl/localhost_8085/AlbumController.wsdl"/>
+    <system systemId="http://localhost:8085/AlbumController?xsd=1" uri="wsdl/localhost_8085/AlbumController.xsd_1.xsd"/>
+    <system systemId="http://localhost:8085/AlbumController?xsd=2" uri="wsdl/localhost_8085/AlbumController.xsd_2.xsd"/>
+    <system systemId="http://localhost:8085/CancionController?wsdl" uri="wsdl/localhost_8085/CancionController.wsdl"/>
+    <system systemId="http://localhost:8085/CancionController?xsd=1" uri="wsdl/localhost_8085/CancionController.xsd_1.xsd"/>
+    <system systemId="http://localhost:8085/CancionController?xsd=2" uri="wsdl/localhost_8085/CancionController.xsd_2.xsd"/>
+</catalog>

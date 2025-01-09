@@ -3,24 +3,30 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.IUsuarioController;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import static java.lang.System.out;
+import java.time.LocalDate;
+
+import java.util.List;
+import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
-import jakarta.servlet.http.HttpSession;
-import java.util.Properties;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.servlet.http.HttpSession;
+import webServices.AnyTypeArray;
+import webServices.UsuarioController;
+import webServices.UsuarioControllerService;
 
 /**
  *
@@ -29,8 +35,10 @@ import java.util.Properties;
 @WebServlet(name = "cambiarEstadoSubscripcion", urlPatterns = {"/cambiarEstadoSubscripcion"})
 @MultipartConfig
 public class cambiarEstadoSubscripcion extends HttpServlet {
-     Fabrica fabrica = Fabrica.getInstance();
-    private IUsuarioController ICU = fabrica.getIUsuarioController();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    private UsuarioController ICU = IUCservicio.getUsuarioControllerPort(); 
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -62,7 +70,7 @@ public class cambiarEstadoSubscripcion extends HttpServlet {
         String host = "smtp.gmail.com";
         final String user = "spotifycure2024@gmail.com"; // Tu correo de Gmail
         final String password = "qifzqwldaxbnqlmw"; // Contraseña de aplicación de Gmail
-
+        LocalDate fechaActual = LocalDate.now();
         HttpSession session = request.getSession();
         int tipo = 0;
 
@@ -72,43 +80,22 @@ public class cambiarEstadoSubscripcion extends HttpServlet {
             tipo = Integer.parseInt(planSeleccionado);
         }
 
-        LocalDate fechaActual = LocalDate.now();
         String usuario = (String) session.getAttribute("nick");
         String estado = request.getParameter("estado");
-        Object[][] usr = ICU.obtenerDatosCliente(usuario);
-        String destinatario = (String) usr[0][3]; // Correo del usuario
+        
+        List auxUsr = ICU.obtenerDatosCliente(usuario);
+        AnyTypeArray datosUsr = (AnyTypeArray) auxUsr.get(0);
+        List<Object> usr = datosUsr.getItem();
+        
+        
+        
+        
+        String destinatario = (String) usr.get(3); // Correo del usuario
 
         try {
-            ICU.CambiarEstadosubscripcion(usuario, estado, tipo, fechaActual);
+            ICU.cambiarEstadosubscripcion(usuario, estado, tipo);
 
-            Properties props = new Properties();
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.starttls.enable", "true");
-            props.put("mail.smtp.host", host);
-            props.put("mail.smtp.port", "587");
-
-            Session mailSession = Session.getInstance(props, new javax.mail.Authenticator() {
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(user, password);
-                }
-            });
-  
-            String asunto = "Actualización de Suscripción en Spotify Cure";
-            String mensaje = "Hola " + usuario + ",\n\n"
-                    + "Tu suscripción ha sido actualizada exitosamente.\n"
-                    + "Estado: " + estado + "\n"
-                    + "Fecha de actualización: " + fechaActual + "\n\n"
-                    + "Gracias por usar Spotify Cure.";
-
-            MimeMessage message = new MimeMessage(mailSession);
-            message.setFrom(new InternetAddress(user));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
-            message.setSubject(asunto);
-            message.setText(mensaje);
-   
-            Transport.send(message);
-
-            response.getWriter().println("Suscripción actualizada y correo enviado exitosamente.");
+           
         } catch (Exception ex) {
             ex.printStackTrace();
             response.getWriter().println("Error: " + ex.getMessage());

@@ -4,25 +4,30 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import static java.lang.System.out;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDate;
 import javax.persistence.RollbackException;
+import webServices.UsuarioController;
+import webServices.UsuarioControllerService;
+
+
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import persistence.exceptions.PreexistingEntityException;
+
+
 
 /**
  *
@@ -31,8 +36,8 @@ import persistence.exceptions.PreexistingEntityException;
 @WebServlet(name = "register", urlPatterns = {"/register"})
 @MultipartConfig
 public class register extends HttpServlet {
-    Fabrica fabrica = Fabrica.getInstance();
-    private IUsuarioController ICU = fabrica.getIUsuarioController();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    private UsuarioController ICU = IUCservicio.getUsuarioControllerPort(); 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,6 +51,7 @@ public class register extends HttpServlet {
             throws ServletException, IOException {
        
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -60,6 +66,13 @@ public class register extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+    }
+    
+    public static webServices.LocalDate convertToWebServiceLocalDate(LocalDate localDate) {
+    webServices.LocalDate wsLocalDate = new webServices.LocalDate();
+    // Si necesitas enviar la fecha como un string formateado, puedes añadir lógica adicional aquí.
+    // Dejar vacío el objeto si no se espera un contenido específico también podría ser válido.
+    return wsLocalDate;
     }
 
     /**
@@ -89,7 +102,7 @@ public class register extends HttpServlet {
     if(fileName.isEmpty()){ // si no se selecciono ninguna imagen
         fileName="imagenDefault.png";
     }
-    String uploads = getServletContext().getRealPath("") + File.separator + "includes/Usuarios";
+    String uploads = getServletContext().getRealPath("") + File.separator + "fotosDePerfil";
     
     // Asegúrate de que la carpeta de destino existe
     File uploadDir = new File(uploads);
@@ -108,8 +121,8 @@ public class register extends HttpServlet {
         }
     }
 
-    try {       
-        ICU.registroUsuario(username, nombre, apellido, email, LocalDate.parse(birthdate), "includes/Usuarios/"+fileName, biografia, link, userType, password);
+    try {    
+        ICU.registroUsuario(username, nombre, apellido, email, birthdate, "fotosDePerfil/"+fileName, biografia, link, userType, password);
         response.sendRedirect("login.jsp?");
     } catch (Exception e) {
         //segun el tipo de exception obtenido

@@ -4,24 +4,48 @@
     Author     : lilia
 --%>
 
+<%@page import="webServices.GeneroControllerService"%>
+<%@page import="webServices.CancionControllerService"%>
+<%@page import="webServices.PlaylistController"%>
+<%@page import="Utilidades.controlIngresos"%>
+<%@page import="webServices.PlaylistControllerService"%>
+<%@page import="webServices.AlbumControllerService"%>
+<%@page import="webServices.UsuarioControllerService"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="controllers.IAlbumController" %>
-<%@page import="controllers.ICancionController"%>
-<%@page import="controllers.Fabrica"%>
-<%@page import="controllers.IGeneroController"%>
-<%@page import="controllers.IUsuarioController"%>
+<%@page import="webServices.AlbumController" %>
+<%@page import="webServices.CancionController"%>
+<%@page import="webServices.GeneroController"%>
+<%@page import="webServices.UsuarioController"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-<%
+<%  
+    controlIngresos controlIngresos = new controlIngresos();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    UsuarioController usrController = IUCservicio.getUsuarioControllerPort(); 
+    usrController.autenticarUsuario(controlIngresos.obtenerIpActual(), 
+    controlIngresos.obtenerUrlActual(request), controlIngresos.obtenerNavegadorActual(request), controlIngresos.obtenerSistemaOperativoActual(request));
+    
+    
     if (session == null || session.getAttribute("nick") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
-    Fabrica fabrica = Fabrica.getInstance();
-    IAlbumController alController = fabrica.getIAlbumController();
-    IGeneroController genController = fabrica.getIGeneroController();
-    IUsuarioController usrController = fabrica.getIUsuarioController();
-    ICancionController canController = fabrica.getICancionController();
+
+    
+      //llamo websvc
+    AlbumControllerService IACservicio = new AlbumControllerService();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
+    CancionControllerService ICCservicio = new CancionControllerService();
+    GeneroControllerService IGCservicio = new GeneroControllerService();
+
+    //intancio controllers
+    AlbumController albController = IACservicio.getAlbumControllerPort();
+    PlaylistController playController = IPCservicio.getPlaylistControllerPort();
+    CancionController canController = ICCservicio.getCancionControllerPort();
+    GeneroController genController = IGCservicio.getGeneroControllerPort();
+
+    
+    
     String artistaLogueado = session.getAttribute("nick").toString();
 
     List<String> artistas = usrController.obtenerNombresArtistas();
@@ -45,72 +69,72 @@
         <script>
 
             function agregarCancion() {
-                let dataCancion = "";
-                let nombreCancion = document.getElementById('nombreCancion').value;
-                dataCancion += nombreCancion;
-                dataCancion += ",";
-                const archivos = document.getElementById(nombreCancion).files;
-                if (archivos) {
-                    const audio = new Audio();
-                    audio.src = URL.createObjectURL(archivos[0]);
+        let dataCancion = "";
+        let nombreCancion = document.getElementById('nombreCancion').value;
+        dataCancion += nombreCancion;
+        dataCancion += ",";
+        const archivos = document.getElementById(nombreCancion).files;
+        if (archivos) {
+            const audio = new Audio();
+            audio.src = URL.createObjectURL(archivos[0]);
 
-                    // Esperamos a que se carguen los metadatos
-                    audio.addEventListener("loadedmetadata", function () {
+            // Esperamos a que se carguen los metadatos
+            audio.addEventListener("loadedmetadata", function () {
 
-                        const duracion = Math.floor(audio.duration); // DuraciÃ³n en segundos
-                        dataCancion += duracion;
+                const duracion = Math.floor(audio.duration); // DuraciÃ³n en segundos
+                dataCancion += duracion;
 
-                        alert(dataCancion);
-                        const li = document.createElement('li');
-                        li.classList.add('text-white', 'mb-2');
-                        li.textContent = nombreCancion + " (" + duracion + " seg) " + archivos[0].name;
-                        document.getElementById('listaCanciones').appendChild(li);
+                alert(dataCancion);
+                const li = document.createElement('li');
+                li.classList.add('text-white', 'mb-2');
+                li.textContent = nombreCancion + " (" + duracion + " seg) " + archivos[0].name;
+                document.getElementById('listaCanciones').appendChild(li);
 
-                        const inputTextdocument = document.createElement('input');
-                        inputTextdocument.type = "text";
-                        inputTextdocument.value = dataCancion;
+                const inputTextdocument = document.createElement('input');
+                inputTextdocument.type = "text";
+                inputTextdocument.value = dataCancion;
 
-                        inputTextdocument.classList.add('hidden');
+                inputTextdocument.classList.add('hidden');
 
-                        if (archivos.length > 0) {
-                            for (let i = 0; i < archivos.length; i++) {
-                                inputTextdocument.name = archivos[i].name;
-                            }
-                        } else {
-                            alert("No se han seleccionado archivos");
-                        }
-                        document.getElementById("contenedor").appendChild(inputTextdocument);
-                        // Liberamos la URL para evitar fugas de memoria
-                        URL.revokeObjectURL(audio.src);
-                    });
-
+                if (archivos.length > 0) {
+                    for (let i = 0; i < archivos.length; i++) {
+                        inputTextdocument.name = archivos[i].name;
+                    }
+                } else {
+                    alert("No se han seleccionado archivos");
                 }
-            }
+                document.getElementById("contenedor").appendChild(inputTextdocument);
+                // Liberamos la URL para evitar fugas de memoria
+                URL.revokeObjectURL(audio.src);
+            });
 
-            function crearInputFile() {
+        }
+    }
 
-
-                const elementos = document.getElementsByName('audio');
-
-                // Convertir la HTMLCollection a un array y usar forEach
-                Array.from(elementos).forEach((elemento) => {
-                    console.log(elemento.value); // Aquí puedes hacer lo que necesites con cada elemento
-                    elemento.classList.add('hidden');
-                });
+    function crearInputFile() {
 
 
-                const inputFile = document.createElement('input');
-                const inputFileReferencia = document.getElementById('inputfileReferencia');
-                inputFile.type = inputFileReferencia.type;
-                inputFile.class = inputFileReferencia.class;
-                inputFile.accept = inputFileReferencia.accept;
-                inputFile.name = inputFileReferencia.name;
-                inputFile.required = true;
+        const elementos = document.getElementsByName('audio');
 
-                inputFile.id = document.getElementById('nombreCancion').value;
-                document.getElementById("contenedorinputFiles").appendChild(inputFile);
+        // Convertir la HTMLCollection a un array y usar forEach
+        Array.from(elementos).forEach((elemento) => {
+            console.log(elemento.value); // Aquí puedes hacer lo que necesites con cada elemento
+            elemento.classList.add('hidden');
+        });
 
-            }
+
+        const inputFile = document.createElement('input');
+        const inputFileReferencia = document.getElementById('inputfileReferencia');
+        inputFile.type = inputFileReferencia.type;
+        inputFile.class = inputFileReferencia.class;
+        inputFile.accept = inputFileReferencia.accept;
+        inputFile.name = inputFileReferencia.name;
+        inputFile.required = true;
+
+        inputFile.id = document.getElementById('nombreCancion').value;
+        document.getElementById("contenedorinputFiles").appendChild(inputFile);
+
+    }
 
 
         </script>

@@ -4,18 +4,14 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.IAlbumController;
-import controllers.IPlaylistController;
-import controllers.IUsuarioController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import static java.lang.System.out;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,7 +19,11 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import models.Playlist;
+import webServices.Playlist;
+import webServices.PlaylistController;
+import webServices.PlaylistControllerService;
+import webServices.UsuarioController;
+import webServices.UsuarioControllerService;
 
 /**
  *
@@ -31,9 +31,11 @@ import models.Playlist;
  */
 @WebServlet(name = "guardarPlaylistFavorita", urlPatterns = {"/guardarPlaylistFavorita"})
 public class guardarPlaylistFavorita extends HttpServlet {
-    Fabrica fabrica = Fabrica.getInstance();
-    private IUsuarioController ICU = fabrica.getIUsuarioController();
-    private IPlaylistController playController = fabrica.getIPlaylistController();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
+
+    UsuarioController ICU = IUCservicio.getUsuarioControllerPort(); 
+    PlaylistController playController = IPCservicio.getPlaylistControllerPort();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -100,18 +102,16 @@ public class guardarPlaylistFavorita extends HttpServlet {
             }
 
         }
-        
-        
         response.setContentType("application/json");
       response.getWriter().write("{\"success\": true, \"message\": \"Canción eliminada de favoritos\"}");
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
+      
+     EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
         EntityManager em = emf.createEntityManager();
         String usuarioLogueado = (String) session.getAttribute("nick");
-        List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuarioLogueado + "'").getResultList();
+        List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistFavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuarioLogueado + "'").getResultList();
         List<Integer> playlistsCreadas = em.createNativeQuery("SELECT id FROM playlistparticular where propietario='" + usuarioLogueado + "'").getResultList();
         playlistFavoritas.addAll(playlistsCreadas);
-        session.setAttribute("playlistFavoritas", playlistFavoritas);
-        
+        session.setAttribute("playlistFavoritas", playlistFavoritas);        
         
     }
 

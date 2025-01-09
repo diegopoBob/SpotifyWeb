@@ -4,16 +4,14 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.IPlaylistController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import static java.lang.System.out;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +19,8 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import webServices.PlaylistController;
+import webServices.PlaylistControllerService;
 
 /**
  *
@@ -29,9 +29,9 @@ import javax.persistence.Persistence;
 @WebServlet(name = "eliminarPlaylist", urlPatterns = {"/eliminarPlaylist"})
 public class eliminarPlaylist extends HttpServlet {
     
-    Fabrica fabrica = Fabrica.getInstance();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
     
-    private IPlaylistController playController = fabrica.getIPlaylistController();
+    PlaylistController playController = IPCservicio.getPlaylistControllerPort();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -77,11 +77,9 @@ public class eliminarPlaylist extends HttpServlet {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
         EntityManager em = emf.createEntityManager();
         HttpSession session = request.getSession();
-        String nick = (String) session.getAttribute("nick");
         String idAlbum = request.getParameter("idEliminar");
         int id = Integer.parseInt(idAlbum);
         try {
-            
             
             playController.eliminarLista(id);
           
@@ -92,11 +90,13 @@ public class eliminarPlaylist extends HttpServlet {
         
         
       String usuarioLogueado = (String) session.getAttribute("nick");
-        List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistfavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuarioLogueado + "'").getResultList();
+        List<Integer> playlistFavoritas = em.createNativeQuery("Select id from playlist join cliente_playlistFavoritas where playlist_particular_id = playlist.id and cliente_id='" + usuarioLogueado + "'").getResultList();
         List<Integer> playlistsCreadas = em.createNativeQuery("SELECT id FROM playlistparticular where propietario='" + usuarioLogueado + "'").getResultList();
         playlistFavoritas.addAll(playlistsCreadas);
-        session.setAttribute("playlistFavoritas", playlistFavoritas);  
+        session.setAttribute("playlistFavoritas", playlistFavoritas);
+        
       response.setContentType("application/json");
+      
       response.getWriter().write("{\"success\": true, \"message\": \"\"}");
     }
 

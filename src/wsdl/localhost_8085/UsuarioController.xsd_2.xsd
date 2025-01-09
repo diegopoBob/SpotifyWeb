@@ -1,0 +1,541 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (https://github.com/eclipse-ee4j/metro-jax-ws). RI's version is JAX-WS RI 2.3.3 git-revision#b4c5bb6. --><xs:schema xmlns:tns="http://controllers/" xmlns:ns1="http://jaxb.dev.java.net/array" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://controllers/">
+
+<xs:import namespace="http://jaxb.dev.java.net/array" schemaLocation="http://localhost:8085/UsuarioController?xsd=1"/>
+
+<xs:element name="CambiarEstadosubscripcion" type="tns:CambiarEstadosubscripcion"/>
+
+<xs:element name="CambiarEstadosubscripcionResponse" type="tns:CambiarEstadosubscripcionResponse"/>
+
+<xs:element name="Exception" type="tns:Exception"/>
+
+<xs:element name="NonexistentEntityException" type="tns:NonexistentEntityException"/>
+
+<xs:element name="artistaNombre" type="tns:artistaNombre"/>
+
+<xs:element name="artistaNombreResponse" type="tns:artistaNombreResponse"/>
+
+<xs:element name="autenticarUsuario" type="tns:autenticarUsuario"/>
+
+<xs:element name="autenticarUsuarioResponse" type="tns:autenticarUsuarioResponse"/>
+
+<xs:element name="checkPassword" type="tns:checkPassword"/>
+
+<xs:element name="checkPasswordResponse" type="tns:checkPasswordResponse"/>
+
+<xs:element name="dejarSeguirUsuario" type="tns:dejarSeguirUsuario"/>
+
+<xs:element name="dejarSeguirUsuarioResponse" type="tns:dejarSeguirUsuarioResponse"/>
+
+<xs:element name="eliminarAlbumFavorito" type="tns:eliminarAlbumFavorito"/>
+
+<xs:element name="eliminarAlbumFavoritoResponse" type="tns:eliminarAlbumFavoritoResponse"/>
+
+<xs:element name="eliminarAlbumFavoritoWeb" type="tns:eliminarAlbumFavoritoWeb"/>
+
+<xs:element name="eliminarAlbumFavoritoWebResponse" type="tns:eliminarAlbumFavoritoWebResponse"/>
+
+<xs:element name="eliminarCancionFavorita" type="tns:eliminarCancionFavorita"/>
+
+<xs:element name="eliminarCancionFavoritaResponse" type="tns:eliminarCancionFavoritaResponse"/>
+
+<xs:element name="eliminarPlaylistFavorita" type="tns:eliminarPlaylistFavorita"/>
+
+<xs:element name="eliminarPlaylistFavoritaResponse" type="tns:eliminarPlaylistFavoritaResponse"/>
+
+<xs:element name="eliminarUsuario" type="tns:eliminarUsuario"/>
+
+<xs:element name="eliminarUsuarioResponse" type="tns:eliminarUsuarioResponse"/>
+
+<xs:element name="esCliente" type="tns:esCliente"/>
+
+<xs:element name="esClienteResponse" type="tns:esClienteResponse"/>
+
+<xs:element name="getDatosUsuario" type="tns:getDatosUsuario"/>
+
+<xs:element name="getDatosUsuarioResponse" type="tns:getDatosUsuarioResponse"/>
+
+<xs:element name="getNickPorMail" type="tns:getNickPorMail"/>
+
+<xs:element name="getNickPorMailResponse" type="tns:getNickPorMailResponse"/>
+
+<xs:element name="hashPassword" type="tns:hashPassword"/>
+
+<xs:element name="hashPasswordResponse" type="tns:hashPasswordResponse"/>
+
+<xs:element name="inicioSesion" type="tns:inicioSesion"/>
+
+<xs:element name="inicioSesionResponse" type="tns:inicioSesionResponse"/>
+
+<xs:element name="obtenerDatosArtista" type="tns:obtenerDatosArtista"/>
+
+<xs:element name="obtenerDatosArtistaResponse" type="tns:obtenerDatosArtistaResponse"/>
+
+<xs:element name="obtenerDatosArtistas" type="tns:obtenerDatosArtistas"/>
+
+<xs:element name="obtenerDatosArtistasResponse" type="tns:obtenerDatosArtistasResponse"/>
+
+<xs:element name="obtenerDatosCliente" type="tns:obtenerDatosCliente"/>
+
+<xs:element name="obtenerDatosClienteResponse" type="tns:obtenerDatosClienteResponse"/>
+
+<xs:element name="obtenerDatosClientes" type="tns:obtenerDatosClientes"/>
+
+<xs:element name="obtenerDatosClientesResponse" type="tns:obtenerDatosClientesResponse"/>
+
+<xs:element name="obtenerNicknamesDisponiblesASeguir" type="tns:obtenerNicknamesDisponiblesASeguir"/>
+
+<xs:element name="obtenerNicknamesDisponiblesASeguirResponse" type="tns:obtenerNicknamesDisponiblesASeguirResponse"/>
+
+<xs:element name="obtenerNicknamesseguidores" type="tns:obtenerNicknamesseguidores"/>
+
+<xs:element name="obtenerNicknamesseguidoresResponse" type="tns:obtenerNicknamesseguidoresResponse"/>
+
+<xs:element name="obtenerNicknamesseguidos" type="tns:obtenerNicknamesseguidos"/>
+
+<xs:element name="obtenerNicknamesseguidosResponse" type="tns:obtenerNicknamesseguidosResponse"/>
+
+<xs:element name="obtenerNombresArtistas" type="tns:obtenerNombresArtistas"/>
+
+<xs:element name="obtenerNombresArtistasResponse" type="tns:obtenerNombresArtistasResponse"/>
+
+<xs:element name="obtenerNombresClientes" type="tns:obtenerNombresClientes"/>
+
+<xs:element name="obtenerNombresClientesResponse" type="tns:obtenerNombresClientesResponse"/>
+
+<xs:element name="obtenerNombresDePlaylistsNoFavoritas" type="tns:obtenerNombresDePlaylistsNoFavoritas"/>
+
+<xs:element name="obtenerNombresDePlaylistsNoFavoritasResponse" type="tns:obtenerNombresDePlaylistsNoFavoritasResponse"/>
+
+<xs:element name="registrarAlbumFavorito" type="tns:registrarAlbumFavorito"/>
+
+<xs:element name="registrarAlbumFavoritoResponse" type="tns:registrarAlbumFavoritoResponse"/>
+
+<xs:element name="registrarAlbumFavoritoWeb" type="tns:registrarAlbumFavoritoWeb"/>
+
+<xs:element name="registrarAlbumFavoritoWebResponse" type="tns:registrarAlbumFavoritoWebResponse"/>
+
+<xs:element name="registrarCancionFavorita" type="tns:registrarCancionFavorita"/>
+
+<xs:element name="registrarCancionFavoritaResponse" type="tns:registrarCancionFavoritaResponse"/>
+
+<xs:element name="registrarPlaylistFavorita" type="tns:registrarPlaylistFavorita"/>
+
+<xs:element name="registrarPlaylistFavoritaResponse" type="tns:registrarPlaylistFavoritaResponse"/>
+
+<xs:element name="registroUsuario" type="tns:registroUsuario"/>
+
+<xs:element name="registroUsuarioResponse" type="tns:registroUsuarioResponse"/>
+
+<xs:element name="seguirUsuario" type="tns:seguirUsuario"/>
+
+<xs:element name="seguirUsuarioResponse" type="tns:seguirUsuarioResponse"/>
+
+<xs:element name="tipoUsuario" type="tns:tipoUsuario"/>
+
+<xs:element name="tipoUsuarioResponse" type="tns:tipoUsuarioResponse"/>
+
+<xs:element name="usuarioNombre" type="tns:usuarioNombre"/>
+
+<xs:element name="usuarioNombreResponse" type="tns:usuarioNombreResponse"/>
+
+<xs:complexType name="eliminarAlbumFavorito">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarAlbumFavoritoResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="Exception">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="esCliente">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="esClienteResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getNickPorMail">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getNickPorMailResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="inicioSesion">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="inicioSesionResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosArtistas">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosArtistasResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarAlbumFavoritoWeb">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarAlbumFavoritoWebResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="artistaNombre">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="artistaNombreResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDatosUsuario">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDatosUsuarioResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registroUsuario">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+<xs:element name="arg2" type="xs:string" minOccurs="0"/>
+<xs:element name="arg3" type="xs:string" minOccurs="0"/>
+<xs:element name="arg4" type="xs:string" minOccurs="0"/>
+<xs:element name="arg5" type="xs:string" minOccurs="0"/>
+<xs:element name="arg6" type="xs:string" minOccurs="0"/>
+<xs:element name="arg7" type="xs:string" minOccurs="0"/>
+<xs:element name="arg8" type="xs:string" minOccurs="0"/>
+<xs:element name="arg9" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registroUsuarioResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresArtistas">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresArtistasResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="usuarioNombre">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="usuarioNombreResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarPlaylistFavorita">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarPlaylistFavoritaResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="hashPassword">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hashPasswordResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNicknamesDisponiblesASeguir">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNicknamesDisponiblesASeguirResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarPlaylistFavorita">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarPlaylistFavoritaResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosArtista">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosArtistaResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresClientes">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresClientesResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresDePlaylistsNoFavoritas">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNombresDePlaylistsNoFavoritasResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarCancionFavorita">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarCancionFavoritaResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosClientes">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosClientesResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosCliente">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerDatosClienteResponse">
+<xs:sequence>
+<xs:element name="return" type="ns1:anyTypeArray" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNicknamesseguidos">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNicknamesseguidosResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="seguirUsuario">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="seguirUsuarioResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="eliminarCancionFavorita">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarCancionFavoritaResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="CambiarEstadosubscripcion">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+<xs:element name="arg2" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CambiarEstadosubscripcionResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="eliminarUsuario">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarUsuarioResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="NonexistentEntityException">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="autenticarUsuario">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+<xs:element name="arg2" type="xs:string" minOccurs="0"/>
+<xs:element name="arg3" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="autenticarUsuarioResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="checkPassword">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="checkPasswordResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="dejarSeguirUsuario">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="dejarSeguirUsuarioResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="registrarAlbumFavoritoWeb">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarAlbumFavoritoWebResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerNicknamesseguidores">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerNicknamesseguidoresResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarAlbumFavorito">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registrarAlbumFavoritoResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="tipoUsuario">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="tipoUsuarioResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

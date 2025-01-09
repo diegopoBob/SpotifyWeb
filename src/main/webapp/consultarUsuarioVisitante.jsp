@@ -5,22 +5,34 @@
 --%>
 
 
-<%@page import="models.Playlist"%>
-<%@page import="models.Album"%>
+<%@page import="Utilidades.controlIngresos"%>
+<%@page import="webServices.PlaylistController"%>
+<%@page import="webServices.AlbumController"%>
+<%@page import="webServices.UsuarioController"%>
+<%@page import="webServices.PlaylistControllerService"%>
+<%@page import="webServices.AlbumControllerService"%>
+<%@page import="webServices.UsuarioControllerService"%>
 <%@ page import="java.time.LocalDate" %>
 <%@page import="java.util.ArrayList"%>
-<%@page import="controllers.IPlaylistController"%>
-<%@page import="controllers.IAlbumController" %>
 <%@page import="java.util.List"%>
-<%@page import="controllers.IUsuarioController"%>
-<%@page import="controllers.Fabrica"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     
-    Fabrica fabrica = Fabrica.getInstance();
-    IUsuarioController usrController = fabrica.getIUsuarioController();
-    IPlaylistController playController = fabrica.getIPlaylistController();
-    IAlbumController albController = fabrica.getIAlbumController();
+    
+    
+    
+    controlIngresos controlIngresos = new controlIngresos();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    UsuarioController usrController = IUCservicio.getUsuarioControllerPort(); 
+    usrController.autenticarUsuario(controlIngresos.obtenerIpActual(), 
+    controlIngresos.obtenerUrlActual(request), controlIngresos.obtenerNavegadorActual(request), controlIngresos.obtenerSistemaOperativoActual(request));
+    
+        //llamo websvc
+    AlbumControllerService IACservicio = new AlbumControllerService();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
+    //intancio controllers
+    AlbumController albController = IACservicio.getAlbumControllerPort();
+    PlaylistController playController = IPCservicio.getPlaylistControllerPort();
 
     String imagenDefault = "includes/imagenDefault.png";
     //String usuarioLogueado = session.getAttribute("nick").toString();

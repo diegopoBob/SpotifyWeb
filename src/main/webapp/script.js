@@ -722,7 +722,7 @@ function AJAXaltaTemaLista(idCan, idPlay,idPlayAct,existeRel) {
         return;
     }
     
-    console.log("ID de canción:", idCan, "ID de playlist:", idPlay," ddsad",existeRel);
+    console.log("ID de canción:", idCan, "ID de playlist:", idPlay," ddsad",existeRel, idPlayAct);
     // Creamos la cadena de datos para enviar
     const dataString = 
         "&idCan=" + encodeURIComponent(idCan) + 
@@ -737,7 +737,7 @@ function AJAXaltaTemaLista(idCan, idPlay,idPlayAct,existeRel) {
 
         success: function (data) {
             if (data.success) {
-                abrirCasoDeUso("consultarPlaylist.jsp", idPlayAct); // Cambia a idAct si es necesario
+                abrirCasoDeUso("consultarPlaylist.jsp", idPlayAct); // Cambia a idAct si es necesario               
             } else {
                 console.error("Error del servidor:", data.message || "Sin mensaje.");
             }
@@ -746,45 +746,6 @@ function AJAXaltaTemaLista(idCan, idPlay,idPlayAct,existeRel) {
             console.error(`Error AJAX: ${status} - ${error}`);
         }
     });
-}
-
-function AjaXaumentoDescargas() {
-
-    let dataString = $("#descargarForm").serialize();
-
-     const id = $("#idCanDescarga").val();
-
-    dataString = "&idCan=" + encodeURIComponent(id); // 
-
-    console.log(dataString);
-    $.ajax({
-        type: "POST",
-        url: "aumentarDescargas",
-        data: dataString,
-        dataType: "json"
-
-    });
-
-}
-
-function AjaXaumentoContador(id) {
-
-    let dataString = $("#publicarForm").serialize();
-
-    
-    
-
-    dataString = "&idCan=" + encodeURIComponent(id); // 
-
-    console.log(dataString);
-    $.ajax({
-        type: "POST",
-        url: "aumentarContador",
-        data: dataString,
-        dataType: "json"
-
-    });
-
 }
 
 
@@ -859,5 +820,3 @@ function scripts_rankingUsuarios() {
         });
     });
 }
-
-

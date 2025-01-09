@@ -1,4 +1,13 @@
 
+<%@page import="Utilidades.controlIngresos"%>
+<%@page import="webServices.PlaylistController"%>
+<%@page import="webServices.CancionController"%>
+<%@page import="webServices.AlbumController"%>
+<%@page import="webServices.UsuarioController"%>
+<%@page import="webServices.PlaylistControllerService"%>
+<%@page import="webServices.CancionControllerService"%>
+<%@page import="webServices.AlbumControllerService"%>
+<%@page import="webServices.UsuarioControllerService"%>
 <%-- 
     Document   : principal
     Created on : Oct 16, 2024, 1:22:30 PM
@@ -12,26 +21,38 @@
 <%@page import="javax.persistence.EntityManager"%>
 <%@page import="javax.persistence.Persistence"%>
 <%@page import="javax.persistence.EntityManagerFactory"%>
-<%@page import="controllers.ICancionController"%>
-<%@page import="controllers.IUsuarioController"%>
-<%@page import="controllers.IAlbumController"%>
-<%@page import="controllers.IPlaylistController"%>
-<%@page import="controllers.Fabrica"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
+    
+    
+    
+       controlIngresos controlIngresos = new controlIngresos();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    UsuarioController usrController = IUCservicio.getUsuarioControllerPort(); 
+    usrController.autenticarUsuario(controlIngresos.obtenerIpActual(), 
+    controlIngresos.obtenerUrlActual(request), controlIngresos.obtenerNavegadorActual(request), controlIngresos.obtenerSistemaOperativoActual(request));
+    
+    
     String input = request.getParameter("input");
-    Fabrica fabrica = Fabrica.getInstance();
-    ICancionController cancionController = fabrica.getICancionController();
-    IUsuarioController usrController = fabrica.getIUsuarioController();
-    IAlbumController albumController = fabrica.getIAlbumController();
-    IPlaylistController playlistController = fabrica.getIPlaylistController();
+    
+    
+ 
+    
+       //llamo websvc
+    AlbumControllerService IACservicio = new AlbumControllerService();
+    CancionControllerService ICCservicio = new CancionControllerService();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
+    //intancio controllers
+    AlbumController albumController = IACservicio.getAlbumControllerPort();
+    CancionController cancionController = ICCservicio.getCancionControllerPort();
+    PlaylistController playlistController = IPCservicio.getPlaylistControllerPort();
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
     EntityManager em = emf.createEntityManager();
     Map<String, String> canciones = new HashMap<>();
 
-    List<Object[]> ObtenidosCanciones = em.createNativeQuery("SELECT c.id, c.nombre, c.duracion, c.direccion_archivo_de_audio FROM cancion c JOIN cliente_cancionesfavoritas cf ON c.id = cf.cancion_id WHERE cf.cliente_id = ?1").setParameter(1, input).getResultList();
+    List<Object[]> ObtenidosCanciones = em.createNativeQuery("SELECT c.id, c.nombre, c.duracion, c.direccion_archivo_de_audio FROM cancion c JOIN cliente_cancionesFavoritas cf ON c.id = cf.cancion_id WHERE cf.cliente_id = ?1").setParameter(1, input).getResultList();
     List<Object[]> ObtenidosClientes = em.createNativeQuery("Select nick,imagen from usuario WHERE tipo_usuario = 'cliente' ORDER BY RAND() LIMIT 5").getResultList();
     List<Object[]> ObtenidosArtistas = em.createNativeQuery("Select nick,imagen from usuario WHERE tipo_usuario = 'artista' ORDER BY RAND() LIMIT 5").getResultList();
     List<Object[]> ObtenidosAlbums = em.createNativeQuery("SELECT id, nombre, direccion_imagen, artista, anioo FROM album ORDER BY RAND() LIMIT 5").getResultList();
@@ -81,7 +102,7 @@
                                     imagen = aux[2].toString();
                                 }
                     %>
-                    <div onclick="abrirCasoDeUso('consultarAlbumVisitante.jsp?tipo=artista&nombre=<%= aux[3]%>&user=<%= aux[0]%>'); event.stopPropagation();" class="hover:bg-neutral-600 rounded relative flex flex-col">
+                    <div onclick="abrirCasoDeUso('ConsultarAlbumVisitante.jsp?tipo=artista&nombre=<%= aux[3]%>&user=<%= aux[0]%>'); event.stopPropagation();" class="hover:bg-neutral-600 rounded relative flex flex-col">
                         <div class="relative m-3" style="width: clamp(6rem, 20vw, 16rem); height: clamp(6rem, 20vw, 16rem);">
                             <img src="<%= imagen%>" alt="" class="w-full h-full object-cover" style="-webkit-box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); -moz-box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); box-shadow: 0px 0px 32px -11px rgba(0,0,0,1); border-radius: 0.5rem;"/>
                         </div>

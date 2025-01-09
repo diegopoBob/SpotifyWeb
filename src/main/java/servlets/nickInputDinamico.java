@@ -4,20 +4,19 @@
  */
 package servlets;
 
-import controllers.Fabrica;
-import controllers.IUsuarioController;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import models.Usuario;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -25,7 +24,6 @@ import models.Usuario;
  */
 @WebServlet(name = "nickInputDinamico", urlPatterns = {"/verificarNick"})
 public class nickInputDinamico extends HttpServlet {
-      Fabrica fabrica = Fabrica.getInstance();
       EntityManagerFactory emf = Persistence.createEntityManagerFactory("grupo6_Spotify");
       EntityManager em = emf.createEntityManager();
     /**
@@ -66,15 +64,12 @@ public class nickInputDinamico extends HttpServlet {
     }
     
     private boolean verificarNickname(String nick){
-        String jpql = "SELECT COUNT(e) FROM Usuario e WHERE e.nick = :id";
-        Long count = em.createQuery(jpql, Long.class)
-                .setParameter("id", nick)
-                .getSingleResult();
-        if (count >= 1) {
-            
-            return false;
+        String jpql = "SELECT nick FROM Usuario WHERE nick ='"+nick+"'";
+        List count = em.createNativeQuery(jpql).getResultList();
+        if (count.isEmpty()) { 
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

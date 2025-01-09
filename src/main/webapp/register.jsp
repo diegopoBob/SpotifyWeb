@@ -3,7 +3,9 @@
     Created on : Oct 4, 2024, 1:33:48?AM
     Author     : dylan
 --%>
-<%@page import="controllers.Fabrica"%>
+<%@page import="webServices.UsuarioController"%>
+<%@page import="webServices.UsuarioControllerService"%>
+<%@page import="Utilidades.controlIngresos"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -11,9 +13,14 @@
 <%@page import="javax.persistence.EntityManager"%>
 <%@page import="javax.persistence.Persistence"%>
 <%@page import="javax.persistence.EntityManagerFactory"%>
-<%@page import="controllers.IUsuarioController"%>
+
 
 <%
+    controlIngresos controlIngresos = new controlIngresos();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    UsuarioController IUC = IUCservicio.getUsuarioControllerPort(); 
+    IUC.autenticarUsuario(controlIngresos.obtenerIpActual(), 
+    controlIngresos.obtenerUrlActual(request), controlIngresos.obtenerNavegadorActual(request), controlIngresos.obtenerSistemaOperativoActual(request));
     
     if (session == null || session.getAttribute("nick") == null) {        
     }else{

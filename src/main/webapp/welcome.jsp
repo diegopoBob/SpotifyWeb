@@ -3,24 +3,40 @@
     Created on : Oct 28, 2024, 3:40:39 PM
     Author     : dylan
 --%>
+<%@page import="webServices.UsuarioController"%>
+<%@page import="webServices.UsuarioControllerService"%>
+<%@page import="Utilidades.controlIngresos"%>
+<%@page import="webServices.PlaylistController"%>
+<%@page import="webServices.AlbumController"%>
+<%@page import="webServices.PlaylistControllerService"%>
+<%@page import="webServices.AlbumControllerService"%>
+<%@page import="javax.xml.namespace.QName"%>
+<%@page import="java.net.URL"%>
+<%@page import="javax.xml.ws.WebServiceRef"%>
 <%@page import="java.time.LocalDate"%>
-<%@page import="controllers.IUsuarioController"%>
-<%@page import="controllers.ICancionController"%>
-<%@page import="controllers.IAlbumController"%>
-<%@page import="controllers.IPlaylistController"%>
-<%@page import="controllers.Fabrica"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    
+     controlIngresos controlIngresos = new controlIngresos();
+    UsuarioControllerService IUCservicio = new UsuarioControllerService();
+    UsuarioController IUC = IUCservicio.getUsuarioControllerPort(); 
+    IUC.autenticarUsuario(controlIngresos.obtenerIpActual(), 
+    controlIngresos.obtenerUrlActual(request), controlIngresos.obtenerNavegadorActual(request), controlIngresos.obtenerSistemaOperativoActual(request));
 
     if (!(session == null || session.getAttribute("nick") == null)) {
         response.sendRedirect("index.jsp");
         return;
     }
-    Fabrica fabrica = Fabrica.getInstance();
-    IPlaylistController IPC = fabrica.getIPlaylistController();
-    IAlbumController IAC = fabrica.getIAlbumController();
+
+    //llamo websvc
+    AlbumControllerService IACservicio = new AlbumControllerService();
+    PlaylistControllerService IPCservicio = new PlaylistControllerService();
+    //intancio controllers
+    AlbumController IAC = IACservicio.getAlbumControllerPort();
+    PlaylistController IPC = IPCservicio.getPlaylistControllerPort();
+
     boolean mostrarTooltip = true;
 
 %>
@@ -76,8 +92,8 @@
                     </form>
                 </div>
                 <div class="h-auto bg-black pr-4 flex items-center text-white userDropdown gap-2">
-                    <a type="button" href="login.jsp" class="text-whitecursor-pointer bg-neutral-400 rounded-full p-2 hidden md:block">Iniciar Sesion</a>
-                    <a type="button"  href="register.jsp" class="text-whitecursor-pointer bg-neutral-400 rounded-full p-2 hidden md:block">Registrarse</a>
+                    <a type="button" href="login.jsp" class="text-whitecursor-pointer bg-neutral-400 rounded-full p-2 ">Iniciar Sesion</a>
+                    
                 </div>
             </div>
 
